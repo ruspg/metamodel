@@ -7,6 +7,10 @@ from .atlas_bundle_model import (
     AtlasBundleOptions,
     AtlasBundleResult,
 )
+from .compatibility_report_generator import (
+    CompatibilityReportGenerationError,
+    build_compatibility_report,
+)
 from .lint import LintMessage, LintResult, lint_ontology
 from .metamodel_snapshot_generator import (
     MetamodelSnapshotGenerationError,
@@ -47,6 +51,8 @@ from .type_catalog_generator import TypeCatalogGenerationError, build_type_catal
 from .validator import OntologyValidationError, ensure_valid_ontology, validate_ontology
 
 __all__ = [
+    "build_compatibility_report",
+    "CompatibilityReportGenerationError",
     "build_search_aliases",
     "SearchAliasesGenerationError",
     "build_relation_catalog",

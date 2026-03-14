@@ -11,6 +11,7 @@ from .atlas_bundle_model import (
     AtlasBundleOptions,
     AtlasBundleResult,
 )
+from .compatibility_report_generator import build_compatibility_report
 from .metamodel_snapshot_generator import build_metamodel_snapshot
 from .projection_model import ProjectionModel
 from .relation_catalog_generator import build_relation_catalog
@@ -51,7 +52,8 @@ _ARTIFACT_PLANS: Tuple[AtlasBundleArtifactPlan, ...] = (
     AtlasBundleArtifactPlan(
         artifact_id="compatibility_report",
         relative_path="artifacts/compatibility_report.md",
-        description="Wave 1 atlas compatibility report placeholder",
+        description="Wave 1 atlas compatibility report",
+        placeholder=False,
     ),
 )
 
@@ -150,6 +152,8 @@ def _build_artifact_payload(
         return build_relation_catalog(projection)
     if plan.artifact_id == "search_aliases":
         return build_search_aliases(projection)
+    if plan.artifact_id == "compatibility_report":
+        return build_compatibility_report(projection, artifact_inventory=_ARTIFACT_PLANS)
 
     if plan.relative_path.endswith(".md"):
         return _build_placeholder_markdown(plan, projection, options)

@@ -116,6 +116,18 @@ def test_generate_atlas_bundle_search_aliases_is_real_artifact(tmp_path: Path) -
     assert payload["counts"]["alias_count"] > 0
 
 
+def test_generate_atlas_bundle_compatibility_report_is_real_artifact(tmp_path: Path) -> None:
+    projection = _baseline_projection()
+
+    result = generate_atlas_bundle(projection, tmp_path)
+    report_path = Path(result.bundle_root) / "artifacts" / "compatibility_report.md"
+    payload = report_path.read_text(encoding="utf-8")
+
+    assert "# Wave 1 Compatibility Report" in payload
+    assert "## Artifact Inventory" in payload
+    assert "## Validation/Compatibility Status" in payload
+
+
 def test_generate_atlas_bundle_manifest_structure(tmp_path: Path) -> None:
     projection = _baseline_projection()
     options = AtlasBundleOptions(
@@ -153,6 +165,10 @@ def test_generate_atlas_bundle_manifest_structure(tmp_path: Path) -> None:
         item for item in manifest_payload["artifacts"] if item["artifact_id"] == "search_aliases"
     )
     assert search_aliases_manifest_entry["placeholder"] is False
+    compatibility_report_manifest_entry = next(
+        item for item in manifest_payload["artifacts"] if item["artifact_id"] == "compatibility_report"
+    )
+    assert compatibility_report_manifest_entry["placeholder"] is False
 
 
 def test_generate_atlas_bundle_fails_for_missing_projection_metadata(tmp_path: Path) -> None:

@@ -39,3 +39,4 @@ This `tools/` directory is the forward-looking home for future loader/validator/
 
 - `tools/wave1/relation_catalog_generator.py` implements the concrete `relation_catalog.json` artifact as a compact, deterministic runtime-facing relation catalog for the active profile.
 - `tools/wave1/search_aliases_generator.py` implements the concrete `search_aliases.json` artifact as a compact, deterministic runtime-facing alias/disambiguation projection for the active profile.
+- `tools/wave1/compatibility_report_generator.py` implements the concrete `compatibility_report.md` artifact as a deterministic release/import compatibility summary over generated bundle artifacts.
