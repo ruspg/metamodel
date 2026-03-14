@@ -1,7 +1,7 @@
 # Entity Kind Contract v2
 
 Дата: 2026-03-09
-Статус: draft-for-review
+Статус: frozen-for-wave
 Сессия: 8 — точный контракт `entity_kind`
 
 ## 1. Назначение

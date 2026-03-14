@@ -1,7 +1,7 @@
 # Glossary, Alias, and Naming Policy
 
 Дата: 2026-03-09
-Статус: proposed
+Статус: frozen-for-wave
 Сессия: 12 — правила именования, aliases и glossary model
 
 ## 1. Цель
