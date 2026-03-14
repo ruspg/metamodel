@@ -41,9 +41,12 @@ from .relation_catalog_validator import (
     validate_relation_catalog,
 )
 from .validation_types import ValidationMessage, ValidationResult
+from .type_catalog_generator import TypeCatalogGenerationError, build_type_catalog
 from .validator import OntologyValidationError, ensure_valid_ontology, validate_ontology
 
 __all__ = [
+    "build_type_catalog",
+    "TypeCatalogGenerationError",
     "build_metamodel_snapshot",
     "MetamodelSnapshotGenerationError",
     "AttributeDefinition",

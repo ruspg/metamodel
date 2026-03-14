@@ -34,4 +34,5 @@ This `tools/` directory is the forward-looking home for future loader/validator/
 ## Wave 1 atlas bundle generator skeleton
 - `tools/wave1/atlas_bundle_generator.py` provides `generate_atlas_bundle(...)` as the canonical Wave 1 atlas bundle orchestration entrypoint over the projection model.
 - `tools/wave1/atlas_bundle_model.py` defines bundle manifest/result dataclasses and deterministic artifact planning structures for future concrete artifact generators.
-- `tools/wave1/metamodel_snapshot_generator.py` implements the first concrete artifact (`metamodel_snapshot.json`) as a compact, deterministic runtime-facing metamodel surface for the active profile.
+- `tools/wave1/metamodel_snapshot_generator.py` implements the concrete `metamodel_snapshot.json` artifact as a compact, deterministic runtime-facing metamodel surface for the active profile.
+- `tools/wave1/type_catalog_generator.py` implements the concrete `type_catalog.json` artifact as a compact, deterministic runtime-facing kind/attribute catalog for the active profile.

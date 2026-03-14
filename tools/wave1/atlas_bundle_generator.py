@@ -13,6 +13,7 @@ from .atlas_bundle_model import (
 )
 from .metamodel_snapshot_generator import build_metamodel_snapshot
 from .projection_model import ProjectionModel
+from .type_catalog_generator import build_type_catalog
 
 
 _MANIFEST_SCHEMA_VERSION = "wave1.atlas.bundle/v1"
@@ -30,7 +31,8 @@ _ARTIFACT_PLANS: Tuple[AtlasBundleArtifactPlan, ...] = (
     AtlasBundleArtifactPlan(
         artifact_id="type_catalog",
         relative_path="artifacts/type_catalog.json",
-        description="Wave 1 atlas type catalog placeholder",
+        description="Wave 1 atlas type catalog",
+        placeholder=False,
     ),
     AtlasBundleArtifactPlan(
         artifact_id="relation_catalog",
@@ -138,6 +140,8 @@ def _build_artifact_payload(
 ) -> Any:
     if plan.artifact_id == "metamodel_snapshot":
         return build_metamodel_snapshot(projection)
+    if plan.artifact_id == "type_catalog":
+        return build_type_catalog(projection)
 
     if plan.relative_path.endswith(".md"):
         return _build_placeholder_markdown(plan, projection, options)
