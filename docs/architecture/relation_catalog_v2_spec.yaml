@@ -1,0 +1,22 @@
+# Relation Catalog v2 — Spec (Stub)
+# Дата: 2026-03-14
+# Статус: stub / draft
+# Depends on: relation_kind_contract_v2, business_layer_relation_matrix
+# Consumed by: bundle generator, runtime import, relation_catalog_v2_rules
+
+# TODO: Определить структуру relation catalog v2
+# - формат (JSON Schema / YAML structure)
+# - обязательные поля для каждой relation
+# - правила allowed source/target kinds
+# - traversal semantics
+# - qualified vs unqualified edges
+
+version: "0.1"
+purpose: "First-class relation catalog for atlas projection bundle"
+status: stub
+
+# Placeholder structure — to be filled
+# relation_catalog:
+#   version: string
+#   relations: []
+#   rules: {}
