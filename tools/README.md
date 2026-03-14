@@ -19,3 +19,6 @@ This `tools/` directory is the forward-looking home for future loader/validator/
 
 ## Wave 1 ontology lint
 - `tools/wave1/lint.py` provides `lint_ontology(...)` for semantic quality checks (naming/alias/glossary/relation consistency) after structural validation.
+
+## Wave 1 relation catalog validator
+- `tools/wave1/relation_catalog_validator.py` provides `validate_relation_catalog(...)` and `ensure_valid_relation_catalog(...)` for dedicated relation-catalog gates prior to generation tasks.
