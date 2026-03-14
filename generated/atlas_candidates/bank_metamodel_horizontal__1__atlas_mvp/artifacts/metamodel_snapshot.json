@@ -1,0 +1,816 @@
+{
+  "catalog_metadata": {
+    "relation_catalog_purpose": "Wave 1 relation catalog for atlas MVP projection, centered on business backbone and minimum cross-layer traversal usefulness",
+    "relation_catalog_status": "wave1-frozen-input",
+    "relation_catalog_version": "2.0.0"
+  },
+  "counts": {
+    "entity_kind_count": 25,
+    "qualifier_count": 11,
+    "relation_count": 34,
+    "relation_kind_count": 36
+  },
+  "entity_kinds": [
+    {
+      "attributes": [],
+      "category": "interface",
+      "id": "api",
+      "metamodel_level": "component_details",
+      "name": "API"
+    },
+    {
+      "attributes": [],
+      "category": "interface",
+      "id": "api_method",
+      "metamodel_level": "component_details",
+      "name": "API Method"
+    },
+    {
+      "attributes": [],
+      "category": "interface",
+      "id": "api_method_parameter",
+      "metamodel_level": "component_details",
+      "name": "API Method Parameter"
+    },
+    {
+      "attributes": [],
+      "category": "offering",
+      "id": "bank_product",
+      "metamodel_level": "strategic_view",
+      "name": "Bank Product"
+    },
+    {
+      "attributes": [],
+      "category": "capability",
+      "id": "business_capability",
+      "metamodel_level": "business_details",
+      "name": "Business Capability"
+    },
+    {
+      "attributes": [],
+      "category": "business_object",
+      "id": "business_entity",
+      "metamodel_level": "business_details",
+      "name": "Business Entity"
+    },
+    {
+      "attributes": [],
+      "category": "process",
+      "id": "business_function",
+      "metamodel_level": "business_details",
+      "name": "Business Function"
+    },
+    {
+      "attributes": [],
+      "category": "process",
+      "id": "business_process",
+      "metamodel_level": "business_details",
+      "name": "Business Process"
+    },
+    {
+      "attributes": [],
+      "category": "channel",
+      "id": "channel",
+      "metamodel_level": "business_details",
+      "name": "Channel"
+    },
+    {
+      "attributes": [],
+      "category": "application",
+      "id": "component",
+      "metamodel_level": "component_details",
+      "name": "Component"
+    },
+    {
+      "attributes": [],
+      "category": "application",
+      "id": "functional_subsystem",
+      "metamodel_level": "solution_details",
+      "name": "Functional Subsystem"
+    },
+    {
+      "attributes": [],
+      "category": "goal",
+      "id": "goal",
+      "metamodel_level": "strategic_view",
+      "name": "Goal"
+    },
+    {
+      "attributes": [],
+      "category": "integration",
+      "id": "information_flow",
+      "metamodel_level": "solution_details",
+      "name": "Information Flow"
+    },
+    {
+      "attributes": [],
+      "category": "infrastructure",
+      "id": "infra_resource",
+      "metamodel_level": "infrastructure_details",
+      "name": "Infrastructure Resource"
+    },
+    {
+      "attributes": [],
+      "category": "integration",
+      "id": "integration",
+      "metamodel_level": "component_details",
+      "name": "Integration"
+    },
+    {
+      "attributes": [],
+      "category": "application",
+      "id": "it_system",
+      "metamodel_level": "solution_details",
+      "name": "IT System"
+    },
+    {
+      "attributes": [],
+      "category": "business_structure",
+      "id": "job_family",
+      "metamodel_level": "strategic_view",
+      "name": "Job Family"
+    },
+    {
+      "attributes": [
+        {
+          "id": "logical_resource.resource_kind",
+          "metamodel_level": "infrastructure_details",
+          "name": "Тип ресурса"
+        }
+      ],
+      "category": "infrastructure",
+      "id": "logical_resource",
+      "metamodel_level": "infrastructure_details",
+      "name": "Logical Resource"
+    },
+    {
+      "attributes": [],
+      "category": "business_structure",
+      "id": "organizational_unit",
+      "metamodel_level": "strategic_view",
+      "name": "Organizational Unit"
+    },
+    {
+      "attributes": [],
+      "category": "application",
+      "id": "software_component",
+      "metamodel_level": "component_details",
+      "name": "Software Component"
+    },
+    {
+      "attributes": [],
+      "category": "value_definition",
+      "id": "value",
+      "metamodel_level": "business_details",
+      "name": "Value"
+    },
+    {
+      "attributes": [],
+      "category": "stakeholder",
+      "id": "value_consumer",
+      "metamodel_level": "business_details",
+      "name": "Value Consumer"
+    },
+    {
+      "attributes": [],
+      "category": "value_delivery",
+      "id": "value_stream",
+      "metamodel_level": "business_details",
+      "name": "Value Stream"
+    },
+    {
+      "attributes": [],
+      "category": "value_delivery",
+      "id": "value_stream_stage",
+      "metamodel_level": "business_details",
+      "name": "Value Stream Stage"
+    },
+    {
+      "attributes": [],
+      "category": "vendor_solution",
+      "id": "vendor_product",
+      "metamodel_level": "component_details",
+      "name": "Vendor Product"
+    }
+  ],
+  "model": {
+    "bank_code": "BANK",
+    "model_name": "bank_metamodel_horizontal",
+    "model_version": "1",
+    "profile": "atlas_mvp",
+    "source_profiles": [
+      "atlas_mvp"
+    ]
+  },
+  "qualifiers": [
+    {
+      "id": "branch_type",
+      "name": null
+    },
+    {
+      "id": "condition",
+      "name": null
+    },
+    {
+      "id": "criticality",
+      "name": null
+    },
+    {
+      "id": "dependency_type",
+      "name": null
+    },
+    {
+      "id": "directionality",
+      "name": null
+    },
+    {
+      "id": "interaction_type",
+      "name": null
+    },
+    {
+      "id": "mandatory",
+      "name": null
+    },
+    {
+      "id": "order_index",
+      "name": null
+    },
+    {
+      "id": "payload_role",
+      "name": null
+    },
+    {
+      "id": "role",
+      "name": null
+    },
+    {
+      "id": "sensitivity",
+      "name": null
+    }
+  ],
+  "relation_kinds": [
+    {
+      "category": "composition",
+      "direction": "directed",
+      "from_kind": "api",
+      "id": "rel_api_composed_of_methods",
+      "name": "API состоит из методов",
+      "to_kind": "api_method"
+    },
+    {
+      "category": "aggregation",
+      "direction": "directed",
+      "from_kind": "business_capability",
+      "id": "rel_capability_aggregates_processes",
+      "name": "Capability агрегирует процессы",
+      "to_kind": "business_process"
+    },
+    {
+      "category": "dependency",
+      "direction": "directed",
+      "from_kind": "business_capability",
+      "id": "rel_capability_needed_for_goal",
+      "name": "Capability необходима для Goal",
+      "to_kind": "goal"
+    },
+    {
+      "category": "service",
+      "direction": "directed",
+      "from_kind": "business_capability",
+      "id": "rel_capability_serves_value_stream",
+      "name": "Capability поддерживает Value Stream",
+      "to_kind": "value_stream"
+    },
+    {
+      "category": "service",
+      "direction": "directed",
+      "from_kind": "channel",
+      "id": "rel_channel_serves_value",
+      "name": "Channel обслуживает Value",
+      "to_kind": "value"
+    },
+    {
+      "category": "composition",
+      "direction": "directed",
+      "from_kind": "component",
+      "id": "rel_component_composed_of_subsystems",
+      "name": "Component состоит из Subsystems",
+      "to_kind": "functional_subsystem"
+    },
+    {
+      "category": "composition",
+      "direction": "directed",
+      "from_kind": "component",
+      "id": "rel_component_exposes_api",
+      "name": "Component состоит из API",
+      "to_kind": "api"
+    },
+    {
+      "category": "realization",
+      "direction": "directed",
+      "from_kind": "vendor_product",
+      "id": "rel_component_realized_by_vendor_product",
+      "name": "Vendor Product реализует Component",
+      "to_kind": "component"
+    },
+    {
+      "category": "consumption",
+      "direction": "directed",
+      "from_kind": "value_consumer",
+      "id": "rel_consumer_consumes_value",
+      "name": "Consumer потребляет Value",
+      "to_kind": "value"
+    },
+    {
+      "category": "interaction",
+      "direction": "directed",
+      "from_kind": "value_consumer",
+      "id": "rel_consumer_contacts_via_channel",
+      "name": "Consumer контактирует через Channel",
+      "to_kind": "channel"
+    },
+    {
+      "category": "flow",
+      "direction": "directed",
+      "from_kind": "information_flow",
+      "id": "rel_info_flow_serves_entity",
+      "name": "Information Flow передаёт сущность",
+      "to_kind": "business_entity"
+    },
+    {
+      "category": "service",
+      "direction": "directed",
+      "from_kind": "infra_resource",
+      "id": "rel_infra_resource_serves_logical_resource",
+      "name": "Infrastructure Resource обслуживает Logical Resource",
+      "to_kind": "logical_resource"
+    },
+    {
+      "category": "service",
+      "direction": "directed",
+      "from_kind": "infra_resource",
+      "id": "rel_infra_resource_serves_software_component",
+      "name": "Infrastructure Resource обслуживает Software Component",
+      "to_kind": "software_component"
+    },
+    {
+      "category": "realization",
+      "direction": "directed",
+      "from_kind": "integration",
+      "id": "rel_integration_realizes_info_flow",
+      "name": "Integration реализует Information Flow",
+      "to_kind": "information_flow"
+    },
+    {
+      "category": "association",
+      "direction": "directed",
+      "from_kind": "integration",
+      "id": "rel_integration_uses_methods",
+      "name": "Integration использует методы API",
+      "to_kind": "api_method"
+    },
+    {
+      "category": "mastership",
+      "direction": "directed",
+      "from_kind": "it_system",
+      "id": "rel_it_system_master_for_entity",
+      "name": "IT System мастер для сущности",
+      "to_kind": "business_entity"
+    },
+    {
+      "category": "realization",
+      "direction": "directed",
+      "from_kind": "it_system",
+      "id": "rel_it_system_realizes_capability",
+      "name": "IT System реализует Capability",
+      "to_kind": "business_capability"
+    },
+    {
+      "category": "service",
+      "direction": "directed",
+      "from_kind": "it_system",
+      "id": "rel_it_system_serves_info_flow",
+      "name": "IT System обслуживает информационный поток",
+      "to_kind": "information_flow"
+    },
+    {
+      "category": "aggregation",
+      "direction": "directed",
+      "from_kind": "job_family",
+      "id": "rel_job_family_aggregates_product",
+      "name": "Job Family агрегирует Bank Product",
+      "to_kind": "bank_product"
+    },
+    {
+      "category": "service",
+      "direction": "directed",
+      "from_kind": "logical_resource",
+      "id": "rel_logical_resource_serves_component",
+      "name": "Logical Resource обслуживает Component",
+      "to_kind": "component"
+    },
+    {
+      "category": "service",
+      "direction": "directed",
+      "from_kind": "logical_resource",
+      "id": "rel_logical_resource_serves_integration",
+      "name": "Logical Resource обслуживает Integration",
+      "to_kind": "integration"
+    },
+    {
+      "category": "composition",
+      "direction": "directed",
+      "from_kind": "api_method",
+      "id": "rel_method_composed_of_params",
+      "name": "API Method состоит из параметров",
+      "to_kind": "api_method_parameter"
+    },
+    {
+      "category": "achievement",
+      "direction": "directed",
+      "from_kind": "organizational_unit",
+      "id": "rel_org_unit_achieves_goal",
+      "name": "Org Unit достигает Goal",
+      "to_kind": "goal"
+    },
+    {
+      "category": "production",
+      "direction": "directed",
+      "from_kind": "organizational_unit",
+      "id": "rel_org_unit_creates_product",
+      "name": "Org Unit создаёт Bank Product",
+      "to_kind": "bank_product"
+    },
+    {
+      "category": "ownership",
+      "direction": "directed",
+      "from_kind": "organizational_unit",
+      "id": "rel_org_unit_owns_it_system",
+      "name": "Org Unit отвечает за IT System",
+      "to_kind": "it_system"
+    },
+    {
+      "category": "support",
+      "direction": "directed",
+      "from_kind": "organizational_unit",
+      "id": "rel_org_unit_supports_capability",
+      "name": "Org Unit поддерживает Capability",
+      "to_kind": "business_capability"
+    },
+    {
+      "category": "realization",
+      "direction": "directed",
+      "from_kind": "business_process",
+      "id": "rel_process_realizes_stage",
+      "name": "Process реализует стадию",
+      "to_kind": "value_stream_stage"
+    },
+    {
+      "category": "service",
+      "direction": "directed",
+      "from_kind": "business_process",
+      "id": "rel_process_serves_entity",
+      "name": "Process обслуживает сущность",
+      "to_kind": "business_entity"
+    },
+    {
+      "category": "association",
+      "direction": "directed",
+      "from_kind": "business_process",
+      "id": "rel_process_uses_function",
+      "name": "Process использует Function",
+      "to_kind": "business_function"
+    },
+    {
+      "category": "composition",
+      "direction": "directed",
+      "from_kind": "software_component",
+      "id": "rel_software_component_composed_of_vendor_product",
+      "name": "Software Component состоит из Vendor Product",
+      "to_kind": "vendor_product"
+    },
+    {
+      "category": "composition",
+      "direction": "directed",
+      "from_kind": "functional_subsystem",
+      "id": "rel_subsystem_composed_of_systems",
+      "name": "Functional Subsystem состоит из IT Systems",
+      "to_kind": "it_system"
+    },
+    {
+      "category": "association",
+      "direction": "directed",
+      "from_kind": "value",
+      "id": "rel_value_associated_with_goal",
+      "name": "Value ассоциируется с Goal",
+      "to_kind": "goal"
+    },
+    {
+      "category": "value_delivery",
+      "direction": "directed",
+      "from_kind": "value",
+      "id": "rel_value_sold_within_product",
+      "name": "Value продаётся в рамках Bank Product",
+      "to_kind": "bank_product"
+    },
+    {
+      "category": "aggregation",
+      "direction": "directed",
+      "from_kind": "value_stream",
+      "id": "rel_value_stream_aggregates_stages",
+      "name": "Value Stream агрегирует стадии",
+      "to_kind": "value_stream_stage"
+    },
+    {
+      "category": "composition",
+      "direction": "directed",
+      "from_kind": "value_stream",
+      "id": "rel_value_stream_composed_of_products",
+      "name": "Value Stream состоит из продуктов",
+      "to_kind": "bank_product"
+    },
+    {
+      "category": "production",
+      "direction": "directed",
+      "from_kind": "value_stream",
+      "id": "rel_value_stream_produces_value",
+      "name": "Value Stream производит Value",
+      "to_kind": "value"
+    }
+  ],
+  "relations": [
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_capability",
+      "id": "rel_capability_aggregates_processes",
+      "to_kind": "business_process"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "component",
+      "id": "rel_component_supports_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "data_product",
+      "id": "rel_data_product_used_by_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_entity",
+      "id": "rel_entity_acted_on_by_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_entity",
+      "id": "rel_entity_carried_by_information_flow",
+      "to_kind": "information_flow"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_entity",
+      "id": "rel_entity_served_by_process",
+      "to_kind": "business_process"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_function",
+      "id": "rel_function_executed_by_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "information_flow",
+      "id": "rel_information_flow_carries_entity",
+      "to_kind": "business_entity"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "information_flow",
+      "id": "rel_information_flow_used_by_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "information_flow",
+      "id": "rel_information_flow_used_by_process",
+      "to_kind": "business_process"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "it_system",
+      "id": "rel_it_system_supports_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_acts_on_entity",
+      "to_kind": "business_entity"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_belongs_to_process",
+      "to_kind": "business_process"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_executes_function",
+      "to_kind": "business_function"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_follows_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_owned_by_team",
+      "to_kind": "team"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_performed_by_org_unit",
+      "to_kind": "organizational_unit"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_precedes_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_supported_by_component",
+      "to_kind": "component"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_supported_by_system",
+      "to_kind": "it_system"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_uses_data_product",
+      "to_kind": "data_product"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_uses_information_flow",
+      "to_kind": "information_flow"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "organizational_unit",
+      "id": "rel_org_unit_performs_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_process",
+      "id": "rel_process_belongs_to_stage",
+      "to_kind": "value_stream_stage"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_process",
+      "id": "rel_process_decomposes_to_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_process",
+      "id": "rel_process_depends_on_process",
+      "to_kind": "business_process"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_process",
+      "id": "rel_process_realizes_capability",
+      "to_kind": "business_capability"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_process",
+      "id": "rel_process_required_by_process",
+      "to_kind": "business_process"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_process",
+      "id": "rel_process_serves_entity",
+      "to_kind": "business_entity"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_process",
+      "id": "rel_process_uses_information_flow",
+      "to_kind": "information_flow"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "value_stream_stage",
+      "id": "rel_stage_belongs_to_value_stream",
+      "to_kind": "value_stream"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "value_stream_stage",
+      "id": "rel_stage_realized_by_process",
+      "to_kind": "business_process"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "team",
+      "id": "rel_team_owns_operation",
+      "to_kind": "business_operation"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "value_stream",
+      "id": "rel_value_stream_contains_stage",
+      "to_kind": "value_stream_stage"
+    }
+  ],
+  "schema_version": "wave1.metamodel_snapshot/v1"
+}
