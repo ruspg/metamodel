@@ -62,8 +62,8 @@ def generate_atlas_bundle(
 ) -> AtlasBundleResult:
     """Generate Wave 1 atlas bundle skeleton output and deterministic manifest."""
 
-    effective_options = options or AtlasBundleOptions()
-    _validate_projection_input(projection)
+    effective_options = options or AtlasBundleOptions(profile=projection.metadata.active_profile)
+    _validate_projection_input(projection, effective_options)
 
     root = Path(output_root)
     bundle_name = effective_options.bundle_name or _default_bundle_name(
@@ -106,13 +106,17 @@ def generate_atlas_bundle(
     )
 
 
-def _validate_projection_input(projection: ProjectionModel) -> None:
+def _validate_projection_input(projection: ProjectionModel, options: AtlasBundleOptions) -> None:
     if not projection.metadata.model_name.strip():
         raise AtlasBundleGenerationError("projection metadata.model_name is required")
     if not projection.metadata.version.strip():
         raise AtlasBundleGenerationError("projection metadata.version is required")
     if not projection.metadata.bank_code.strip():
         raise AtlasBundleGenerationError("projection metadata.bank_code is required")
+    if options.profile != projection.metadata.active_profile:
+        raise AtlasBundleGenerationError(
+            "bundle options.profile must match projection metadata.active_profile"
+        )
 
 
 def _default_bundle_name(model_name: str, version: str, profile: str) -> str:
@@ -123,7 +127,8 @@ def _default_bundle_name(model_name: str, version: str, profile: str) -> str:
 
 
 def _slugify(value: str) -> str:
-    return "".join(ch.lower() if ch.isalnum() else "_" for ch in value).strip("_")
+    normalized = "".join(ch.lower() if ch.isalnum() else "_" for ch in value).strip("_")
+    return normalized or "value"
 
 
 def _build_artifact_payload(

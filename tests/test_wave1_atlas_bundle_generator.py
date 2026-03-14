@@ -109,3 +109,13 @@ def test_generate_atlas_bundle_fails_for_missing_projection_metadata(tmp_path: P
         generate_atlas_bundle(broken, tmp_path)
 
     assert "model_name" in str(exc_info.value)
+
+
+def test_generate_atlas_bundle_fails_for_profile_mismatch(tmp_path: Path) -> None:
+    projection = _baseline_projection()
+    options = AtlasBundleOptions(profile="not_atlas")
+
+    with pytest.raises(AtlasBundleGenerationError) as exc_info:
+        generate_atlas_bundle(projection, tmp_path, options=options)
+
+    assert "options.profile" in str(exc_info.value)

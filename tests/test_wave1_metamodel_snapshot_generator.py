@@ -41,3 +41,14 @@ def test_metamodel_snapshot_builder_fails_for_missing_metadata() -> None:
         build_metamodel_snapshot(broken)
 
     assert "metadata.version" in str(exc_info.value)
+
+
+def test_metamodel_snapshot_builder_includes_compact_runtime_sections() -> None:
+    projection = _baseline_projection()
+
+    payload = build_metamodel_snapshot(projection)
+
+    assert payload["catalog_metadata"]["relation_catalog_purpose"] is not None
+    assert [item["id"] for item in payload["entity_kinds"]] == sorted(
+        item["id"] for item in payload["entity_kinds"]
+    )
