@@ -1,0 +1,559 @@
+{
+  "aliases": [
+    {
+      "alias": "api",
+      "sources": [
+        "canonical_id",
+        "canonical_name",
+        "display_name_ru"
+      ],
+      "target_category": "interface",
+      "target_id": "api"
+    },
+    {
+      "alias": "api method",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "interface",
+      "target_id": "api_method"
+    },
+    {
+      "alias": "api method parameter",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "interface",
+      "target_id": "api_method_parameter"
+    },
+    {
+      "alias": "api_method",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "interface",
+      "target_id": "api_method"
+    },
+    {
+      "alias": "api_method_parameter",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "interface",
+      "target_id": "api_method_parameter"
+    },
+    {
+      "alias": "bank product",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "offering",
+      "target_id": "bank_product"
+    },
+    {
+      "alias": "bank_product",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "offering",
+      "target_id": "bank_product"
+    },
+    {
+      "alias": "business capability",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "capability",
+      "target_id": "business_capability"
+    },
+    {
+      "alias": "business entity",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "business_object",
+      "target_id": "business_entity"
+    },
+    {
+      "alias": "business function",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "process",
+      "target_id": "business_function"
+    },
+    {
+      "alias": "business process",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "process",
+      "target_id": "business_process"
+    },
+    {
+      "alias": "business_capability",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "capability",
+      "target_id": "business_capability"
+    },
+    {
+      "alias": "business_entity",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "business_object",
+      "target_id": "business_entity"
+    },
+    {
+      "alias": "business_function",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "process",
+      "target_id": "business_function"
+    },
+    {
+      "alias": "business_process",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "process",
+      "target_id": "business_process"
+    },
+    {
+      "alias": "channel",
+      "sources": [
+        "canonical_id",
+        "canonical_name"
+      ],
+      "target_category": "channel",
+      "target_id": "channel"
+    },
+    {
+      "alias": "component",
+      "sources": [
+        "canonical_id",
+        "canonical_name"
+      ],
+      "target_category": "application",
+      "target_id": "component"
+    },
+    {
+      "alias": "functional subsystem",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "application",
+      "target_id": "functional_subsystem"
+    },
+    {
+      "alias": "functional_subsystem",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "application",
+      "target_id": "functional_subsystem"
+    },
+    {
+      "alias": "goal",
+      "sources": [
+        "canonical_id",
+        "canonical_name"
+      ],
+      "target_category": "goal",
+      "target_id": "goal"
+    },
+    {
+      "alias": "information flow",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "integration",
+      "target_id": "information_flow"
+    },
+    {
+      "alias": "information_flow",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "integration",
+      "target_id": "information_flow"
+    },
+    {
+      "alias": "infra_resource",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "infrastructure",
+      "target_id": "infra_resource"
+    },
+    {
+      "alias": "infrastructure resource",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "infrastructure",
+      "target_id": "infra_resource"
+    },
+    {
+      "alias": "integration",
+      "sources": [
+        "canonical_id",
+        "canonical_name"
+      ],
+      "target_category": "integration",
+      "target_id": "integration"
+    },
+    {
+      "alias": "it system",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "application",
+      "target_id": "it_system"
+    },
+    {
+      "alias": "it_system",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "application",
+      "target_id": "it_system"
+    },
+    {
+      "alias": "job family",
+      "sources": [
+        "canonical_name",
+        "display_name_ru"
+      ],
+      "target_category": "business_structure",
+      "target_id": "job_family"
+    },
+    {
+      "alias": "job_family",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "business_structure",
+      "target_id": "job_family"
+    },
+    {
+      "alias": "logical resource",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "infrastructure",
+      "target_id": "logical_resource"
+    },
+    {
+      "alias": "logical_resource",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "infrastructure",
+      "target_id": "logical_resource"
+    },
+    {
+      "alias": "organizational unit",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "business_structure",
+      "target_id": "organizational_unit"
+    },
+    {
+      "alias": "organizational_unit",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "business_structure",
+      "target_id": "organizational_unit"
+    },
+    {
+      "alias": "software component",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "application",
+      "target_id": "software_component"
+    },
+    {
+      "alias": "software_component",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "application",
+      "target_id": "software_component"
+    },
+    {
+      "alias": "value",
+      "sources": [
+        "canonical_id",
+        "canonical_name"
+      ],
+      "target_category": "value_definition",
+      "target_id": "value"
+    },
+    {
+      "alias": "value consumer",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "stakeholder",
+      "target_id": "value_consumer"
+    },
+    {
+      "alias": "value stream",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "value_delivery",
+      "target_id": "value_stream"
+    },
+    {
+      "alias": "value stream stage",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "value_delivery",
+      "target_id": "value_stream_stage"
+    },
+    {
+      "alias": "value_consumer",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "stakeholder",
+      "target_id": "value_consumer"
+    },
+    {
+      "alias": "value_stream",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "value_delivery",
+      "target_id": "value_stream"
+    },
+    {
+      "alias": "value_stream_stage",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "value_delivery",
+      "target_id": "value_stream_stage"
+    },
+    {
+      "alias": "vendor product",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "vendor_solution",
+      "target_id": "vendor_product"
+    },
+    {
+      "alias": "vendor_product",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "vendor_solution",
+      "target_id": "vendor_product"
+    },
+    {
+      "alias": "бизнес-процесс",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "process",
+      "target_id": "business_process"
+    },
+    {
+      "alias": "бизнес-способность",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "capability",
+      "target_id": "business_capability"
+    },
+    {
+      "alias": "бизнес-сущность",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "business_object",
+      "target_id": "business_entity"
+    },
+    {
+      "alias": "бизнес-функция",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "process",
+      "target_id": "business_function"
+    },
+    {
+      "alias": "вендорский продукт",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "vendor_solution",
+      "target_id": "vendor_product"
+    },
+    {
+      "alias": "интеграция",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "integration",
+      "target_id": "integration"
+    },
+    {
+      "alias": "информационный поток",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "integration",
+      "target_id": "information_flow"
+    },
+    {
+      "alias": "инфраструктурный ресурс",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "infrastructure",
+      "target_id": "infra_resource"
+    },
+    {
+      "alias": "ит-система",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "application",
+      "target_id": "it_system"
+    },
+    {
+      "alias": "канал",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "channel",
+      "target_id": "channel"
+    },
+    {
+      "alias": "компонент",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "application",
+      "target_id": "component"
+    },
+    {
+      "alias": "компонент по",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "application",
+      "target_id": "software_component"
+    },
+    {
+      "alias": "логический ресурс",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "infrastructure",
+      "target_id": "logical_resource"
+    },
+    {
+      "alias": "метод api",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "interface",
+      "target_id": "api_method"
+    },
+    {
+      "alias": "организационная единица",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "business_structure",
+      "target_id": "organizational_unit"
+    },
+    {
+      "alias": "параметр метода api",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "interface",
+      "target_id": "api_method_parameter"
+    },
+    {
+      "alias": "поток создания ценности",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "value_delivery",
+      "target_id": "value_stream"
+    },
+    {
+      "alias": "потребитель ценности",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "stakeholder",
+      "target_id": "value_consumer"
+    },
+    {
+      "alias": "продукт банка",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "offering",
+      "target_id": "bank_product"
+    },
+    {
+      "alias": "стадия потока",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "value_delivery",
+      "target_id": "value_stream_stage"
+    },
+    {
+      "alias": "функциональная подсистема",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "application",
+      "target_id": "functional_subsystem"
+    },
+    {
+      "alias": "цель",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "goal",
+      "target_id": "goal"
+    },
+    {
+      "alias": "ценность",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "value_definition",
+      "target_id": "value"
+    }
+  ],
+  "counts": {
+    "alias_count": 67,
+    "unresolved_alias_count": 0
+  },
+  "model": {
+    "bank_code": "BANK",
+    "model_name": "bank_metamodel_horizontal",
+    "model_version": "1",
+    "profile": "atlas_mvp"
+  },
+  "schema_version": "wave1.search_aliases/v1"
+}
