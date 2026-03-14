@@ -69,6 +69,9 @@ Wave 1 relation catalog включает:
 - `allowed_in_neighbors` — можно ли показывать в neighbors API/UX.
 - `allowed_in_paths` — допускается ли в path explanation.
 - `allowed_in_impact` — допускается ли в impact propagation/summaries.
+- `default_visibility` — `visible | collapsed | hidden` политика показа relation по умолчанию в стандартных surfaces.
+- `path_priority` — `primary | secondary | tertiary | excluded` детерминированный приоритет relation для path ranking.
+- `impact_mode` — `propagate | explain_only | exclude` семантика участия relation в impact results.
 - `supports_qualifiers` — допускает ли edge-level qualifiers.
 - `allowed_qualifiers` — whitelist qualifier IDs (пустой список для non-qualified relation).
 - `required_qualifiers` — подмножество `allowed_qualifiers`, обязательное для edge instance.
@@ -122,6 +125,39 @@ Wave 1 relation catalog включает:
 1. `allowed_in_paths=true` только если relation даёт осмысленное объяснение причинно/структурного перехода.
 2. `allowed_in_impact=true` только если relation может нести семантику распространения влияния.
 3. Ownership/mapping-only relations допускаются в impact только при явной полезности для explainability.
+
+### Rule 6A — Visibility policy
+
+1. `default_visibility` обязателен для каждого relation entry и может быть только `visible | collapsed | hidden`.
+2. `visible` означает, что relation показывается по умолчанию в стандартных graph/card relation surfaces.
+3. `collapsed` означает, что relation доступен по умолчанию, но в grouped/collapsed состоянии до явного expand.
+4. `hidden` означает, что relation не показывается в стандартных surfaces по умолчанию; relation может быть доступен только в advanced/debug/export contexts при отдельном разрешении.
+5. `default_visibility` не отменяет capability-флаги:
+   - если `allowed_in_neighbors=false`, relation не должен появляться в neighbors независимо от visibility;
+   - если `allowed_in_paths=false`, relation не используется в path search/ranking независимо от visibility;
+   - если `allowed_in_impact=false`, relation не участвует в impact независимо от visibility/impact_mode;
+   - `ui_group` остаётся группирующим измерением и используется совместно с `default_visibility` (например, collapsed по группе).
+
+### Rule 6B — Deterministic path ranking policy
+
+1. `path_priority` обязателен для каждого relation entry и может быть только `primary | secondary | tertiary | excluded`.
+2. `primary` — relation приоритетен при ранжировании explanatory/business-critical paths.
+3. `secondary` — relation валиден, но должен уступать `primary` при прочих равных.
+4. `tertiary` — relation допустим как fallback и не должен доминировать в top paths.
+5. `excluded` — relation не должен использоваться path ranking даже если edge физически существует.
+6. Для Wave 1 ranking policy:
+   - structural/process backbone relations обычно должны outrank contextual/support relations;
+   - ownership/context relations не должны доминировать над process/data/technology bridge paths;
+   - relations с `path_priority=excluded` всегда исключаются из path ranking.
+
+### Rule 6C — Impact propagation policy
+
+1. `impact_mode` обязателен для каждого relation entry и может быть только `propagate | explain_only | exclude`.
+2. `propagate` — relation может расширять blast radius.
+3. `explain_only` — relation может отображаться в impact results как контекст, но не распространяет impact дальше.
+4. `exclude` — relation не участвует в impact results.
+5. `allowed_in_impact` сохраняется как coarse gate для совместимости Wave 1; `impact_mode` является более сильной семантикой интерпретации.
+6. Если `allowed_in_impact=false`, runtime обязан трактовать relation как effectively excluded для impact независимо от `impact_mode`.
 
 ### Rule 7 — Qualifiers policy
 

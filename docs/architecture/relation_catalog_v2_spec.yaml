@@ -46,6 +46,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: false
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: exclude
       supports_qualifiers: true
       allowed_qualifiers: [order_index]
       required_qualifiers: []
@@ -73,6 +76,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: false
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: exclude
       supports_qualifiers: true
       allowed_qualifiers: [order_index]
       required_qualifiers: []
@@ -100,6 +106,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [role, criticality]
       required_qualifiers: []
@@ -127,6 +136,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [role, criticality]
       required_qualifiers: []
@@ -154,6 +166,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: explain_only
       supports_qualifiers: false
       allowed_qualifiers: []
       required_qualifiers: []
@@ -181,6 +196,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: explain_only
       supports_qualifiers: false
       allowed_qualifiers: []
       required_qualifiers: []
@@ -208,6 +226,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: false
       allowed_qualifiers: []
       required_qualifiers: []
@@ -235,6 +256,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: false
       allowed_qualifiers: []
       required_qualifiers: []
@@ -262,6 +286,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: explain_only
       supports_qualifiers: false
       allowed_qualifiers: []
       required_qualifiers: []
@@ -289,6 +316,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: explain_only
       supports_qualifiers: false
       allowed_qualifiers: []
       required_qualifiers: []
@@ -316,6 +346,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: explain_only
       supports_qualifiers: true
       allowed_qualifiers: [role]
       required_qualifiers: []
@@ -343,6 +376,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: explain_only
       supports_qualifiers: true
       allowed_qualifiers: [role]
       required_qualifiers: []
@@ -370,6 +406,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [interaction_type, criticality, mandatory]
       required_qualifiers: [interaction_type]
@@ -397,6 +436,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [interaction_type, criticality, mandatory]
       required_qualifiers: [interaction_type]
@@ -424,6 +466,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [payload_role, sensitivity]
       required_qualifiers: [payload_role]
@@ -451,6 +496,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [payload_role, sensitivity]
       required_qualifiers: [payload_role]
@@ -479,6 +527,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: explain_only
       supports_qualifiers: true
       allowed_qualifiers: [role]
       required_qualifiers: []
@@ -506,6 +557,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: explain_only
       supports_qualifiers: true
       allowed_qualifiers: [role]
       required_qualifiers: []
@@ -533,6 +587,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [interaction_type, directionality]
       required_qualifiers: [interaction_type]
@@ -560,6 +617,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [interaction_type, directionality]
       required_qualifiers: [interaction_type]
@@ -587,6 +647,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [dependency_type, criticality, condition]
       required_qualifiers: [dependency_type]
@@ -614,6 +677,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [dependency_type, criticality, condition]
       required_qualifiers: [dependency_type]
@@ -641,6 +707,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: false
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: exclude
       supports_qualifiers: true
       allowed_qualifiers: [order_index, condition, branch_type]
       required_qualifiers: []
@@ -668,6 +737,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: false
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: exclude
       supports_qualifiers: true
       allowed_qualifiers: [order_index, condition, branch_type]
       required_qualifiers: []
@@ -696,6 +768,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [criticality]
       required_qualifiers: []
@@ -723,6 +798,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [criticality]
       required_qualifiers: []
@@ -750,6 +828,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [criticality]
       required_qualifiers: []
@@ -777,6 +858,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: secondary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [criticality]
       required_qualifiers: []
@@ -804,6 +888,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [role, criticality]
       required_qualifiers: []
@@ -831,6 +918,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: visible
+      path_priority: primary
+      impact_mode: propagate
       supports_qualifiers: true
       allowed_qualifiers: [role, criticality]
       required_qualifiers: []
@@ -858,6 +948,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: tertiary
+      impact_mode: explain_only
       supports_qualifiers: true
       allowed_qualifiers: [role]
       required_qualifiers: []
@@ -885,6 +978,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: tertiary
+      impact_mode: explain_only
       supports_qualifiers: true
       allowed_qualifiers: [role]
       required_qualifiers: []
@@ -912,6 +1008,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: tertiary
+      impact_mode: explain_only
       supports_qualifiers: true
       allowed_qualifiers: [role]
       required_qualifiers: []
@@ -939,6 +1038,9 @@ relation_catalog:
       allowed_in_neighbors: true
       allowed_in_paths: true
       allowed_in_impact: true
+      default_visibility: collapsed
+      path_priority: tertiary
+      impact_mode: explain_only
       supports_qualifiers: true
       allowed_qualifiers: [role]
       required_qualifiers: []
