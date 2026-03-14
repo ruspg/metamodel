@@ -11,6 +11,13 @@ from .model import (
     RelationCatalogRelation,
     RelationKind,
 )
+from .validator import (
+    OntologyValidationError,
+    ValidationMessage,
+    ValidationResult,
+    ensure_valid_ontology,
+    validate_ontology,
+)
 
 __all__ = [
     "AttributeDefinition",
@@ -22,5 +29,10 @@ __all__ = [
     "RelationCatalog",
     "RelationCatalogRelation",
     "RelationKind",
+    "OntologyValidationError",
+    "ValidationMessage",
+    "ValidationResult",
+    "ensure_valid_ontology",
     "load_ontology",
+    "validate_ontology",
 ]
