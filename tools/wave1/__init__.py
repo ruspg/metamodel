@@ -7,6 +7,12 @@ from .atlas_bundle_model import (
     AtlasBundleOptions,
     AtlasBundleResult,
 )
+from .bundle_determinism import (
+    BundleDeterminismError,
+    BundleDeterminismResult,
+    compare_bundle_outputs,
+    verify_bundle_determinism,
+)
 from .compatibility_report_generator import (
     CompatibilityReportGenerationError,
     build_compatibility_report,
@@ -51,6 +57,10 @@ from .type_catalog_generator import TypeCatalogGenerationError, build_type_catal
 from .validator import OntologyValidationError, ensure_valid_ontology, validate_ontology
 
 __all__ = [
+    "verify_bundle_determinism",
+    "compare_bundle_outputs",
+    "BundleDeterminismResult",
+    "BundleDeterminismError",
     "build_compatibility_report",
     "CompatibilityReportGenerationError",
     "build_search_aliases",
