@@ -16,3 +16,6 @@ This `tools/` directory is the forward-looking home for future loader/validator/
 ## Wave 1 ontology validator
 - `tools/wave1/validator.py` provides `validate_ontology(...)` for structural/contract checks over the normalized model.
 - `ensure_valid_ontology(...)` raises a readable fatal error while preserving structured result support for tests/review.
+
+## Wave 1 ontology lint
+- `tools/wave1/lint.py` provides `lint_ontology(...)` for semantic quality checks (naming/alias/glossary/relation consistency) after structural validation.

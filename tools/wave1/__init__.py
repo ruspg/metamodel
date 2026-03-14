@@ -1,6 +1,7 @@
 """Wave 1 ontology loading utilities."""
 
 from .loader import OntologyLoadError, load_ontology
+from .lint import LintMessage, LintResult, lint_ontology
 from .model import (
     AttributeDefinition,
     EntityKind,
@@ -20,6 +21,9 @@ from .validator import (
 )
 
 __all__ = [
+    "lint_ontology",
+    "LintResult",
+    "LintMessage",
     "AttributeDefinition",
     "EntityKind",
     "GlossaryAlias",
