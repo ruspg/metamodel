@@ -1,6 +1,6 @@
 # Qualifier Definition Contract v2
 
-Status: draft-for-review  
+Status: frozen-for-wave  
 Session: 11  
 Wave: 2 — ontology schema v2 и semantic core  
 Depends on:

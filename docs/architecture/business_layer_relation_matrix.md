@@ -1,7 +1,7 @@
 # Сессия 15 — Business-Layer Relation Matrix
 
 ## Статус
-- Статус: draft-for-adoption
+- Статус: frozen-for-wave
 - Волна: Wave 3 — семантика бизнес-слоя и relation model
 - Основание: после semantic alignment бизнес-слоя и formal decision по `business_operation`
 - Назначение: зафиксировать минимальную опорную сеть бизнес-смысла для MVP и ближайшего расширения без смысловой неоднозначности

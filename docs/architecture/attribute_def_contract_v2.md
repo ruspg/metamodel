@@ -1,7 +1,7 @@
 # Attribute Definition Contract v2
 
 Дата: 2026-03-09
-Статус: Draft / Approved-for-next-wave
+Статус: frozen-for-wave
 Сессия: 9 — точный контракт `attribute_def`
 
 ## 1. Назначение
