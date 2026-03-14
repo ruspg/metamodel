@@ -1,6 +1,34 @@
 # metamodel
 
-## OWL и визуализация Mermaid
+Repository for Wave 1 ontology authoring and release preparation.
+
+## Canonical Wave 1 structure
+
+The canonical authoring/release layout is now scaffolded with these top-level areas:
+
+- `model/schema/`
+- `model/kinds/`
+- `model/relations/`
+- `model/glossary/`
+- `profiles/`
+- `tools/`
+- `tests/`
+- `generated/`
+
+See `model/README.md` and `tools/README.md` for migration notes.
+
+## Canonical vs legacy (current phase)
+
+This task establishes the Wave 1 structure without semantic migration:
+
+- Canonical target areas are under `model/`, `profiles/`, `tools/`, and `generated/`.
+- Existing source YAML remains in `data/` for backward legibility.
+- Existing root schema remains in `schema/`.
+- Existing converter tooling remains in `metamodel2owl/` and `metamodel_to_mermaid/`.
+
+## Existing converter usage
+
+### OWL и визуализация Mermaid
 
 ```bash
 metamodel2owl \
@@ -15,9 +43,9 @@ metamodel2owl \
 узлы соответствуют сущностям и их атрибутам, а рёбра — связям из метамодели.
 Такой файл можно вставлять в Markdown или обрабатывать любым Mermaid-рендерером.
 
-## Mermaid CLI with advanced styling
+### Mermaid CLI with advanced styling
 
-The repository now also contains a dedicated converter that produces richer Mermaid
+The repository also contains a dedicated converter that produces richer Mermaid
 views directly from the YAML metamodel:
 
 ```bash
@@ -39,6 +67,3 @@ python -m metamodel_to_mermaid \
   --view data \
   --diagram-type er
 ```
-
-These diagrams include level-based subgraphs, colored classes, stylised edges and an
-inline legend and can be pasted straight into Markdown.
