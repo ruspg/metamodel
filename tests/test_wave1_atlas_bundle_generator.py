@@ -54,6 +54,23 @@ def test_generate_atlas_bundle_layout_is_deterministic(tmp_path: Path) -> None:
     assert first.artifact_paths == second.artifact_paths
 
 
+def test_generate_atlas_bundle_metamodel_snapshot_is_real_artifact(tmp_path: Path) -> None:
+    projection = _baseline_projection()
+
+    result = generate_atlas_bundle(projection, tmp_path)
+    snapshot_path = Path(result.bundle_root) / "artifacts" / "metamodel_snapshot.json"
+    payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
+
+    assert payload["schema_version"] == "wave1.metamodel_snapshot/v1"
+    assert payload["model"]["profile"] == "atlas_mvp"
+    assert payload["model"]["model_name"] == projection.metadata.model_name
+    assert payload["counts"]["entity_kind_count"] == len(projection.entity_kinds)
+    assert payload["counts"]["relation_kind_count"] == len(projection.relation_kinds)
+    assert [item["id"] for item in payload["entity_kinds"]] == [
+        kind.id for kind in projection.entity_kinds
+    ]
+
+
 def test_generate_atlas_bundle_manifest_structure(tmp_path: Path) -> None:
     projection = _baseline_projection()
     options = AtlasBundleOptions(
@@ -75,6 +92,10 @@ def test_generate_atlas_bundle_manifest_structure(tmp_path: Path) -> None:
         "search_aliases",
         "compatibility_report",
     ]
+    snapshot_manifest_entry = next(
+        item for item in manifest_payload["artifacts"] if item["artifact_id"] == "metamodel_snapshot"
+    )
+    assert snapshot_manifest_entry["placeholder"] is False
 
 
 def test_generate_atlas_bundle_fails_for_missing_projection_metadata(tmp_path: Path) -> None:

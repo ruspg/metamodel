@@ -11,6 +11,7 @@ from .atlas_bundle_model import (
     AtlasBundleOptions,
     AtlasBundleResult,
 )
+from .metamodel_snapshot_generator import build_metamodel_snapshot
 from .projection_model import ProjectionModel
 
 
@@ -23,7 +24,8 @@ _ARTIFACT_PLANS: Tuple[AtlasBundleArtifactPlan, ...] = (
     AtlasBundleArtifactPlan(
         artifact_id="metamodel_snapshot",
         relative_path="artifacts/metamodel_snapshot.json",
-        description="Wave 1 atlas metamodel snapshot placeholder",
+        description="Wave 1 atlas metamodel snapshot",
+        placeholder=False,
     ),
     AtlasBundleArtifactPlan(
         artifact_id="type_catalog",
@@ -78,10 +80,7 @@ def generate_atlas_bundle(
     for plan in _ARTIFACT_PLANS:
         artifact_path = bundle_root / plan.relative_path
         artifact_path.parent.mkdir(parents=True, exist_ok=True)
-        _write_json(
-            artifact_path,
-            _build_placeholder_payload(projection, plan, effective_options),
-        )
+        _write_artifact(artifact_path, _build_artifact_payload(projection, plan, effective_options))
         artifact_paths.append(str(artifact_path))
 
     manifest = AtlasBundleManifest(
@@ -127,6 +126,20 @@ def _slugify(value: str) -> str:
     return "".join(ch.lower() if ch.isalnum() else "_" for ch in value).strip("_")
 
 
+def _build_artifact_payload(
+    projection: ProjectionModel,
+    plan: AtlasBundleArtifactPlan,
+    options: AtlasBundleOptions,
+) -> Any:
+    if plan.artifact_id == "metamodel_snapshot":
+        return build_metamodel_snapshot(projection)
+
+    if plan.relative_path.endswith(".md"):
+        return _build_placeholder_markdown(plan, projection, options)
+
+    return _build_placeholder_payload(projection, plan, options)
+
+
 def _build_placeholder_payload(
     projection: ProjectionModel,
     plan: AtlasBundleArtifactPlan,
@@ -141,6 +154,26 @@ def _build_placeholder_payload(
         "model_version": projection.metadata.version,
         "bank_code": projection.metadata.bank_code,
     }
+
+
+def _build_placeholder_markdown(
+    plan: AtlasBundleArtifactPlan,
+    projection: ProjectionModel,
+    options: AtlasBundleOptions,
+) -> str:
+    return "\n".join(
+        (
+            f"# {plan.artifact_id}",
+            "",
+            "status: placeholder",
+            f"profile: {options.profile}",
+            f"model_name: {projection.metadata.model_name}",
+            f"model_version: {projection.metadata.version}",
+            f"bank_code: {projection.metadata.bank_code}",
+            f"description: {plan.description}",
+            "",
+        )
+    )
 
 
 def _manifest_to_json(manifest: AtlasBundleManifest) -> Mapping[str, Any]:
@@ -163,6 +196,13 @@ def _manifest_to_json(manifest: AtlasBundleManifest) -> Mapping[str, Any]:
             for artifact in manifest.artifacts
         ],
     }
+
+
+def _write_artifact(path: Path, payload: Any) -> None:
+    if isinstance(payload, str):
+        path.write_text(payload, encoding="utf-8")
+        return
+    _write_json(path, payload)
 
 
 def _write_json(path: Path, payload: Mapping[str, Any]) -> None:

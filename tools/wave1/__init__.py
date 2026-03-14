@@ -8,6 +8,10 @@ from .atlas_bundle_model import (
     AtlasBundleResult,
 )
 from .lint import LintMessage, LintResult, lint_ontology
+from .metamodel_snapshot_generator import (
+    MetamodelSnapshotGenerationError,
+    build_metamodel_snapshot,
+)
 from .loader import OntologyLoadError, load_ontology
 from .model import (
     AttributeDefinition,
@@ -40,6 +44,8 @@ from .validation_types import ValidationMessage, ValidationResult
 from .validator import OntologyValidationError, ensure_valid_ontology, validate_ontology
 
 __all__ = [
+    "build_metamodel_snapshot",
+    "MetamodelSnapshotGenerationError",
     "AttributeDefinition",
     "EntityKind",
     "GlossaryAlias",
