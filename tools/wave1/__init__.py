@@ -36,6 +36,7 @@ from .projection_model import (
     ProjectionRelationKind,
 )
 from .relation_catalog_generator import RelationCatalogGenerationError, build_relation_catalog
+from .search_aliases_generator import SearchAliasesGenerationError, build_search_aliases
 from .relation_catalog_validator import (
     RelationCatalogValidationError,
     ensure_valid_relation_catalog,
@@ -46,6 +47,8 @@ from .type_catalog_generator import TypeCatalogGenerationError, build_type_catal
 from .validator import OntologyValidationError, ensure_valid_ontology, validate_ontology
 
 __all__ = [
+    "build_search_aliases",
+    "SearchAliasesGenerationError",
     "build_relation_catalog",
     "RelationCatalogGenerationError",
     "build_type_catalog",

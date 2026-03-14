@@ -104,6 +104,18 @@ def test_generate_atlas_bundle_relation_catalog_is_real_artifact(tmp_path: Path)
     assert payload["counts"]["relation_count"] == _active_relation_count(projection)
 
 
+def test_generate_atlas_bundle_search_aliases_is_real_artifact(tmp_path: Path) -> None:
+    projection = _baseline_projection()
+
+    result = generate_atlas_bundle(projection, tmp_path)
+    alias_path = Path(result.bundle_root) / "artifacts" / "search_aliases.json"
+    payload = json.loads(alias_path.read_text(encoding="utf-8"))
+
+    assert payload["schema_version"] == "wave1.search_aliases/v1"
+    assert payload["model"]["profile"] == "atlas_mvp"
+    assert payload["counts"]["alias_count"] > 0
+
+
 def test_generate_atlas_bundle_manifest_structure(tmp_path: Path) -> None:
     projection = _baseline_projection()
     options = AtlasBundleOptions(
@@ -137,6 +149,10 @@ def test_generate_atlas_bundle_manifest_structure(tmp_path: Path) -> None:
         item for item in manifest_payload["artifacts"] if item["artifact_id"] == "relation_catalog"
     )
     assert relation_catalog_manifest_entry["placeholder"] is False
+    search_aliases_manifest_entry = next(
+        item for item in manifest_payload["artifacts"] if item["artifact_id"] == "search_aliases"
+    )
+    assert search_aliases_manifest_entry["placeholder"] is False
 
 
 def test_generate_atlas_bundle_fails_for_missing_projection_metadata(tmp_path: Path) -> None:

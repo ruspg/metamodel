@@ -38,3 +38,4 @@ This `tools/` directory is the forward-looking home for future loader/validator/
 - `tools/wave1/type_catalog_generator.py` implements the concrete `type_catalog.json` artifact as a compact, deterministic runtime-facing kind/attribute catalog for the active profile.
 
 - `tools/wave1/relation_catalog_generator.py` implements the concrete `relation_catalog.json` artifact as a compact, deterministic runtime-facing relation catalog for the active profile.
+- `tools/wave1/search_aliases_generator.py` implements the concrete `search_aliases.json` artifact as a compact, deterministic runtime-facing alias/disambiguation projection for the active profile.
