@@ -1,4 +1,4 @@
-"""Wave 1 atlas projection bundle generator skeleton."""
+"""Wave 1 atlas projection bundle generator."""
 from __future__ import annotations
 
 import json
@@ -68,7 +68,7 @@ def generate_atlas_bundle(
     *,
     options: AtlasBundleOptions | None = None,
 ) -> AtlasBundleResult:
-    """Generate Wave 1 atlas bundle skeleton output and deterministic manifest."""
+    """Generate Wave 1 atlas bundle output and deterministic manifest."""
 
     effective_options = options or AtlasBundleOptions(profile=projection.metadata.active_profile)
     _validate_projection_input(projection, effective_options)

@@ -17,6 +17,13 @@ from .compatibility_report_generator import (
     CompatibilityReportGenerationError,
     build_compatibility_report,
 )
+from .harness import (
+    HarnessStageResult,
+    Wave1HarnessResult,
+    format_harness_report,
+    run_wave1_validation_harness,
+    run_wave1_validation_harness_on_model,
+)
 from .lint import LintMessage, LintResult, lint_ontology
 from .metamodel_snapshot_generator import (
     MetamodelSnapshotGenerationError,
@@ -63,6 +70,11 @@ __all__ = [
     "BundleDeterminismError",
     "build_compatibility_report",
     "CompatibilityReportGenerationError",
+    "run_wave1_validation_harness",
+    "run_wave1_validation_harness_on_model",
+    "format_harness_report",
+    "HarnessStageResult",
+    "Wave1HarnessResult",
     "build_search_aliases",
     "SearchAliasesGenerationError",
     "build_relation_catalog",
