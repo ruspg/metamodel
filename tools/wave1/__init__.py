@@ -1,5 +1,12 @@
 """Wave 1 ontology loading utilities."""
 
+from .atlas_bundle_generator import AtlasBundleGenerationError, generate_atlas_bundle
+from .atlas_bundle_model import (
+    AtlasBundleArtifactPlan,
+    AtlasBundleManifest,
+    AtlasBundleOptions,
+    AtlasBundleResult,
+)
 from .lint import LintMessage, LintResult, lint_ontology
 from .loader import OntologyLoadError, load_ontology
 from .model import (
@@ -65,4 +72,10 @@ __all__ = [
     "validate_ontology",
     "validate_relation_catalog",
     "build_projection_model",
+    "AtlasBundleArtifactPlan",
+    "AtlasBundleGenerationError",
+    "AtlasBundleManifest",
+    "AtlasBundleOptions",
+    "AtlasBundleResult",
+    "generate_atlas_bundle",
 ]

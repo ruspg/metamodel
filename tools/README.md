@@ -30,3 +30,7 @@ This `tools/` directory is the forward-looking home for future loader/validator/
 ## Wave 1 projection builder
 - `tools/wave1/projection_builder.py` provides `build_projection_model(...)` for deterministic, profile-aware shaping of validated ontology data into a generator-ready projection model.
 - `tools/wave1/projection_model.py` defines the projection dataclasses intended as shared inputs for downstream Wave 1 bundle generators.
+
+## Wave 1 atlas bundle generator skeleton
+- `tools/wave1/atlas_bundle_generator.py` provides `generate_atlas_bundle(...)` as the canonical Wave 1 atlas bundle orchestration entrypoint over the projection model.
+- `tools/wave1/atlas_bundle_model.py` defines bundle manifest/result dataclasses and deterministic artifact planning structures for future concrete artifact generators.
