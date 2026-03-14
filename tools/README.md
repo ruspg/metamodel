@@ -26,3 +26,7 @@ This `tools/` directory is the forward-looking home for future loader/validator/
 ## Wave 1 validation harness
 - `tools/wave1/harness.py` provides `run_wave1_validation_harness(...)` to run load + ontology validation + lint + relation catalog validation in one deterministic flow.
 - Local CLI usage: `python -m tools.wave1.harness data/bank_metamodel_horizontal.yaml --relation-catalog-path docs/architecture/relation_catalog_v2_spec.yaml`
+
+## Wave 1 projection builder
+- `tools/wave1/projection_builder.py` provides `build_projection_model(...)` for deterministic, profile-aware shaping of validated ontology data into a generator-ready projection model.
+- `tools/wave1/projection_model.py` defines the projection dataclasses intended as shared inputs for downstream Wave 1 bundle generators.

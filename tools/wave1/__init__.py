@@ -12,6 +12,18 @@ from .model import (
     RelationCatalogRelation,
     RelationKind,
 )
+from .projection_builder import ProjectionBuildError, build_projection_model
+from .projection_model import (
+    ProjectionAlias,
+    ProjectionAttribute,
+    ProjectionCompatibilityHooks,
+    ProjectionEntityKind,
+    ProjectionMetadata,
+    ProjectionModel,
+    ProjectionQualifierRef,
+    ProjectionRelationEntry,
+    ProjectionRelationKind,
+)
 from .relation_catalog_validator import (
     RelationCatalogValidationError,
     ensure_valid_relation_catalog,
@@ -30,6 +42,16 @@ __all__ = [
     "OntologyLoadError",
     "OntologyValidationError",
     "QualifierDefinition",
+    "ProjectionAlias",
+    "ProjectionAttribute",
+    "ProjectionBuildError",
+    "ProjectionCompatibilityHooks",
+    "ProjectionEntityKind",
+    "ProjectionMetadata",
+    "ProjectionModel",
+    "ProjectionQualifierRef",
+    "ProjectionRelationEntry",
+    "ProjectionRelationKind",
     "RelationCatalog",
     "RelationCatalogRelation",
     "RelationCatalogValidationError",
@@ -42,4 +64,5 @@ __all__ = [
     "load_ontology",
     "validate_ontology",
     "validate_relation_catalog",
+    "build_projection_model",
 ]
