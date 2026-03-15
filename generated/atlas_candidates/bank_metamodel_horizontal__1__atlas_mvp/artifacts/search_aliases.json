@@ -83,6 +83,14 @@
       "target_id": "business_function"
     },
     {
+      "alias": "business operation",
+      "sources": [
+        "canonical_name"
+      ],
+      "target_category": "process",
+      "target_id": "business_operation"
+    },
+    {
       "alias": "business process",
       "sources": [
         "canonical_name"
@@ -113,6 +121,14 @@
       ],
       "target_category": "process",
       "target_id": "business_function"
+    },
+    {
+      "alias": "business_operation",
+      "sources": [
+        "canonical_id"
+      ],
+      "target_category": "process",
+      "target_id": "business_operation"
     },
     {
       "alias": "business_process",
@@ -361,6 +377,14 @@
       "target_id": "vendor_product"
     },
     {
+      "alias": "бизнес-операция",
+      "sources": [
+        "display_name_ru"
+      ],
+      "target_category": "process",
+      "target_id": "business_operation"
+    },
+    {
       "alias": "бизнес-процесс",
       "sources": [
         "display_name_ru"
@@ -546,7 +570,7 @@
     }
   ],
   "counts": {
-    "alias_count": 67,
+    "alias_count": 70,
     "unresolved_alias_count": 0
   },
   "model": {

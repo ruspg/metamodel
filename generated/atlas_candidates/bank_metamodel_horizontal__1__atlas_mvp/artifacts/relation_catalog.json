@@ -1,7 +1,7 @@
 {
   "counts": {
     "qualifier_count": 11,
-    "relation_count": 14
+    "relation_count": 33
   },
   "model": {
     "bank_code": "BANK",
@@ -39,6 +39,70 @@
       "ui_group": "structure",
       "ui_label_in": "realizes capability",
       "ui_label_out": "aggregates processes"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "criticality"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "implementation",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "component",
+      "has_inverse": true,
+      "id": "rel_component_supports_operation",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_operation_supported_by_component",
+      "path_priority": "secondary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "technology",
+      "ui_label_in": "supported by component",
+      "ui_label_out": "supports operation"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "criticality",
+        "interaction_type",
+        "mandatory"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "association",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_entity",
+      "has_inverse": true,
+      "id": "rel_entity_acted_on_by_operation",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_operation_acts_on_entity",
+      "path_priority": "primary",
+      "required_qualifiers": [
+        "interaction_type"
+      ],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "data",
+      "ui_label_in": "acts on entity",
+      "ui_label_out": "acted on by operation"
     },
     {
       "allowed_in_impact": true,
@@ -107,6 +171,34 @@
       "allowed_in_impact": true,
       "allowed_in_neighbors": true,
       "allowed_in_paths": true,
+      "allowed_qualifiers": [],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "realization",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": false,
+      "from_kind": "business_function",
+      "has_inverse": true,
+      "id": "rel_function_executed_by_operation",
+      "impact_mode": "explain_only",
+      "inverse_relation_id": "rel_operation_executes_function",
+      "path_priority": "secondary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": false,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "process",
+      "ui_label_in": "executes function",
+      "ui_label_out": "executed by operation"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
       "allowed_qualifiers": [
         "payload_role",
         "sensitivity"
@@ -135,6 +227,39 @@
       "ui_group": "lineage",
       "ui_label_in": "carried by information flow",
       "ui_label_out": "carries entity"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "directionality",
+        "interaction_type"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "flow",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "information_flow",
+      "has_inverse": true,
+      "id": "rel_information_flow_used_by_operation",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_operation_uses_information_flow",
+      "path_priority": "primary",
+      "required_qualifiers": [
+        "interaction_type"
+      ],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "lineage",
+      "ui_label_in": "uses information flow",
+      "ui_label_out": "used by operation"
     },
     {
       "allowed_in_impact": true,
@@ -171,6 +296,401 @@
       "allowed_in_neighbors": true,
       "allowed_in_paths": true,
       "allowed_qualifiers": [
+        "criticality"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "support",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "it_system",
+      "has_inverse": true,
+      "id": "rel_it_system_supports_operation",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_operation_supported_by_system",
+      "path_priority": "secondary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "technology",
+      "ui_label_in": "supported by system",
+      "ui_label_out": "supports operation"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "criticality",
+        "interaction_type",
+        "mandatory"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "association",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_acts_on_entity",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_entity_acted_on_by_operation",
+      "path_priority": "primary",
+      "required_qualifiers": [
+        "interaction_type"
+      ],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "business_entity",
+      "ui_group": "data",
+      "ui_label_in": "acted on by operation",
+      "ui_label_out": "acts on entity"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "composition",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_belongs_to_process",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_process_decomposes_to_operation",
+      "path_priority": "primary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": false,
+      "target_cardinality": "one",
+      "to_kind": "business_process",
+      "ui_group": "process",
+      "ui_label_in": "decomposes to operation",
+      "ui_label_out": "belongs to process"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "criticality"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "implementation",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": false,
+      "id": "rel_operation_executed_by_component",
+      "impact_mode": "propagate",
+      "path_priority": "secondary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "component",
+      "ui_group": "technology",
+      "ui_label_in": "executes operation",
+      "ui_label_out": "executed by component"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "realization",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": false,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_executes_function",
+      "impact_mode": "explain_only",
+      "inverse_relation_id": "rel_function_executed_by_operation",
+      "path_priority": "secondary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": false,
+      "target_cardinality": "many",
+      "to_kind": "business_function",
+      "ui_group": "process",
+      "ui_label_in": "executed by operation",
+      "ui_label_out": "executes function"
+    },
+    {
+      "allowed_in_impact": false,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "branch_type",
+        "condition",
+        "order_index"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "dependency",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_follows_operation",
+      "impact_mode": "exclude",
+      "inverse_relation_id": "rel_operation_precedes_operation",
+      "path_priority": "primary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "process",
+      "ui_label_in": "precedes operation",
+      "ui_label_out": "follows operation"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "role"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "responsibility",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_performed_by_org_unit",
+      "impact_mode": "explain_only",
+      "inverse_relation_id": "rel_org_unit_performs_operation",
+      "path_priority": "tertiary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "organizational_unit",
+      "ui_group": "ownership",
+      "ui_label_in": "performs operation",
+      "ui_label_out": "performed by org unit"
+    },
+    {
+      "allowed_in_impact": false,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "branch_type",
+        "condition",
+        "order_index"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "dependency",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_precedes_operation",
+      "impact_mode": "exclude",
+      "inverse_relation_id": "rel_operation_follows_operation",
+      "path_priority": "primary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "process",
+      "ui_label_in": "follows operation",
+      "ui_label_out": "precedes operation"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "criticality"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "implementation",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_supported_by_component",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_component_supports_operation",
+      "path_priority": "secondary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "component",
+      "ui_group": "technology",
+      "ui_label_in": "supports operation",
+      "ui_label_out": "supported by component"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "criticality"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "support",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_supported_by_system",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_it_system_supports_operation",
+      "path_priority": "secondary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "it_system",
+      "ui_group": "technology",
+      "ui_label_in": "supports operation",
+      "ui_label_out": "supported by system"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "directionality",
+        "interaction_type"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "flow",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": true,
+      "id": "rel_operation_uses_information_flow",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_information_flow_used_by_operation",
+      "path_priority": "primary",
+      "required_qualifiers": [
+        "interaction_type"
+      ],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "information_flow",
+      "ui_group": "lineage",
+      "ui_label_in": "used by operation",
+      "ui_label_out": "uses information flow"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "criticality"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "support",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_operation",
+      "has_inverse": false,
+      "id": "rel_operation_uses_system",
+      "impact_mode": "propagate",
+      "path_priority": "secondary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "it_system",
+      "ui_group": "technology",
+      "ui_label_in": "used by operation",
+      "ui_label_out": "uses system"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
+        "role"
+      ],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "responsibility",
+      "default_visibility": "collapsed",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "organizational_unit",
+      "has_inverse": true,
+      "id": "rel_org_unit_performs_operation",
+      "impact_mode": "explain_only",
+      "inverse_relation_id": "rel_operation_performed_by_org_unit",
+      "path_priority": "tertiary",
+      "required_qualifiers": [],
+      "source_cardinality": "many",
+      "status": "active",
+      "supports_qualifiers": true,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "ownership",
+      "ui_label_in": "performed by org unit",
+      "ui_label_out": "performs operation"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [
         "criticality",
         "role"
       ],
@@ -196,6 +716,61 @@
       "ui_group": "process",
       "ui_label_in": "realized by process",
       "ui_label_out": "belongs to stage"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "composition",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_process",
+      "has_inverse": false,
+      "id": "rel_process_contains_operation",
+      "impact_mode": "propagate",
+      "path_priority": "primary",
+      "required_qualifiers": [],
+      "source_cardinality": "one",
+      "status": "active",
+      "supports_qualifiers": false,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "process",
+      "ui_label_in": "included in process",
+      "ui_label_out": "contains operation"
+    },
+    {
+      "allowed_in_impact": true,
+      "allowed_in_neighbors": true,
+      "allowed_in_paths": true,
+      "allowed_qualifiers": [],
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "category": "composition",
+      "default_visibility": "visible",
+      "direction": "directed",
+      "evidence_required": true,
+      "from_kind": "business_process",
+      "has_inverse": true,
+      "id": "rel_process_decomposes_to_operation",
+      "impact_mode": "propagate",
+      "inverse_relation_id": "rel_operation_belongs_to_process",
+      "path_priority": "primary",
+      "required_qualifiers": [],
+      "source_cardinality": "one",
+      "status": "active",
+      "supports_qualifiers": false,
+      "target_cardinality": "many",
+      "to_kind": "business_operation",
+      "ui_group": "process",
+      "ui_label_in": "belongs to process",
+      "ui_label_out": "decomposes to operation"
     },
     {
       "allowed_in_impact": true,

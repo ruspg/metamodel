@@ -1,7 +1,7 @@
 {
   "counts": {
     "attribute_count": 1,
-    "kind_count": 25
+    "kind_count": 26
   },
   "kinds": [
     {
@@ -66,6 +66,15 @@
       "metamodel_level": "business_details",
       "name": "Business Function",
       "name_ru": "Бизнес-функция"
+    },
+    {
+      "attributes": [],
+      "category": "process",
+      "description": "Исполняемый шаг внутри бизнес-процесса, связывающий процесс с ИТ-реализацией.",
+      "id": "business_operation",
+      "metamodel_level": "business_details",
+      "name": "Business Operation",
+      "name_ru": "Бизнес-операция"
     },
     {
       "attributes": [],

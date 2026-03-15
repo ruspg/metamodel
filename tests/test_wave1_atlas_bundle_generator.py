@@ -192,3 +192,29 @@ def test_generate_atlas_bundle_fails_for_profile_mismatch(tmp_path: Path) -> Non
         generate_atlas_bundle(projection, tmp_path, options=options)
 
     assert "options.profile" in str(exc_info.value)
+
+
+def test_generate_atlas_bundle_contains_required_wave1_minimum_slice(tmp_path: Path) -> None:
+    projection = _baseline_projection()
+
+    result = generate_atlas_bundle(projection, tmp_path)
+
+    type_catalog = json.loads((Path(result.bundle_root) / "artifacts" / "type_catalog.json").read_text(encoding="utf-8"))
+    relation_catalog = json.loads((Path(result.bundle_root) / "artifacts" / "relation_catalog.json").read_text(encoding="utf-8"))
+
+    required_kind_ids = {
+        "business_process",
+        "business_operation",
+        "it_system",
+        "component",
+        "business_entity",
+    }
+    required_relation_ids = {
+        "rel_process_contains_operation",
+        "rel_operation_uses_system",
+        "rel_operation_executed_by_component",
+        "rel_process_serves_entity",
+    }
+
+    assert required_kind_ids.issubset({item["id"] for item in type_catalog["kinds"]})
+    assert required_relation_ids.issubset({item["id"] for item in relation_catalog["relations"]})
