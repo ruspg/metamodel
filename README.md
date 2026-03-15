@@ -1,10 +1,51 @@
-# metamodel
+# Metamodel
 
-Repository for Wave 1 ontology authoring and release preparation.
+> Единое рабочее пространство для проектирования, проверки и публикации корпоративной метамодели (Wave 1).
 
-## Wave 1 developer quickstart
+`metamodel` — это репозиторий, в котором собраны:
+- **исходные YAML-описания** доменной модели,
+- **инструменты контроля качества** (валидация, линтинг, проверки связей),
+- **генераторы артефактов** для downstream-систем,
+- **конвертеры в OWL и Mermaid** для интеграции и визуализации.
 
-Run the canonical Wave 1 validation harness (loader + validator + lint + relation catalog checks):
+Проект ориентирован на предсказуемую и воспроизводимую подготовку релизов онтологии: от редактирования модели до получения детерминированного bundle.
+
+---
+
+## Что умеет проект
+
+- ✅ Загружать и валидировать метамодель по каноническим правилам Wave 1.
+- ✅ Проверять целостность relation catalog и архитектурных ограничений.
+- ✅ Строить projection-представления (например, `atlas_mvp`).
+- ✅ Генерировать release bundle в `generated/`.
+- ✅ Гарантировать **детерминированность** сборки (одинаковый вход → одинаковый результат).
+- ✅ Экспортировать модель в:
+  - **OWL/Turtle** для семантических сценариев,
+  - **Mermaid** для документирования и визуального анализа.
+
+---
+
+## Архитектура репозитория
+
+Каноническая структура Wave 1 разделяет ответственность по зонам:
+
+- `model/` — целевая структура авторинга (схемы, типы, связи, глоссарий).
+- `profiles/` — профили проекций и публикации.
+- `tools/` — служебные инструменты Wave 1 (harness, генераторы, проверки).
+- `tests/` — тесты регрессии и проверок стабильности пайплайна.
+- `generated/` — сгенерированные артефакты сборки.
+
+Текущий этап — плавный переход от legacy к канонической структуре:
+
+- рабочие исходники YAML пока сохраняются в `data/`,
+- историческая схема остаётся в `schema/`,
+- существующие конвертеры доступны в `metamodel2owl/` и `metamodel_to_mermaid/`.
+
+---
+
+## Быстрый старт для разработчика
+
+### 1) Запуск полного validation harness
 
 ```bash
 python -m tools.wave1.harness \
@@ -12,7 +53,10 @@ python -m tools.wave1.harness \
   --relation-catalog-path docs/architecture/relation_catalog_v2_spec.yaml
 ```
 
-Generate an atlas bundle from the baseline ontology/profile:
+Этот сценарий запускает канонический набор проверок Wave 1:
+loader + validator + lint + relation catalog checks.
+
+### 2) Генерация Atlas bundle
 
 ```bash
 python - <<'PY'
@@ -32,7 +76,7 @@ print(result.bundle_root)
 PY
 ```
 
-Verify deterministic bundle output:
+### 3) Проверка детерминированности bundle
 
 ```bash
 python - <<'PY'
@@ -52,33 +96,11 @@ print(result.is_deterministic, result.diagnostics)
 PY
 ```
 
-## Canonical Wave 1 structure
+---
 
-The canonical authoring/release layout is now scaffolded with these top-level areas:
+## Экспорт и визуализация
 
-- `model/schema/`
-- `model/kinds/`
-- `model/relations/`
-- `model/glossary/`
-- `profiles/`
-- `tools/`
-- `tests/`
-- `generated/`
-
-See `model/README.md` and `tools/README.md` for migration notes.
-
-## Canonical vs legacy (current phase)
-
-This task establishes the Wave 1 structure without semantic migration:
-
-- Canonical target areas are under `model/`, `profiles/`, `tools/`, and `generated/`.
-- Existing source YAML remains in `data/` for backward legibility.
-- Existing root schema remains in `schema/`.
-- Existing converter tooling remains in `metamodel2owl/` and `metamodel_to_mermaid/`.
-
-## Existing converter usage
-
-### OWL и визуализация Mermaid
+### OWL + Mermaid из `metamodel2owl`
 
 ```bash
 metamodel2owl \
@@ -89,14 +111,11 @@ metamodel2owl \
   --base-iri "https://bank.example.com/metamodel#"
 ```
 
-Флаг `--mermaid-output` создаёт файл с диаграммой Mermaid (`graph LR`), где
-узлы соответствуют сущностям и их атрибутам, а рёбра — связям из метамодели.
-Такой файл можно вставлять в Markdown или обрабатывать любым Mermaid-рендерером.
+`--mermaid-output` создаёт Mermaid-диаграмму (`graph LR`):
+- узлы — сущности и их атрибуты,
+- рёбра — связи из метамодели.
 
-### Mermaid CLI with advanced styling
-
-The repository also contains a dedicated converter that produces richer Mermaid
-views directly from the YAML metamodel:
+### Расширенные Mermaid-представления (`metamodel_to_mermaid`)
 
 ```bash
 python -m metamodel_to_mermaid \
@@ -108,7 +127,7 @@ python -m metamodel_to_mermaid \
   --with-notes
 ```
 
-To focus on a specific slice simply change the flags, for example to get a data ER view:
+Пример точечного ER-среза:
 
 ```bash
 python -m metamodel_to_mermaid \
@@ -117,3 +136,16 @@ python -m metamodel_to_mermaid \
   --view data \
   --diagram-type er
 ```
+
+---
+
+## Дополнительная документация
+
+- `model/README.md` — правила и статус структуры модели.
+- `tools/README.md` — обзор инструментов и сценариев Wave 1.
+- `docs/` — форматы, contribution rules и архитектурные спецификации.
+
+Если хотите, следующим шагом можно добавить в README:
+- минимальный «happy path» от изменения YAML до готового релизного артефакта,
+- раздел «частые ошибки и диагностика»,
+- диаграмму пайплайна Wave 1 (в Mermaid).
