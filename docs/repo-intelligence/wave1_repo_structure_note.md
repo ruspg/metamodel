@@ -65,3 +65,10 @@ Command Center/runtime implementation safe **without** transferring UI/runtime o
 - UI implementation (canvas, viewers, interaction modes, request UX).
 - Runtime behavior implementation in API/MCP services.
 - Operational observability/runbook execution concerns.
+
+### Cross-repo dependency map
+
+Downstream maintains a concise dependency map at:
+`rbank-atlas/docs/runtime-contracts/cross_repo_dependency_map.md`
+
+It answers: what upstream deliverables unblock downstream UI/runtime work, what can proceed immediately, hard vs parallel dependencies, and ownership boundaries. Upstream should not duplicate this; reference it when coordinating bundle releases and contract changes.
