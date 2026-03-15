@@ -1,0 +1,263 @@
+{
+  "counts": {
+    "attribute_count": 1,
+    "kind_count": 26
+  },
+  "kinds": [
+    {
+      "attributes": [],
+      "category": "interface",
+      "description": "Программный интерфейс компонента, предоставляющий операции наружу.",
+      "id": "api",
+      "metamodel_level": "component_details",
+      "name": "API",
+      "name_ru": "API"
+    },
+    {
+      "attributes": [],
+      "category": "interface",
+      "description": "Конкретная операция/эндпоинт API.",
+      "id": "api_method",
+      "metamodel_level": "component_details",
+      "name": "API Method",
+      "name_ru": "Метод API"
+    },
+    {
+      "attributes": [],
+      "category": "interface",
+      "description": "Параметр или поле запроса/ответа метода API.",
+      "id": "api_method_parameter",
+      "metamodel_level": "component_details",
+      "name": "API Method Parameter",
+      "name_ru": "Параметр метода API"
+    },
+    {
+      "attributes": [],
+      "category": "offering",
+      "description": "Коммерческий продукт/предложение банка, через который продается ценность.",
+      "id": "bank_product",
+      "metamodel_level": "strategic_view",
+      "name": "Bank Product",
+      "name_ru": "Продукт Банка"
+    },
+    {
+      "attributes": [],
+      "category": "capability",
+      "description": "Устойчивое умение организации выполнять набор действий и сервисов.",
+      "id": "business_capability",
+      "metamodel_level": "business_details",
+      "name": "Business Capability",
+      "name_ru": "Бизнес-способность"
+    },
+    {
+      "attributes": [],
+      "category": "business_object",
+      "description": "Ключевой бизнес-объект, состояние которого изменяют процессы.",
+      "id": "business_entity",
+      "metamodel_level": "business_details",
+      "name": "Business Entity",
+      "name_ru": "Бизнес-сущность"
+    },
+    {
+      "attributes": [],
+      "category": "process",
+      "description": "Шаг/функция внутри бизнес-процесса.",
+      "id": "business_function",
+      "metamodel_level": "business_details",
+      "name": "Business Function",
+      "name_ru": "Бизнес-функция"
+    },
+    {
+      "attributes": [],
+      "category": "process",
+      "description": "Исполняемый шаг внутри бизнес-процесса, связывающий процесс с ИТ-реализацией.",
+      "id": "business_operation",
+      "metamodel_level": "business_details",
+      "name": "Business Operation",
+      "name_ru": "Бизнес-операция"
+    },
+    {
+      "attributes": [],
+      "category": "process",
+      "description": "Процесс, который реализует стадии потока и изменяет состояние бизнес-сущностей.",
+      "id": "business_process",
+      "metamodel_level": "business_details",
+      "name": "Business Process",
+      "name_ru": "Бизнес-процесс"
+    },
+    {
+      "attributes": [],
+      "category": "channel",
+      "description": "Канал взаимодействия, обеспечивающий контакт с клиентом и доставку ценности.",
+      "id": "channel",
+      "metamodel_level": "business_details",
+      "name": "Channel",
+      "name_ru": "Канал"
+    },
+    {
+      "attributes": [],
+      "category": "application",
+      "description": "Логический компонент приложения, реализующий часть функциональности.",
+      "id": "component",
+      "metamodel_level": "component_details",
+      "name": "Component",
+      "name_ru": "Компонент"
+    },
+    {
+      "attributes": [],
+      "category": "application",
+      "description": "Функциональный блок внутри ИТ-системы.",
+      "id": "functional_subsystem",
+      "metamodel_level": "solution_details",
+      "name": "Functional Subsystem",
+      "name_ru": "Функциональная подсистема"
+    },
+    {
+      "attributes": [],
+      "category": "goal",
+      "description": "Стратегическая бизнес-цель банка.",
+      "id": "goal",
+      "metamodel_level": "strategic_view",
+      "name": "Goal",
+      "name_ru": "Цель"
+    },
+    {
+      "attributes": [],
+      "category": "integration",
+      "description": "Логический поток данных между системами, являющийся источником или потребителем бизнес-сущностей.",
+      "id": "information_flow",
+      "metamodel_level": "solution_details",
+      "name": "Information Flow",
+      "name_ru": "Информационный поток"
+    },
+    {
+      "attributes": [],
+      "category": "infrastructure",
+      "description": "Физический/виртуальный инфраструктурный ресурс или стенд, обслуживающий логические ресурсы и компоненты.",
+      "id": "infra_resource",
+      "metamodel_level": "infrastructure_details",
+      "name": "Infrastructure Resource",
+      "name_ru": "Инфраструктурный ресурс"
+    },
+    {
+      "attributes": [],
+      "category": "integration",
+      "description": "Интеграционное взаимодействие, использующее методы API и логические ресурсы.",
+      "id": "integration",
+      "metamodel_level": "component_details",
+      "name": "Integration",
+      "name_ru": "Интеграция"
+    },
+    {
+      "attributes": [],
+      "category": "application",
+      "description": "Прикладная система банка (мастер-система для части бизнес-сущностей).",
+      "id": "it_system",
+      "metamodel_level": "solution_details",
+      "name": "IT System",
+      "name_ru": "ИТ-система"
+    },
+    {
+      "attributes": [],
+      "category": "business_structure",
+      "description": "Группа ролей/должностей, в рамках которой продаются продукты банка.",
+      "id": "job_family",
+      "metamodel_level": "strategic_view",
+      "name": "Job Family",
+      "name_ru": "Job Family"
+    },
+    {
+      "attributes": [
+        {
+          "description": "DB, Namespace, Bucket, Topic или Queue.",
+          "enum_values": [
+            "Bucket",
+            "DB",
+            "Namespace",
+            "Queue",
+            "Topic"
+          ],
+          "id": "logical_resource.resource_kind",
+          "metamodel_level": "infrastructure_details",
+          "name": "Тип ресурса"
+        }
+      ],
+      "category": "infrastructure",
+      "description": "Логический ресурс хранения или обмена (DB, Namespace, Bucket, Topic, Queue).",
+      "id": "logical_resource",
+      "metamodel_level": "infrastructure_details",
+      "name": "Logical Resource",
+      "name_ru": "Логический ресурс"
+    },
+    {
+      "attributes": [],
+      "category": "business_structure",
+      "description": "Подразделение банка, создающее продукты и ответственное за системы и способности.",
+      "id": "organizational_unit",
+      "metamodel_level": "strategic_view",
+      "name": "Organizational Unit",
+      "name_ru": "Организационная единица"
+    },
+    {
+      "attributes": [],
+      "category": "application",
+      "description": "Конкретная реализация компонента в коде или артефакте поставки.",
+      "id": "software_component",
+      "metamodel_level": "component_details",
+      "name": "Software Component",
+      "name_ru": "Компонент ПО"
+    },
+    {
+      "attributes": [],
+      "category": "value_definition",
+      "description": "Ценностное предложение для клиента, которое создается и продается банком.",
+      "id": "value",
+      "metamodel_level": "business_details",
+      "name": "Value",
+      "name_ru": "Ценность"
+    },
+    {
+      "attributes": [],
+      "category": "stakeholder",
+      "description": "Клиент или иной актор, который потребляет создаваемую банком ценность.",
+      "id": "value_consumer",
+      "metamodel_level": "business_details",
+      "name": "Value Consumer",
+      "name_ru": "Потребитель ценности"
+    },
+    {
+      "attributes": [],
+      "category": "value_delivery",
+      "description": "Сквозной поток действий, в результате которых создаётся ценность для клиента.",
+      "id": "value_stream",
+      "metamodel_level": "business_details",
+      "name": "Value Stream",
+      "name_ru": "Поток создания ценности"
+    },
+    {
+      "attributes": [],
+      "category": "value_delivery",
+      "description": "Логический шаг/этап внутри value stream.",
+      "id": "value_stream_stage",
+      "metamodel_level": "business_details",
+      "name": "Value Stream Stage",
+      "name_ru": "Стадия потока"
+    },
+    {
+      "attributes": [],
+      "category": "vendor_solution",
+      "description": "Поставляемый вендором программный продукт, на базе которого реализуется компонент.",
+      "id": "vendor_product",
+      "metamodel_level": "component_details",
+      "name": "Vendor Product",
+      "name_ru": "Вендорский продукт"
+    }
+  ],
+  "model": {
+    "bank_code": "BANK",
+    "model_name": "bank_metamodel_horizontal",
+    "model_version": "1",
+    "profile": "atlas_mvp"
+  },
+  "schema_version": "wave1.type_catalog/v1"
+}
