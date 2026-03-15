@@ -98,3 +98,26 @@ def test_projection_builder_fails_when_required_structure_missing() -> None:
         build_projection_model(broken)
 
     assert "relation_catalog" in str(exc_info.value)
+
+
+def test_projection_builder_restores_wave1_minimum_slice_surface() -> None:
+    ontology = _baseline_ontology()
+
+    projected = build_projection_model(ontology, profile="atlas_mvp")
+
+    required_kind_ids = {
+        "business_process",
+        "business_operation",
+        "it_system",
+        "component",
+        "business_entity",
+    }
+    required_relation_ids = {
+        "rel_process_contains_operation",
+        "rel_operation_uses_system",
+        "rel_operation_executed_by_component",
+        "rel_process_serves_entity",
+    }
+
+    assert required_kind_ids.issubset({kind.id for kind in projected.entity_kinds})
+    assert required_relation_ids.issubset({relation.id for relation in projected.relation_entries})

@@ -5,10 +5,10 @@
     "relation_catalog_version": "2.0.0"
   },
   "counts": {
-    "entity_kind_count": 25,
+    "entity_kind_count": 26,
     "qualifier_count": 11,
-    "relation_count": 34,
-    "relation_kind_count": 36
+    "relation_count": 37,
+    "relation_kind_count": 39
   },
   "entity_kinds": [
     {
@@ -59,6 +59,13 @@
       "id": "business_function",
       "metamodel_level": "business_details",
       "name": "Business Function"
+    },
+    {
+      "attributes": [],
+      "category": "process",
+      "id": "business_operation",
+      "metamodel_level": "business_details",
+      "name": "Business Operation"
     },
     {
       "attributes": [],
@@ -426,6 +433,22 @@
       "to_kind": "api_method_parameter"
     },
     {
+      "category": "realization",
+      "direction": "directed",
+      "from_kind": "business_operation",
+      "id": "rel_operation_executed_by_component",
+      "name": "Operation исполняется Component",
+      "to_kind": "component"
+    },
+    {
+      "category": "association",
+      "direction": "directed",
+      "from_kind": "business_operation",
+      "id": "rel_operation_uses_system",
+      "name": "Operation использует IT System",
+      "to_kind": "it_system"
+    },
+    {
       "category": "achievement",
       "direction": "directed",
       "from_kind": "organizational_unit",
@@ -456,6 +479,14 @@
       "id": "rel_org_unit_supports_capability",
       "name": "Org Unit поддерживает Capability",
       "to_kind": "business_capability"
+    },
+    {
+      "category": "composition",
+      "direction": "directed",
+      "from_kind": "business_process",
+      "id": "rel_process_contains_operation",
+      "name": "Process содержит Operation",
+      "to_kind": "business_operation"
     },
     {
       "category": "realization",
@@ -648,6 +679,14 @@
         "atlas_mvp"
       ],
       "from_kind": "business_operation",
+      "id": "rel_operation_executed_by_component",
+      "to_kind": "component"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_operation",
       "id": "rel_operation_executes_function",
       "to_kind": "business_function"
     },
@@ -719,6 +758,14 @@
       "applies_to_profiles": [
         "atlas_mvp"
       ],
+      "from_kind": "business_operation",
+      "id": "rel_operation_uses_system",
+      "to_kind": "it_system"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
       "from_kind": "organizational_unit",
       "id": "rel_org_unit_performs_operation",
       "to_kind": "business_operation"
@@ -730,6 +777,14 @@
       "from_kind": "business_process",
       "id": "rel_process_belongs_to_stage",
       "to_kind": "value_stream_stage"
+    },
+    {
+      "applies_to_profiles": [
+        "atlas_mvp"
+      ],
+      "from_kind": "business_process",
+      "id": "rel_process_contains_operation",
+      "to_kind": "business_operation"
     },
     {
       "applies_to_profiles": [

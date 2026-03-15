@@ -145,6 +145,13 @@ entity_kinds:
     category: process
     description: "Процесс, который реализует стадии потока и изменяет состояние бизнес-сущностей."
 
+  - id: business_operation
+    name: "Business Operation"
+    name_ru: "Бизнес-операция"
+    metamodel_level: business_details
+    category: process
+    description: "Исполняемый шаг внутри бизнес-процесса, связывающий процесс с ИТ-реализацией."
+
   - id: business_function
     name: "Business Function"
     name_ru: "Бизнес-функция"
@@ -376,6 +383,33 @@ relation_kinds:
     category: service
     direction: directed
     description: "Процесс изменяет состояние бизнес-сущности."
+
+  - id: rel_process_contains_operation
+    name: "Process содержит Operation"
+    from_kind: business_process
+    to_kind: business_operation
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Процесс декомпозируется на исполняемые бизнес-операции."
+
+  - id: rel_operation_uses_system
+    name: "Operation использует IT System"
+    from_kind: business_operation
+    to_kind: it_system
+    metamodel_level: solution_details
+    category: association
+    direction: directed
+    description: "Бизнес-операция поддерживается прикладной ИТ-системой."
+
+  - id: rel_operation_executed_by_component
+    name: "Operation исполняется Component"
+    from_kind: business_operation
+    to_kind: component
+    metamodel_level: component_details
+    category: realization
+    direction: directed
+    description: "Реализация операции выполняется логическим компонентом приложения."
 
   - id: rel_process_uses_function
     name: "Process использует Function"

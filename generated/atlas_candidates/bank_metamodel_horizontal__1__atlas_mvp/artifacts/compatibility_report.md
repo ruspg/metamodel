@@ -14,17 +14,17 @@
 - `type_catalog` (generated) → `artifacts/type_catalog.json`
 
 ## Artifact Summary Counts
-- entity_kinds: `25`
+- entity_kinds: `26`
 - attributes: `1`
-- relations: `14`
+- relations: `33`
 - qualifiers: `11`
-- aliases: `67`
+- aliases: `70`
 - unresolved_aliases: `0`
 
 ## Validation/Compatibility Status
-- snapshot_type_kind_count_match: **PASS** (snapshot=25, type_catalog=25)
-- relation_catalog_non_empty: **PASS** (relation_count=14)
-- search_aliases_non_empty: **PASS** (alias_count=67)
+- snapshot_type_kind_count_match: **PASS** (snapshot=26, type_catalog=26)
+- relation_catalog_non_empty: **PASS** (relation_count=33)
+- search_aliases_non_empty: **PASS** (alias_count=70)
 - relation_inverse_integrity: **PASS** (validated from generated relation_catalog)
 
 ## Import-Relevant Notes
