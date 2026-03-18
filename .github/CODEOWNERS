@@ -1,0 +1,21 @@
+# Metamodel repository — code ownership rules.
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default: metamodel architect reviews all changes
+*                               @metamodel-architect
+
+# Ontology source data — requires data owner + architect
+data/                           @metamodel-architect @data-owner
+
+# Relation catalog spec
+docs/architecture/relation_catalog_v2_spec.yaml  @metamodel-architect
+
+# Tooling — platform team
+tools/                          @platform-team @metamodel-architect
+tests/                          @platform-team
+
+# Generated bundles — architect must approve
+generated/                      @metamodel-architect
+
+# Schema definitions
+schema/                         @metamodel-architect @platform-team
