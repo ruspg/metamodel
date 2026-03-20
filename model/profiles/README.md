@@ -1,10 +1,10 @@
 # model/profiles
 
-Profile projection filters for downstream bundle generation.
+Фильтры профильных проекций для генерации downstream-бандлов.
 
-Each profile defines which entity kinds and relation kinds are included
-in a given projection (e.g. `atlas_mvp`).
+Каждый профиль определяет, какие типы сущностей и связей включаются
+в конкретную проекцию (например, `atlas_mvp`).
 
-> **Current status:** Profile filtering logic lives inside
-> `tools/wave1/projection_builder.py`. Extracting it into declarative
-> YAML files here is a planned future step.
+> **Текущий статус:** Логика фильтрации по профилю реализована внутри
+> `tools/wave1/projection_builder.py`. Вынесение в декларативные
+> YAML-файлы в этой директории — запланированный следующий шаг.

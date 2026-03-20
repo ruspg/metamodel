@@ -1,25 +1,26 @@
-# Canonical model area
+# Каноническая область модели
 
-This directory is the canonical home for ontology authoring artifacts.
+Эта директория — каноническое место для авторинга онтологии.
+Пошаговые инструкции по внесению изменений — см. [`CONTRIBUTING.md`](../CONTRIBUTING.md).
 
-## Layout
+## Содержимое
 
-- [`metamodel.yaml`](metamodel.yaml) — entity kinds, attributes, dictionaries, and meta (the core ontology schema).
-- [`relation_catalog.yaml`](relation_catalog.yaml) — relation kinds, qualifier definitions, and traversal rules.
-- [`profiles/`](profiles/) — profile projection filters (e.g. `atlas_mvp.yaml`).
-- [`templates/`](templates/) — copy-paste starters for contributors adding new kinds or relations.
-- [`schema/`](schema/) — JSON Schema validation contracts.
-- [`glossary/`](glossary/) — glossary terms, aliases, and naming policy artifacts.
+- [`metamodel.yaml`](metamodel.yaml) — типы сущностей, атрибуты, словари и метаданные (ядро онтологической схемы).
+- [`relation_catalog.yaml`](relation_catalog.yaml) — типы связей, квалификаторы и правила обхода графа.
+- [`profiles/`](profiles/README.md) — фильтры профильных проекций (например, `atlas_mvp.yaml`).
+- [`templates/`](templates/) — готовые шаблоны для контрибьюторов, добавляющих новые сущности или связи.
+- [`schema/`](schema/README.md) — JSON Schema контракты валидации.
+- [`glossary/`](glossary/README.md) — термины глоссария, алиасы и артефакты политики именования.
 
-See the [design rationale](../README.md#структура-авторинга-обоснование)
-in the repository README for why the metamodel uses two source files rather than
-file-per-kind.
+Почему метамодель хранится в двух файлах, а не file-per-kind —
+см. [Обоснование структуры авторинга](../README.md#структура-авторинга-обоснование)
+в корневом README.
 
-## Migration status
+## Статус миграции
 
-Existing source assets remain in their current locations for backward legibility:
-- current ontology YAML sources stay in `data/`;
-- current root schema stays in `schema/`;
-- converters stay in `metamodel2owl/` and `metamodel_to_mermaid/`.
+Исходные артефакты остаются в текущих местах для обратной совместимости:
+- текущие YAML-исходники онтологии — в `data/`;
+- корневая схема — в `schema/`;
+- конвертеры — в `metamodel2owl/` и `metamodel_to_mermaid/`.
 
-Canonical target: `model/metamodel.yaml` + `model/relation_catalog.yaml`.
+Каноническая цель: `model/metamodel.yaml` + `model/relation_catalog.yaml`.

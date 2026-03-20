@@ -10,6 +10,8 @@
 
 Проект ориентирован на предсказуемую и воспроизводимую подготовку релизов онтологии: от редактирования модели до получения детерминированного bundle.
 
+> **Хотите внести изменения?** Читайте [`CONTRIBUTING.md`](CONTRIBUTING.md) — пошаговые инструкции на русском: как добавить сущность, связь, атрибут или квалификатор.
+
 ---
 
 ## Что умеет проект
@@ -215,8 +217,37 @@ entity kind (как one-class-per-file в коде). Мы сознательно
 
 ---
 
-## Дополнительная документация
+## Документация
 
-- [`model/README.md`](model/README.md) — правила и статус структуры модели.
-- [`tools/README.md`](tools/README.md) — обзор инструментов и сценариев.
-- [`docs/`](docs/) — форматы, contribution rules и архитектурные спецификации.
+### Для контрибьюторов
+
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — как добавить сущность, связь, атрибут или квалификатор
+- [`docs/metamodel_yaml_format.md`](docs/metamodel_yaml_format.md) — формат YAML-файла метамодели
+- [`docs/metamodel_contribution_rules.md`](docs/metamodel_contribution_rules.md) — правила контрибьюшена и проверки
+
+### Архитектурные контракты
+
+- [`docs/architecture/entity_kind_contract_v2.md`](docs/architecture/entity_kind_contract_v2.md) — контракт типа сущности
+- [`docs/architecture/relation_kind_contract_v2.md`](docs/architecture/relation_kind_contract_v2.md) — контракт типа связи
+- [`docs/architecture/attribute_def_contract_v2.md`](docs/architecture/attribute_def_contract_v2.md) — контракт атрибутов
+- [`docs/architecture/qualifier_def_contract_v2.md`](docs/architecture/qualifier_def_contract_v2.md) — контракт квалификаторов
+- [`docs/architecture/glossary_alias_naming_policy.md`](docs/architecture/glossary_alias_naming_policy.md) — правила именования
+- [`docs/architecture/relation_catalog_v2_rules.md`](docs/architecture/relation_catalog_v2_rules.md) — правила каталога связей
+
+### Дизайн и решения
+
+- [`docs/architecture/ontology_schema_v2_high_level_design.md`](docs/architecture/ontology_schema_v2_high_level_design.md) — высокоуровневый дизайн схемы онтологии
+- [`docs/architecture/business_layer_semantic_alignment.md`](docs/architecture/business_layer_semantic_alignment.md) — семантическое выравнивание бизнес-слоя
+- [`docs/architecture/business_layer_relation_matrix.md`](docs/architecture/business_layer_relation_matrix.md) — матрица связей бизнес-слоя
+- [`docs/decisions/`](docs/decisions/) — журнал архитектурных решений (ADR)
+  - [`formal_decision_business_operation.md`](docs/decisions/formal_decision_business_operation.md) — решение по сущности business_operation
+
+### Внутренние справочники
+
+- [`model/README.md`](model/README.md) — содержимое и статус директории модели
+- [`tools/README.md`](tools/README.md) — обзор инструментов и сценариев
+- [`generated/README.md`](generated/README.md) — сгенерированные артефакты и бандлы
+- [`docs/atlas-bundle/README.md`](docs/atlas-bundle/README.md) — контракт выходных артефактов Atlas-бандла
+- [`docs/repo-intelligence/`](docs/repo-intelligence/) — структурный аудит и заметки по репозиторию
+  - [`metamodel_structural_audit.md`](docs/repo-intelligence/metamodel_structural_audit.md) — структурный аудит метамодели
+  - [`wave1_repo_structure_note.md`](docs/repo-intelligence/wave1_repo_structure_note.md) — заметки по структуре репозитория

@@ -1,43 +1,43 @@
-# tools
+# Инструменты
 
-Canonical location for repository tooling.
+Каноническое расположение тулинга репозитория.
 
-## Current state
-Existing converter tooling is preserved in-place to avoid breaking current workflows:
-- `metamodel2owl/` (OWL + Mermaid export CLI)
-- `metamodel_to_mermaid/` (focused Mermaid rendering pipeline)
+## Текущее состояние
 
-This `tools/` directory is the forward-looking home for future loader/validator/generator/release scripts and wrappers.
+Существующие конвертеры сохранены на своих местах, чтобы не ломать текущие рабочие процессы:
+- `metamodel2owl/` — CLI экспорта в OWL + Mermaid
+- `metamodel_to_mermaid/` — пайплайн рендеринга Mermaid-диаграмм
 
-## Ontology loader
-- `tools/wave1/loader.py` provides `load_ontology(...)` for deterministic structural loading/normalization.
-- `tools/wave1/model.py` defines the normalized in-memory dataclasses consumed by follow-up validation/generation tasks.
+Директория `tools/` — целевое место для загрузчиков, валидаторов, генераторов и скриптов релиза.
 
-## Ontology validator
-- `tools/wave1/validator.py` provides `validate_ontology(...)` for structural/contract checks over the normalized model.
-- `ensure_valid_ontology(...)` raises a readable fatal error while preserving structured result support for tests/review.
+## Загрузчик онтологии
+- `tools/wave1/loader.py` — `load_ontology(...)` для детерминированной структурной загрузки и нормализации.
+- `tools/wave1/model.py` — нормализованные dataclass-модели, используемые последующими задачами валидации и генерации.
 
-## Ontology lint
-- `tools/wave1/lint.py` provides `lint_ontology(...)` for semantic quality checks (naming/alias/glossary/relation consistency) after structural validation.
+## Валидатор онтологии
+- `tools/wave1/validator.py` — `validate_ontology(...)` для структурных и контрактных проверок нормализованной модели.
+- `ensure_valid_ontology(...)` — выбрасывает читаемую ошибку, сохраняя структурированный результат для тестов и ревью.
 
-## Relation catalog validator
-- `tools/wave1/relation_catalog_validator.py` provides `validate_relation_catalog(...)` and `ensure_valid_relation_catalog(...)` for dedicated relation-catalog gates prior to generation tasks.
+## Линтер онтологии
+- `tools/wave1/lint.py` — `lint_ontology(...)` для семантических проверок качества (именование, алиасы, глоссарий, консистентность связей) после структурной валидации.
 
-## Validation harness
-- `tools/wave1/harness.py` provides `run_wave1_validation_harness(...)` to run load + ontology validation + lint + relation catalog validation in one deterministic flow.
-- Local CLI usage: `python -m tools.wave1.harness model/metamodel.yaml --relation-catalog-path model/relation_catalog.yaml`
+## Валидатор каталога связей
+- `tools/wave1/relation_catalog_validator.py` — `validate_relation_catalog(...)` и `ensure_valid_relation_catalog(...)` для выделенных проверок каталога связей перед генерацией.
 
-## Projection builder
-- `tools/wave1/projection_builder.py` provides `build_projection_model(...)` for deterministic, profile-aware shaping of validated ontology data into a generator-ready projection model.
-- `tools/wave1/projection_model.py` defines the projection dataclasses intended as shared inputs for downstream bundle generators.
+## Валидационный harness
+- `tools/wave1/harness.py` — `run_wave1_validation_harness(...)` запускает загрузку + валидацию онтологии + линт + валидацию каталога связей в одном детерминированном потоке.
+- Локальный запуск: `python -m tools.wave1.harness model/metamodel.yaml --relation-catalog-path model/relation_catalog.yaml`
 
-## Atlas bundle generator
-- `tools/wave1/atlas_bundle_generator.py` provides `generate_atlas_bundle(...)` as the canonical atlas bundle orchestration entrypoint over the projection model.
-- `tools/wave1/atlas_bundle_model.py` defines bundle manifest/result dataclasses and deterministic artifact planning structures for future concrete artifact generators.
-- `tools/wave1/metamodel_snapshot_generator.py` implements the concrete `metamodel_snapshot.json` artifact as a compact, deterministic runtime-facing metamodel surface for the active profile.
-- `tools/wave1/type_catalog_generator.py` implements the concrete `type_catalog.json` artifact as a compact, deterministic runtime-facing kind/attribute catalog for the active profile.
+## Построитель проекций
+- `tools/wave1/projection_builder.py` — `build_projection_model(...)` для детерминированного профильного формирования валидированных данных онтологии в модель, готовую для генератора.
+- `tools/wave1/projection_model.py` — dataclass-модели проекции, используемые как входные данные для генераторов бандлов.
 
-- `tools/wave1/relation_catalog_generator.py` implements the concrete `relation_catalog.json` artifact as a compact, deterministic runtime-facing relation catalog for the active profile.
-- `tools/wave1/search_aliases_generator.py` implements the concrete `search_aliases.json` artifact as a compact, deterministic runtime-facing alias/disambiguation projection for the active profile.
-- `tools/wave1/compatibility_report_generator.py` implements the concrete `compatibility_report.md` artifact as a deterministic release/import compatibility summary over generated bundle artifacts.
-- `tools/wave1/bundle_determinism.py` provides `verify_bundle_determinism(...)` to run repeated bundle generation and compare file paths, bytes, manifest ordering, and artifact ordering checks with concise drift diagnostics.
+## Генератор Atlas-бандла
+- `tools/wave1/atlas_bundle_generator.py` — `generate_atlas_bundle(...)` — каноническая точка входа для оркестрации генерации бандла из проекционной модели.
+- `tools/wave1/atlas_bundle_model.py` — dataclass-модели манифеста и результатов бандла, структуры планирования артефактов.
+- `tools/wave1/metamodel_snapshot_generator.py` — генерация `metamodel_snapshot.json` — компактного детерминированного runtime-представления метамодели для активного профиля.
+- `tools/wave1/type_catalog_generator.py` — генерация `type_catalog.json` — компактного каталога типов и атрибутов для активного профиля.
+- `tools/wave1/relation_catalog_generator.py` — генерация `relation_catalog.json` — компактного каталога связей для активного профиля.
+- `tools/wave1/search_aliases_generator.py` — генерация `search_aliases.json` — проекции алиасов и дисамбигуации для активного профиля.
+- `tools/wave1/compatibility_report_generator.py` — генерация `compatibility_report.md` — отчёта совместимости релиза по сгенерированным артефактам бандла.
+- `tools/wave1/bundle_determinism.py` — `verify_bundle_determinism(...)` — повторная генерация бандла и сравнение путей файлов, байтов, порядка манифеста и артефактов с диагностикой дрейфа.
