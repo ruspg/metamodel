@@ -11,11 +11,11 @@ git clone <repo-url> && cd metamodel
 
 # Validate the current model
 python -m tools.wave1.harness \
-  data/bank_metamodel_horizontal.yaml \
-  --relation-catalog-path docs/architecture/relation_catalog_v2_spec.yaml
+  model/metamodel.yaml \
+  --relation-catalog-path model/relation_catalog.yaml
 
 # Run semantic linter
-python -m tools.wave1.lint data/bank_metamodel_horizontal.yaml
+python -m tools.wave1.lint model/metamodel.yaml
 
 # Run tests
 python -m pytest tests/ -v
@@ -31,7 +31,9 @@ git checkout -b feat/add-<kind-name>
 
 ### 2. Edit the YAML
 
-All entity kinds and relations are defined in `data/bank_metamodel_horizontal.yaml`.
+- **Entity kinds** are defined in `model/metamodel.yaml`
+- **Relation kinds** are defined in `model/relation_catalog.yaml`
+- **Starter templates** are in `model/templates/` — copy a block and fill in the fields
 
 Follow the contracts:
 - Entity kinds: see `docs/architecture/entity_kind_contract_v2.md`
@@ -44,8 +46,8 @@ Follow the contracts:
 ```bash
 # Must pass with zero errors before creating PR
 python -m tools.wave1.harness \
-  data/bank_metamodel_horizontal.yaml \
-  --relation-catalog-path docs/architecture/relation_catalog_v2_spec.yaml
+  model/metamodel.yaml \
+  --relation-catalog-path model/relation_catalog.yaml
 ```
 
 ### 4. Create a Pull Request
@@ -82,6 +84,7 @@ Bundle generation and import into rbank-atlas is a separate manual step
 
 ## Need Help?
 
+- Design rationale: see [README.md](README.md#authoring-structure-design-rationale)
 - Full contribution rules: `docs/metamodel_contribution_rules.md`
 - Naming policy: `docs/architecture/glossary_alias_naming_policy.md`
 - Decision log: `docs/decisions/`

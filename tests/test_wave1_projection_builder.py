@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def _baseline_ontology():
     return load_ontology(
-        ROOT / "data/bank_metamodel_horizontal.yaml",
-        relation_catalog_path=ROOT / "docs/architecture/relation_catalog_v2_spec.yaml",
+        ROOT / "model/metamodel.yaml",
+        relation_catalog_path=ROOT / "model/relation_catalog.yaml",
     )
 
 

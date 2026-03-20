@@ -23,8 +23,8 @@ jobs:
       - name: Run validation harness
         run: |
           python -m tools.wave1.harness \
-            data/bank_metamodel_horizontal.yaml \
-            --relation-catalog-path docs/architecture/relation_catalog_v2_spec.yaml
+            model/metamodel.yaml \
+            --relation-catalog-path model/relation_catalog.yaml
 
   # ── Unit tests ──────────────────────────────────────────────
   test:
@@ -52,7 +52,7 @@ jobs:
       - name: Run semantic linter
         run: |
           python -m tools.wave1.lint \
-            data/bank_metamodel_horizontal.yaml
+            model/metamodel.yaml
 
   # ── Bundle determinism ─────────────────────────────────────
   determinism:
@@ -68,5 +68,5 @@ jobs:
       - name: Verify bundle reproducibility
         run: |
           python -m tools.wave1.bundle_determinism \
-            data/bank_metamodel_horizontal.yaml \
-            --relation-catalog-path docs/architecture/relation_catalog_v2_spec.yaml
+            model/metamodel.yaml \
+            --relation-catalog-path model/relation_catalog.yaml

@@ -1,0 +1,45 @@
+# Template: new relation kind
+#
+# How to use:
+# 1. Copy the block below (without this comment header)
+# 2. Paste it in the relation_catalog.relations section of model/relation_catalog.yaml
+# 3. Fill in all <PLACEHOLDER> values
+# 4. Run validation: python -m tools.wave1.harness model/metamodel.yaml \
+#      --relation-catalog-path model/relation_catalog.yaml
+# 5. Create a PR
+#
+# Rules:
+# - id must be unique, conventionally prefixed with rel_
+# - from_kind and to_kind must reference existing entity kind IDs
+# - If has_inverse: true, define the inverse relation as a separate entry
+# - See docs/architecture/relation_kind_contract_v2.md for full contract
+
+    - id: rel_<source>_<verb>_<target>
+      name: <Human-readable name>
+      description: <What this relation means>
+      from_kind: <source_entity_kind_id>
+      to_kind: <target_entity_kind_id>
+      category: <association|aggregation|composition|realization|implementation|dependency|flow>
+      direction: directed
+      source_cardinality: <one|many>
+      target_cardinality: <one|many>
+      has_inverse: false
+      inverse_relation_id: null
+      is_traversable_by_default: true
+      allowed_in_neighbors: true
+      allowed_in_paths: true
+      allowed_in_impact: false
+      default_visibility: visible
+      path_priority: secondary
+      impact_mode: exclude
+      supports_qualifiers: false
+      allowed_qualifiers: []
+      required_qualifiers: []
+      evidence_required: false
+      ui_label_out: <verb phrase from source to target>
+      ui_label_in: <verb phrase from target to source>
+      ui_group: structure
+      exportable: true
+      status: active
+      introduced_in: "2.0.0"
+      applies_to_profiles: [atlas_mvp]
