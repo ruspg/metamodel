@@ -54,6 +54,51 @@ jobs:
           python -m tools.wave1.lint \
             model/metamodel.yaml
 
+  # ── Bundle diff (PR only) ─────────────────────────────────
+  bundle-diff:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Generate bundle and compute diff
+        run: python scripts/pr_bundle_diff.py > /tmp/bundle-diff.md
+      - name: Post PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('/tmp/bundle-diff.md', 'utf8');
+            const marker = '<!-- bundle-diff-bot -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body.includes(marker));
+            const fullBody = marker + '\n' + body;
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: fullBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: fullBody,
+              });
+            }
+
   # ── Bundle determinism ─────────────────────────────────────
   determinism:
     runs-on: ubuntu-latest
