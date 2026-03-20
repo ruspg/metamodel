@@ -240,6 +240,7 @@ entity kind (как one-class-per-file в коде). Мы сознательно
 - [`docs/architecture/business_layer_semantic_alignment.md`](docs/architecture/business_layer_semantic_alignment.md) — семантическое выравнивание бизнес-слоя
 - [`docs/architecture/business_layer_relation_matrix.md`](docs/architecture/business_layer_relation_matrix.md) — матрица связей бизнес-слоя
 - [`docs/decisions/`](docs/decisions/) — журнал архитектурных решений (ADR)
+  - [`formal_decision_business_operation.md`](docs/decisions/formal_decision_business_operation.md) — решение по сущности business_operation
 
 ### Внутренние справочники
 
@@ -248,3 +249,5 @@ entity kind (как one-class-per-file в коде). Мы сознательно
 - [`generated/README.md`](generated/README.md) — сгенерированные артефакты и бандлы
 - [`docs/atlas-bundle/README.md`](docs/atlas-bundle/README.md) — контракт выходных артефактов Atlas-бандла
 - [`docs/repo-intelligence/`](docs/repo-intelligence/) — структурный аудит и заметки по репозиторию
+  - [`metamodel_structural_audit.md`](docs/repo-intelligence/metamodel_structural_audit.md) — структурный аудит метамодели
+  - [`wave1_repo_structure_note.md`](docs/repo-intelligence/wave1_repo_structure_note.md) — заметки по структуре репозитория
