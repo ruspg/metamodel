@@ -17,7 +17,7 @@ meta:
   locale: "ru-RU"            # необязательно, но рекомендуется
 
 dictionaries:
-  metamodel_levels: [...]      # справочник Operational Metamodel с 6 уровнями
+  metamodel_levels: [...]      # справочник Operational Metamodel с 5 уровнями
 
 entity_kinds:                  # перечень типов сущностей
   - id: ...
