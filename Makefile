@@ -1,4 +1,4 @@
-.PHONY: validate lint test determinism bundle all
+.PHONY: validate lint test determinism bundle diff all
 
 PYTHON      ?= python3
 METAMODEL   := model/metamodel.yaml
@@ -28,6 +28,9 @@ o = load_ontology('$(METAMODEL)', relation_catalog_path='$(RELCATALOG)'); \
 p = build_projection_model(o, profile='atlas_mvp'); \
 r = generate_atlas_bundle(p, Path('generated')); \
 print(r.bundle_root)"
+
+diff:  ## Show bundle diff vs baseline
+	$(PYTHON) scripts/pr_bundle_diff.py
 
 help:  ## Show this help
 	@grep -E '^[a-z]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-15s %s\n", $$1, $$2}'
