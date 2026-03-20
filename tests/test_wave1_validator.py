@@ -11,8 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_validate_happy_path_wave1_inputs() -> None:
     ontology = load_ontology(
-        ROOT / "data/bank_metamodel_horizontal.yaml",
-        relation_catalog_path=ROOT / "docs/architecture/relation_catalog_v2_spec.yaml",
+        ROOT / "model/metamodel.yaml",
+        relation_catalog_path=ROOT / "model/relation_catalog.yaml",
     )
 
     result = validate_ontology(ontology)
@@ -23,8 +23,8 @@ def test_validate_happy_path_wave1_inputs() -> None:
 
 def test_validate_missing_reference_case() -> None:
     ontology = load_ontology(
-        ROOT / "data/bank_metamodel_horizontal.yaml",
-        relation_catalog_path=ROOT / "docs/architecture/relation_catalog_v2_spec.yaml",
+        ROOT / "model/metamodel.yaml",
+        relation_catalog_path=ROOT / "model/relation_catalog.yaml",
     )
 
     broken_relation = ontology.relation_catalog.relations[0]
@@ -67,8 +67,8 @@ def test_validate_missing_reference_case() -> None:
 
 def test_validate_duplicate_id_case() -> None:
     ontology = load_ontology(
-        ROOT / "data/bank_metamodel_horizontal.yaml",
-        relation_catalog_path=ROOT / "docs/architecture/relation_catalog_v2_spec.yaml",
+        ROOT / "model/metamodel.yaml",
+        relation_catalog_path=ROOT / "model/relation_catalog.yaml",
     )
     duplicate_entity = ontology.entity_kinds[0]
     broken_ontology = ontology.__class__(
@@ -91,8 +91,8 @@ def test_validate_duplicate_id_case() -> None:
 
 def test_validate_invalid_inverse_relation_case() -> None:
     ontology = load_ontology(
-        ROOT / "data/bank_metamodel_horizontal.yaml",
-        relation_catalog_path=ROOT / "docs/architecture/relation_catalog_v2_spec.yaml",
+        ROOT / "model/metamodel.yaml",
+        relation_catalog_path=ROOT / "model/relation_catalog.yaml",
     )
     rel = ontology.relation_catalog.relations[0]
     payload = dict(rel.payload)
@@ -134,8 +134,8 @@ def test_validate_invalid_inverse_relation_case() -> None:
 
 def test_validate_invalid_enum_value_case() -> None:
     ontology = load_ontology(
-        ROOT / "data/bank_metamodel_horizontal.yaml",
-        relation_catalog_path=ROOT / "docs/architecture/relation_catalog_v2_spec.yaml",
+        ROOT / "model/metamodel.yaml",
+        relation_catalog_path=ROOT / "model/relation_catalog.yaml",
     )
     rel = ontology.relation_catalog.relations[0]
     payload = dict(rel.payload)
@@ -176,8 +176,8 @@ def test_validate_invalid_enum_value_case() -> None:
 
 def test_ensure_valid_ontology_raises_readable_error() -> None:
     ontology = load_ontology(
-        ROOT / "data/bank_metamodel_horizontal.yaml",
-        relation_catalog_path=ROOT / "docs/architecture/relation_catalog_v2_spec.yaml",
+        ROOT / "model/metamodel.yaml",
+        relation_catalog_path=ROOT / "model/relation_catalog.yaml",
     )
     rel = ontology.relation_catalog.relations[0]
     payload = dict(rel.payload)

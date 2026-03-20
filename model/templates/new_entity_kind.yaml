@@ -1,0 +1,23 @@
+# Template: new entity kind
+#
+# How to use:
+# 1. Copy the block below (without this comment header)
+# 2. Paste it at the end of the entity_kinds section in model/metamodel.yaml
+# 3. Fill in all <PLACEHOLDER> values
+# 4. Run validation: python -m tools.wave1.harness model/metamodel.yaml \
+#      --relation-catalog-path model/relation_catalog.yaml
+# 5. Create a PR
+#
+# Rules:
+# - id must be unique snake_case
+# - name_ru is required
+# - metamodel_level: strategic_view | business_details | solution_details
+#                    | component_details | infrastructure_details
+# - See docs/architecture/entity_kind_contract_v2.md for full contract
+
+  - id: <snake_case_id>
+    name: "<English Name>"
+    name_ru: "<Русское имя>"
+    metamodel_level: <level>
+    category: <semantic_category>
+    description: "<Описание сущности>"

@@ -14,8 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_wave1_package_exports_include_harness_entrypoints() -> None:
-    ontology_path = ROOT / "data/bank_metamodel_horizontal.yaml"
-    relation_catalog_path = ROOT / "docs/architecture/relation_catalog_v2_spec.yaml"
+    ontology_path = ROOT / "model/metamodel.yaml"
+    relation_catalog_path = ROOT / "model/relation_catalog.yaml"
 
     by_path = run_wave1_validation_harness(
         ontology_path,

@@ -13,8 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_loads_legacy_wave1_input_with_relation_catalog() -> None:
     ontology = load_ontology(
-        ROOT / "data/bank_metamodel_horizontal.yaml",
-        relation_catalog_path=ROOT / "docs/architecture/relation_catalog_v2_spec.yaml",
+        ROOT / "model/metamodel.yaml",
+        relation_catalog_path=ROOT / "model/relation_catalog.yaml",
     )
 
     assert ontology.meta["model_name"] == "bank_metamodel_horizontal"

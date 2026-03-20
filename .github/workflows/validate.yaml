@@ -1,0 +1,72 @@
+name: Metamodel Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # ── Validation harness ─────────────────────────────────────
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Run validation harness
+        run: |
+          python -m tools.wave1.harness \
+            model/metamodel.yaml \
+            --relation-catalog-path model/relation_catalog.yaml
+
+  # ── Unit tests ──────────────────────────────────────────────
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: pip install -e . && pip install pytest
+      - name: Run tests
+        run: python -m pytest tests/ -v --tb=short
+
+  # ── Lint ────────────────────────────────────────────────────
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Run semantic linter
+        run: |
+          python -m tools.wave1.lint \
+            model/metamodel.yaml
+
+  # ── Bundle determinism ─────────────────────────────────────
+  determinism:
+    runs-on: ubuntu-latest
+    needs: [validate, test]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Verify bundle reproducibility
+        run: |
+          python -m tools.wave1.bundle_determinism \
+            model/metamodel.yaml \
+            --relation-catalog-path model/relation_catalog.yaml

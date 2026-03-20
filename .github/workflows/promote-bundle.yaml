@@ -1,0 +1,135 @@
+name: Promote Metamodel Bundle
+
+# Triggered manually or on merge to main when generated/ changes.
+on:
+  workflow_dispatch:
+    inputs:
+      bundle_version:
+        description: "Bundle version to promote (e.g., atlas_mvp_v2)"
+        required: true
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - "generated/atlas_candidates/**"
+
+env:
+  PYTHON_VERSION: "3.11"
+  ATLAS_REPO: ruspg/rbank-atlas
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout metamodel
+        uses: actions/checkout@v4
+        with:
+          path: metamodel
+
+      - name: Checkout rbank-atlas
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ATLAS_REPO }}
+          token: ${{ secrets.ATLAS_REPO_TOKEN }}
+          path: rbank-atlas
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Determine bundle version
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.bundle_version }}" ]; then
+            echo "version=${{ github.event.inputs.bundle_version }}" >> $GITHUB_OUTPUT
+          else
+            # Find latest generated bundle
+            VERSION=$(ls -1d metamodel/generated/atlas_candidates/*/ 2>/dev/null | sort -V | tail -1 | xargs basename)
+            echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate bundle exists
+        run: |
+          BUNDLE_DIR="metamodel/generated/atlas_candidates/${{ steps.version.outputs.version }}"
+          if [ ! -d "$BUNDLE_DIR" ]; then
+            echo "::error::Bundle directory not found: $BUNDLE_DIR"
+            exit 1
+          fi
+          echo "Promoting bundle: ${{ steps.version.outputs.version }}"
+          ls -la "$BUNDLE_DIR"
+
+      - name: Copy bundle to rbank-atlas
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          DEST="rbank-atlas/specs/metamodel/versions/${VERSION}"
+          mkdir -p "$DEST"
+          cp -r "metamodel/generated/atlas_candidates/${VERSION}/." "$DEST/"
+
+      - name: Update active_version.json
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          cd rbank-atlas
+          pip install -q pyyaml
+          python3 -c "
+          import json, datetime
+          p = 'specs/metamodel/active_version.json'
+          with open(p) as f:
+              data = json.load(f)
+          data['active_version'] = '${VERSION}'
+          data.setdefault('imported_versions', []).append({
+              'version': '${VERSION}',
+              'imported_at': datetime.datetime.utcnow().isoformat() + 'Z',
+              'compatibility_status': 'pending_validation',
+              'source': 'automated_promotion'
+          })
+          with open(p, 'w') as f:
+              json.dump(data, f, indent=2)
+          print(f'Updated active_version to ${VERSION}')
+          "
+
+      - name: Validate bundle loads
+        run: |
+          cd rbank-atlas
+          pip install -q -e packages/api
+          python3 -c "
+          from app.domain.metamodel_bundle_importer import load_active_metamodel_bundle
+          from pathlib import Path
+          b = load_active_metamodel_bundle(Path('specs/metamodel'))
+          kinds = len(b.type_catalog.get('kinds', []))
+          rels = len(b.relation_catalog.get('relations', []))
+          print(f'Bundle loaded OK: {kinds} kinds, {rels} relations')
+          assert kinds > 0, 'No entity kinds in bundle'
+          "
+
+      - name: Create PR in rbank-atlas
+        env:
+          GH_TOKEN: ${{ secrets.ATLAS_REPO_TOKEN }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          cd rbank-atlas
+          BRANCH="chore/promote-metamodel-${VERSION}"
+          git checkout -b "$BRANCH"
+          git add specs/metamodel/
+          git commit -m "chore: promote metamodel bundle ${VERSION}
+
+          Automated promotion from metamodel repo.
+          Source commit: ${{ github.sha }}
+          "
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "chore: promote metamodel bundle ${VERSION}" \
+            --body "$(cat <<EOF
+          ## Automated Metamodel Bundle Promotion
+
+          - **Version:** ${VERSION}
+          - **Source:** metamodel repo commit \`${{ github.sha }}\`
+          - **Validation:** Bundle loads successfully (kinds + relations verified)
+
+          ### Next steps
+          1. CI will run full test suite
+          2. Review and merge
+          3. Deploy via \`helm upgrade\`
+
+          🤖 Automated by metamodel CI
+          EOF
+          )"

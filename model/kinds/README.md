@@ -1,5 +1,10 @@
 # model/kinds
 
-Canonical location for Wave 1 entity kind and attribute kind authoring files.
-
-The repository currently keeps monolithic YAML model definitions under `data/`. This directory is intentionally scaffolded for phased decomposition in later tasks.
+> **Note:** This directory is reserved for future use if the metamodel grows
+> beyond ~80 entity kinds and requires domain-based decomposition
+> (e.g. `payments.yaml`, `lending.yaml`).
+>
+> Currently all entity kinds live in `model/metamodel.yaml` as a single
+> cohesive file. See the
+> [design rationale](../../README.md#authoring-structure-design-rationale)
+> for why.
