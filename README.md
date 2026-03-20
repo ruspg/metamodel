@@ -190,8 +190,8 @@ entity kind (как one-class-per-file в коде). Мы сознательно
 
 ### Что обеспечивает inner-source (а не структура файлов)
 
-1. **Шаблоны** (`model/templates/`) — контрибьютор копирует готовый блок,
-   заполняет 6 полей, вставляет в `metamodel.yaml`.
+1. **Шаблоны** ([`model/templates/`](model/templates/)) — контрибьютор копирует готовый блок,
+   заполняет 6 полей, вставляет в [`metamodel.yaml`](model/metamodel.yaml).
 
 2. **Мгновенная CI-обратная связь** — harness работает за секунды.
    PR-бот комментирует: "Добавлен kind `data_quality_rule`, 2 новых relation,
@@ -217,6 +217,6 @@ entity kind (как one-class-per-file в коде). Мы сознательно
 
 ## Дополнительная документация
 
-- `model/README.md` — правила и статус структуры модели.
-- `tools/README.md` — обзор инструментов и сценариев.
-- `docs/` — форматы, contribution rules и архитектурные спецификации.
+- [`model/README.md`](model/README.md) — правила и статус структуры модели.
+- [`tools/README.md`](tools/README.md) — обзор инструментов и сценариев.
+- [`docs/`](docs/) — форматы, contribution rules и архитектурные спецификации.
