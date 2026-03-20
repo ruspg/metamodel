@@ -1,10 +1,10 @@
 # generated
 
-Canonical location for generated artifacts (validation outputs, release bundles, diagrams, and other build products).
+Каноническое расположение сгенерированных артефактов (результаты валидации, релизные бандлы, диаграммы и другие продукты сборки).
 
-Generated files should remain reproducible from source model inputs and tooling.
+Сгенерированные файлы должны быть воспроизводимы из исходных данных модели и тулинга.
 
-## Atlas candidates
+## Atlas-кандидаты
 
-Versioned atlas candidate bundles are published under `generated/atlas_candidates/`.
-See `generated/atlas_candidates/README.md` for the current candidate version, artifact inventory, and generation command.
+Версионированные бандлы-кандидаты Atlas публикуются в `generated/atlas_candidates/`.
+Подробнее о текущей версии кандидата, инвентаре артефактов и команде генерации — см. [`generated/atlas_candidates/README.md`](atlas_candidates/README.md).

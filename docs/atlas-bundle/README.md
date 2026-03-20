@@ -1,14 +1,14 @@
-# Atlas bundle output contract
+# Контракт выходных артефактов Atlas-бандла
 
-When the bundle generator is implemented, it must produce artifacts matching the downstream contract.
+Генератор бандлов должен производить артефакты, соответствующие downstream-контракту.
 
-**Canonical spec:** `rbank-atlas` docs/runtime-contracts/atlas_projection_bundle_spec.md
+**Каноническая спецификация:** `rbank-atlas` docs/runtime-contracts/atlas_projection_bundle_spec.md
 
-**Required output filenames:**
+**Обязательные выходные файлы:**
 - `metamodel_snapshot.json`
 - `type_catalog.json`
 - `relation_catalog.json`
 - `search_aliases.json`
 - `compatibility_report.md`
 
-See `metamodel_structural_audit.md` §5.1 for current gap.
+См. `metamodel_structural_audit.md` §5.1 для текущего разрыва.

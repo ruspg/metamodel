@@ -1,5 +1,5 @@
 # model/schema
 
-JSON Schema validation contracts for the metamodel.
+JSON Schema контракты валидации метамодели.
 
-- `metamodel.schema.yaml` — structural validation for `model/metamodel.yaml`.
+- `metamodel.schema.yaml` — структурная валидация для `model/metamodel.yaml`.

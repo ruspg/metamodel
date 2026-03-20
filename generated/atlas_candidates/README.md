@@ -1,17 +1,17 @@
-# Atlas candidate bundles
+# Бандлы-кандидаты Atlas
 
-This directory contains versioned, deterministic atlas candidate bundles generated from the canonical ontology/profile inputs.
+Эта директория содержит версионированные детерминированные бандлы-кандидаты Atlas, сгенерированные из канонических входных данных онтологии и профиля.
 
-Bundle identifiers are immutable: once published, a bundle path must never be reused for different artifacts.
+Идентификаторы бандлов иммутабельны: однажды опубликованный путь бандла не должен повторно использоваться для других артефактов.
 
-## Current candidate
+## Текущий кандидат
 
-- Version: `2`
-- Profile: `atlas_mvp`
-- Bundle path: `generated/atlas_candidates/bank_metamodel_horizontal__1__atlas_mvp__v2/`
-- Prior promoted candidate retained as immutable historical artifact: `generated/atlas_candidates/bank_metamodel_horizontal__1__atlas_mvp/`
+- Версия: `2`
+- Профиль: `atlas_mvp`
+- Путь бандла: `generated/atlas_candidates/bank_metamodel_horizontal__1__atlas_mvp__v2/`
+- Предыдущий промотированный кандидат сохранён как иммутабельный исторический артефакт: `generated/atlas_candidates/bank_metamodel_horizontal__1__atlas_mvp/`
 
-## Generation command
+## Команда генерации
 
 ```bash
 python - <<'PY'

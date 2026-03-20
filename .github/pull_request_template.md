@@ -1,37 +1,37 @@
-## Metamodel Change Request
+## Запрос на изменение метамодели
 
-**Type:** <!-- check one -->
-- [ ] New entity kind
-- [ ] New relation kind
-- [ ] Attribute change (add / rename / remove)
-- [ ] Qualifier change
-- [ ] Glossary / alias update
-- [ ] Tooling / CI change
+**Тип:** <!-- отметьте нужное -->
+- [ ] Новый тип сущности
+- [ ] Новый тип связи
+- [ ] Изменение атрибутов (добавление / переименование / удаление)
+- [ ] Изменение квалификаторов
+- [ ] Обновление глоссария / алиасов
+- [ ] Изменение тулинга / CI
 - [ ] Deprecation
 
-**Affected kinds / relations:**
-<!-- List entity_kind IDs or relation IDs affected -->
+**Затронутые сущности / связи:**
+<!-- Перечислите id затронутых entity kind или relation kind -->
 
-**Breaking change:** <!-- Yes / No -->
+**Ломающее изменение:** <!-- Да / Нет -->
 
-**Justification:**
-<!-- Why is this change needed? Link to ADR or requirement if applicable -->
+**Обоснование:**
+<!-- Зачем нужно это изменение? Ссылка на ADR или требование, если применимо -->
 
 ---
 
-### Validation results
+### Результаты валидации
 
-<!-- Paste output of: python -m tools.wave1.harness model/metamodel.yaml --relation-catalog-path model/relation_catalog.yaml -->
+<!-- Вставьте вывод: python -m tools.wave1.harness model/metamodel.yaml --relation-catalog-path model/relation_catalog.yaml -->
 
 ```
-<paste here>
+<вставьте здесь>
 ```
 
-### Checklist
+### Чеклист
 
-- [ ] Ran validation harness locally (zero errors)
-- [ ] Ran lint check (`python -m tools.wave1.lint ...`)
-- [ ] No breaking changes **or** documented migration path
-- [ ] Updated `name_ru` for all new/changed entities
-- [ ] ADR created in `docs/decisions/` if this is an architectural decision
-- [ ] Tests updated or added in `tests/`
+- [ ] Запущен валидационный harness локально (ноль ошибок)
+- [ ] Запущена проверка линтером (`python -m tools.wave1.lint ...`)
+- [ ] Нет ломающих изменений **или** описан путь миграции
+- [ ] Заполнено `name_ru` для всех новых/изменённых сущностей
+- [ ] Создан ADR в `docs/decisions/`, если это архитектурное решение
+- [ ] Тесты обновлены или добавлены в `tests/`
