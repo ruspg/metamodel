@@ -69,10 +69,11 @@ make help        # Все доступные команды
 | `component_details` | Компоненты, API, интеграции | component, api, integration |
 | `infrastructure_details` | Инфраструктура, ресурсы | logical_resource, infra_resource |
 
-### Проверка
+### Проверка перед коммитом
 
 ```bash
 make validate    # Должно быть 0 errors
+make lint        # Проверка именования, алиасов, консистентности связей
 make diff        # Покажет "+1 kind"
 ```
 
@@ -115,6 +116,8 @@ make diff        # Покажет "+1 kind"
 - `description` — что хранит этот атрибут
 - `properties.allowed_values` — (опционально) список допустимых значений
 
+Полная спецификация — см. [контракт атрибутов](docs/architecture/attribute_def_contract_v2.md).
+
 ---
 
 ## 3. Отредактировать существующую сущность
@@ -132,7 +135,8 @@ make diff        # Покажет "+1 kind"
 | Удалить kind | **Ломающее** | **Да** |
 | Изменить `metamodel_level` | Средний | Желательно |
 
-Ломающие изменения требуют ADR в [`docs/decisions/`](docs/decisions/).
+Ломающие изменения (переименование `id`, удаление kind, изменение контракта)
+требуют ADR в [`docs/decisions/`](docs/decisions/) — опишите причину, альтернативы и план миграции.
 
 ---
 
@@ -239,6 +243,8 @@ qualifier_references:
       required_qualifiers: [criticality]    # обязательные
 ```
 
+Полная спецификация — см. [контракт квалификаторов](docs/architecture/qualifier_def_contract_v2.md).
+
 ---
 
 ## Общий workflow
@@ -253,6 +259,7 @@ git checkout -b feat/add-<что-добавляем>
 
 # 3. Проверка
 make validate    # 0 errors обязательно
+make lint        # именование, консистентность
 make diff        # посмотреть дельту бандла
 
 # 4. Коммит + PR
@@ -263,6 +270,13 @@ git push -u origin feat/add-<что-добавляем>
 
 CI автоматически прогонит validate + lint + test и опубликует **bundle diff**
 в комментарии к PR.
+
+### После открытия PR
+
+1. Дождитесь зелёных чеков CI (validate, lint, test, determinism).
+2. Metamodel Architect проведёт ревью — обычно в течение 1–2 рабочих дней.
+3. При замечаниях — правьте, пушьте, CI перезапустится автоматически.
+4. После апрува мейнтейнер мержит PR. Изменения попадают в следующий релизный бандл.
 
 ---
 

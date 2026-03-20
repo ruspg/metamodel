@@ -14,14 +14,14 @@
    - Поддерживайте ключи `version`, `bank_code`, `model_name`, `last_updated` и корневые разделы `dictionaries.metamodel_levels`, `entity_kinds`, `relation_kinds`.
    - В каталоге `relation_kinds` уже описаны горизонтальные связи Job Family с банковскими продуктами, интеграциями и логическими/инфраструктурными ресурсами; при расширении проверяйте, не дублируют ли новые записи `job_family_has_bank_product`, `job_family_owns_integration`, `job_family_uses_logical_resource`, `job_family_depends_on_infrastructure_resource`.
    - Для новых сущностей обязательно указывайте `id`, `name`, `metamodel_level`, `category`, `description`, `rules`. Атрибуты и локализованные поля добавляйте только если они нужны.
-   - В поле `metamodel_level` используйте только шесть значений Operational Metamodel: `strategic_view`, `business_details`, `data_details`, `solution_details`, `component_details`, `infrastructure_details`.
+   - В поле `metamodel_level` используйте только пять значений Operational Metamodel: `strategic_view`, `business_details`, `solution_details`, `component_details`, `infrastructure_details`.
 2. **JSON Schema:**
    - Перед коммитом выполните в корне проекта команду:
      ```bash
      python - <<'PY'
      import yaml, jsonschema, pathlib
      schema = yaml.safe_load(pathlib.Path('model/schema/metamodel.schema.yaml').read_text())
-     data = yaml.safe_load(pathlib.Path('data/enterprise_metamodel.yaml').read_text())
+     data = yaml.safe_load(pathlib.Path('model/metamodel.yaml').read_text())
      jsonschema.validate(data, schema)
      print('ok')
      PY
@@ -31,11 +31,11 @@
 
 ## 3. Проверки на дублирование и противоречия
 1. **Идентификаторы:**
-   - `id` сущности, атрибута и связи должны быть уникальны во всём файле. При добавлении новых записей выполните `rg "id:" data/enterprise_metamodel.yaml` и убедитесь, что новое имя не встречается.
+   - `id` сущности, атрибута и связи должны быть уникальны во всём файле. При добавлении новых записей выполните `rg "id:" model/metamodel.yaml` и убедитесь, что новое имя не встречается.
 2. **Семантические дубликаты:**
    - Перед созданием новой сущности или атрибута проверьте существующие определения. Перечитайте раздел `dictionaries.entity_kinds` и убедитесь, что требуемая концепция не описана ранее.
 3. **Противоречия уровней:**
-   - Значение `metamodel_level` должно ссылаться на один из шести уровней Operational Metamodel (`strategic_view`, `business_details`, `data_details`, `solution_details`, `component_details`, `infrastructure_details`).
+   - Значение `metamodel_level` должно ссылаться на один из шести уровней Operational Metamodel (`strategic_view`, `business_details`, `solution_details`, `component_details`, `infrastructure_details`).
 4. **Валидация связей:**
    - `from_kind` и `to_kind` в `relation_kinds` должны ссылаться на существующие `entity_kinds`.
    - Один и тот же тип связи не должен дублировать уже описанный смысл. Если нужна вариация, уточните `category` и описание.
@@ -44,7 +44,7 @@
      ```bash
      python - <<'PY'
      import yaml, pathlib, collections
-     data = yaml.safe_load(pathlib.Path('data/enterprise_metamodel.yaml').read_text())
+     data = yaml.safe_load(pathlib.Path('model/metamodel.yaml').read_text())
      ids = []
      for item in data['entity_kinds']:
          ids.append(('entity_kinds', item['id']))
