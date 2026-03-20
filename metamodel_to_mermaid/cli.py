@@ -10,7 +10,7 @@ from .render_er import ERDiagramRenderer
 from .render_flow import FlowchartRenderer
 
 
-DEFAULT_INPUT = Path("data/enterprise_metamodel.yaml")
+DEFAULT_INPUT = Path("model/metamodel.yaml")
 
 
 def build_parser() -> argparse.ArgumentParser:

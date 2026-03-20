@@ -1,4 +1,4 @@
-# Atlas bundle output contract (Wave 1)
+# Atlas bundle output contract
 
 When the bundle generator is implemented, it must produce artifacts matching the downstream contract.
 

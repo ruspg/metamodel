@@ -18,7 +18,7 @@
      ```bash
      python - <<'PY'
      import yaml, jsonschema, pathlib
-     schema = yaml.safe_load(pathlib.Path('schema/metamodel.schema.yaml').read_text())
+     schema = yaml.safe_load(pathlib.Path('model/schema/metamodel.schema.yaml').read_text())
      data = yaml.safe_load(pathlib.Path('data/enterprise_metamodel.yaml').read_text())
      jsonschema.validate(data, schema)
      print('ok')

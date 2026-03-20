@@ -1,6 +1,6 @@
 # Metamodel
 
-> Единое рабочее пространство для проектирования, проверки и публикации корпоративной метамодели (Wave 1).
+> Единое рабочее пространство для проектирования, проверки и публикации корпоративной метамодели.
 
 `metamodel` — это репозиторий, в котором собраны:
 - **исходные YAML-описания** доменной модели,
@@ -14,7 +14,7 @@
 
 ## Что умеет проект
 
-- ✅ Загружать и валидировать метамодель по каноническим правилам Wave 1.
+- ✅ Загружать и валидировать метамодель по каноническим правилам.
 - ✅ Проверять целостность relation catalog и архитектурных ограничений.
 - ✅ Строить projection-представления (например, `atlas_mvp`).
 - ✅ Генерировать release bundle в `generated/`.
@@ -35,13 +35,12 @@ metamodel/
 │   ├── profiles/                 #   Профили проекций
 │   ├── templates/                #   Шаблоны для контрибьюторов
 │   └── schema/                   #   Валидационные контракты
-├── tools/                        # Инструменты Wave 1 (harness, генераторы)
+├── tools/                        # Инструменты (harness, генераторы)
 ├── tests/                        # Тесты регрессии и стабильности
 ├── generated/                    # Иммутабельные release-бандлы
 ├── docs/                         # Архитектурные контракты и решения
-├── schema/                       # Legacy-схема (→ model/schema/)
-├── metamodel2owl/                # Legacy OWL-конвертер
-└── metamodel_to_mermaid/         # Legacy Mermaid-конвертер
+├── metamodel2owl/                # OWL-конвертер
+└── metamodel_to_mermaid/         # Mermaid-конвертер
 ```
 
 Подробнее о том, почему `model/` содержит два файла, а не file-per-kind —
@@ -59,7 +58,7 @@ python -m tools.wave1.harness \
   --relation-catalog-path model/relation_catalog.yaml
 ```
 
-Этот сценарий запускает канонический набор проверок Wave 1:
+Этот сценарий запускает канонический набор проверок:
 loader + validator + lint + relation catalog checks.
 
 ### 2) Генерация Atlas bundle
@@ -125,7 +124,7 @@ metamodel2owl \
 
 ```bash
 python -m metamodel_to_mermaid \
-  --input data/enterprise_metamodel.yaml \
+  --input model/metamodel.yaml \
   --output docs/metamodel-all.mmd \
   --view all \
   --diagram-type flow \
@@ -137,7 +136,7 @@ python -m metamodel_to_mermaid \
 
 ```bash
 python -m metamodel_to_mermaid \
-  --input data/enterprise_metamodel.yaml \
+  --input model/metamodel.yaml \
   --output docs/metamodel-data.mmd \
   --view data \
   --diagram-type er
@@ -219,5 +218,5 @@ entity kind (как one-class-per-file в коде). Мы сознательно
 ## Дополнительная документация
 
 - `model/README.md` — правила и статус структуры модели.
-- `tools/README.md` — обзор инструментов и сценариев Wave 1.
+- `tools/README.md` — обзор инструментов и сценариев.
 - `docs/` — форматы, contribution rules и архитектурные спецификации.

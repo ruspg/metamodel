@@ -1,6 +1,5 @@
 # model/schema
 
-Canonical location for Wave 1 schema contracts.
+JSON Schema validation contracts for the metamodel.
 
-Current authoritative schema is still `schema/metamodel.schema.yaml`
-(to be moved here in a follow-up task).
+- `metamodel.schema.yaml` — structural validation for `model/metamodel.yaml`.

@@ -1,6 +1,6 @@
-# Wave 1 atlas candidate bundles
+# Atlas candidate bundles
 
-This directory contains versioned, deterministic Wave 1 atlas candidate bundles generated from the canonical ontology/profile inputs.
+This directory contains versioned, deterministic atlas candidate bundles generated from the canonical ontology/profile inputs.
 
 Bundle identifiers are immutable: once published, a bundle path must never be reused for different artifacts.
 
@@ -23,8 +23,8 @@ from tools.wave1.atlas_bundle_model import AtlasBundleOptions
 
 root = Path('.')
 ontology = load_ontology(
-    root / 'data/bank_metamodel_horizontal.yaml',
-    relation_catalog_path=root / 'docs/architecture/relation_catalog_v2_spec.yaml',
+    root / 'model/metamodel.yaml',
+    relation_catalog_path=root / 'model/relation_catalog.yaml',
 )
 projection = build_projection_model(ontology, profile='atlas_mvp')
 result = generate_atlas_bundle(
