@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install dependencies
-        run: pip install pyyaml pytest
+        run: pip install pyyaml pytest rdflib
       - name: Run tests
         run: python -m pytest tests/ -v --tb=short
 
