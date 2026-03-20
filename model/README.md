@@ -4,12 +4,12 @@ This directory is the canonical home for ontology authoring artifacts.
 
 ## Layout
 
-- `metamodel.yaml` — entity kinds, attributes, dictionaries, and meta (the core ontology schema).
-- `relation_catalog.yaml` — relation kinds, qualifier definitions, and traversal rules.
-- `profiles/` — profile projection filters (e.g. `atlas_mvp.yaml`).
-- `templates/` — copy-paste starters for contributors adding new kinds or relations.
-- `schema/` — JSON Schema validation contracts.
-- `glossary/` — glossary terms, aliases, and naming policy artifacts.
+- [`metamodel.yaml`](metamodel.yaml) — entity kinds, attributes, dictionaries, and meta (the core ontology schema).
+- [`relation_catalog.yaml`](relation_catalog.yaml) — relation kinds, qualifier definitions, and traversal rules.
+- [`profiles/`](profiles/) — profile projection filters (e.g. `atlas_mvp.yaml`).
+- [`templates/`](templates/) — copy-paste starters for contributors adding new kinds or relations.
+- [`schema/`](schema/) — JSON Schema validation contracts.
+- [`glossary/`](glossary/) — glossary terms, aliases, and naming policy artifacts.
 
 See the [design rationale](../README.md#структура-авторинга-обоснование)
 in the repository README for why the metamodel uses two source files rather than
