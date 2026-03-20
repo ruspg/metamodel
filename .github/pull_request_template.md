@@ -21,7 +21,7 @@
 
 ### Validation results
 
-<!-- Paste output of: python -m tools.wave1.harness data/bank_metamodel_horizontal.yaml --relation-catalog-path docs/architecture/relation_catalog_v2_spec.yaml -->
+<!-- Paste output of: python -m tools.wave1.harness model/metamodel.yaml --relation-catalog-path model/relation_catalog.yaml -->
 
 ```
 <paste here>

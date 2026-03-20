@@ -131,7 +131,7 @@ attributes:
 
 ## 5. Схема и проверка
 
-- Формальная схема задана в файле `schema/metamodel.schema.yaml` (JSON Schema).
+- Формальная схема задана в файле `model/schema/metamodel.schema.yaml` (JSON Schema).
 - Проверка осуществляется любым валидатором JSON Schema, понимающим YAML.
 - При расширении структуры рекомендуется дополнять схему новыми свойствами.
 

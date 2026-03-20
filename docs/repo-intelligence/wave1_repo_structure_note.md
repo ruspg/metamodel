@@ -1,9 +1,9 @@
-# Wave 1 repository structure note
+# Repository structure note
 
 ## Purpose
-This note defines the canonical Wave 1 authoring/release structure introduced by task `W1-A-001` and clarifies what remains legacy during phased migration.
+This note defines the canonical authoring/release structure and clarifies what remains legacy during phased migration.
 
-## Canonical directories (Wave 1)
+## Canonical directories
 - `model/schema/`
 - `model/kinds/`
 - `model/relations/`
@@ -20,7 +20,7 @@ To keep the repository coherent and avoid breaking existing workflows, the follo
 - `metamodel2owl/` and `metamodel_to_mermaid/` for existing conversion/visualization tooling.
 
 ## Practical guidance for next tasks
-- New loader/validator/generator/release-bundle work should target canonical Wave 1 areas.
+- New loader/validator/generator/release-bundle work should target canonical areas.
 - Legacy areas should be treated as compatibility inputs until dedicated migration tasks relocate or split artifacts.
 - This task makes no ontology semantic changes.
 

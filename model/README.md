@@ -1,6 +1,6 @@
-# Wave 1 canonical model area
+# Canonical model area
 
-This directory is the canonical home for Wave 1 ontology authoring artifacts.
+This directory is the canonical home for ontology authoring artifacts.
 
 ## Layout
 
@@ -11,13 +11,13 @@ This directory is the canonical home for Wave 1 ontology authoring artifacts.
 - `schema/` — JSON Schema validation contracts.
 - `glossary/` — glossary terms, aliases, and naming policy artifacts.
 
-See the [design rationale](../README.md#authoring-structure-design-rationale)
+See the [design rationale](../README.md#структура-авторинга-обоснование)
 in the repository README for why the metamodel uses two source files rather than
 file-per-kind.
 
 ## Migration status
 
-Wave 1 keeps existing source assets in their current locations for backward legibility:
+Existing source assets remain in their current locations for backward legibility:
 - current ontology YAML sources stay in `data/`;
 - current root schema stays in `schema/`;
 - converters stay in `metamodel2owl/` and `metamodel_to_mermaid/`.

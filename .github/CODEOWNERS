@@ -5,10 +5,7 @@
 *                               @metamodel-architect
 
 # Ontology source data — requires data owner + architect
-data/                           @metamodel-architect @data-owner
-
-# Relation catalog spec
-docs/architecture/relation_catalog_v2_spec.yaml  @metamodel-architect
+model/                          @metamodel-architect @data-owner
 
 # Tooling — platform team
 tools/                          @platform-team @metamodel-architect

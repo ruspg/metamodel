@@ -87,7 +87,7 @@
 - `bank_metamodel_horizontal.yaml` выглядит как более ранний или более узкий горизонтальный срез / сценарный seed.
 
 ### 3.3 Формат и схема
-Есть JSON Schema `schema/metamodel.schema.yaml`.
+Есть JSON Schema `model/schema/metamodel.schema.yaml`.
 
 Обязательные корневые секции:
 - `meta`
