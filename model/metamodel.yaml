@@ -66,6 +66,9 @@ dictionaries:
     - id: flows_over
       name: "Передает по потоку"
       description: "Информационный поток транспортирует бизнес-сущности."
+    - id: specialization
+      name: "Частный случай"
+      description: "Source является частным случаем (специализацией) target."
 
 entity_kinds:
   - id: goal
@@ -438,14 +441,14 @@ relation_kinds:
     direction: directed
     description: "Способность поддерживает поток создания ценности."
 
-  - id: rel_org_unit_supports_capability
-    name: "Org Unit поддерживает Capability"
+  - id: rel_org_unit_performs_capability
+    name: "Org Unit выполняет Capability"
     from_kind: organizational_unit
     to_kind: business_capability
     metamodel_level: strategic_view
-    category: support
+    category: execution
     direction: directed
-    description: "Подразделение обеспечивает работу бизнес-способности."
+    description: "Подразделение выполняет бизнес-способность."
 
   - id: rel_info_flow_serves_entity
     name: "Information Flow передаёт сущность"
@@ -483,23 +486,23 @@ relation_kinds:
     direction: directed
     description: "Система поддерживает выполнение бизнес-способности."
 
-  - id: rel_org_unit_owns_it_system
-    name: "Org Unit отвечает за IT System"
+  - id: rel_org_unit_serves_it_system
+    name: "Org Unit обслуживает (отвечает за) IT System"
     from_kind: organizational_unit
     to_kind: it_system
     metamodel_level: strategic_view
-    category: ownership
+    category: serves
     direction: directed
-    description: "Подразделение владеет и поддерживает систему."
+    description: "Подразделение обслуживает и отвечает за ИТ-систему."
 
-  - id: rel_subsystem_composed_of_systems
-    name: "Functional Subsystem состоит из IT Systems"
-    from_kind: functional_subsystem
-    to_kind: it_system
+  - id: rel_it_system_composed_of_subsystems
+    name: "IT System состоит из Functional Subsystems"
+    from_kind: it_system
+    to_kind: functional_subsystem
     metamodel_level: solution_details
     category: composition
     direction: directed
-    description: "Подсистема агрегирует один или несколько ИТ-систем."
+    description: "ИТ-система состоит из функциональных подсистем."
 
   - id: rel_component_composed_of_subsystems
     name: "Component состоит из Subsystems"
@@ -519,14 +522,23 @@ relation_kinds:
     direction: directed
     description: "Вендорский продукт реализует компонент."
 
-  - id: rel_software_component_composed_of_vendor_product
-    name: "Software Component состоит из Vendor Product"
-    from_kind: software_component
-    to_kind: vendor_product
+  - id: rel_vendor_product_specializes_it_system
+    name: "Vendor Product является частным случаем IT System"
+    from_kind: vendor_product
+    to_kind: it_system
+    metamodel_level: component_details
+    category: specialization
+    direction: directed
+    description: "Вендорский продукт (ПО) является частным случаем ИТ-системы."
+
+  - id: rel_vendor_product_composed_of_software_components
+    name: "Vendor Product состоит из Software Components"
+    from_kind: vendor_product
+    to_kind: software_component
     metamodel_level: component_details
     category: composition
     direction: directed
-    description: "Компонент ПО построен на вендорском продукте."
+    description: "Вендорский продукт состоит из компонентов ПО."
 
   - id: rel_component_exposes_api
     name: "Component состоит из API"
