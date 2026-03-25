@@ -1,113 +1,176 @@
-# Metamodel
+# Operating Metamodel
 
-> Единое рабочее пространство для проектирования, проверки и публикации корпоративной метамодели.
+> Язык и грамматика моделирования операционной деятельности банка — от стратегии до инфраструктуры.
 
-`metamodel` — это репозиторий, в котором собраны:
-- **исходные YAML-описания** доменной модели,
-- **инструменты контроля качества** (валидация, линтинг, проверки связей),
-- **генераторы артефактов** для downstream-систем,
-- **конвертеры в OWL и Mermaid** для интеграции и визуализации.
+**Operating Metamodel** задаёт типы сущностей и связей, по которым описывается вся деятельность и архитектура организации: какие сущности существуют (capabilities, процессы, системы, компоненты, данные, инфраструктура), как они связаны между собой и на каких уровнях детализации это описывается.
 
-Проект ориентирован на предсказуемую и воспроизводимую подготовку релизов онтологии: от редактирования модели до получения детерминированного bundle.
-
-> **Хотите внести изменения?** Читайте [`CONTRIBUTING.md`](CONTRIBUTING.md) — пошаговые инструкции на русском: как добавить сущность, связь, атрибут или квалификатор.
+Метамодель — это не конкретные объекты, а **правила**, по которым объекты создаются: типы сущностей, допустимые связи между ними, атрибуты и ограничения.
 
 ---
 
-## Что умеет проект
+## Место в архитектуре
 
-- ✅ Загружать и валидировать метамодель по каноническим правилам.
-- ✅ Проверять целостность relation catalog и архитектурных ограничений.
-- ✅ Строить projection-представления (например, `atlas_mvp`).
-- ✅ Генерировать release bundle в `generated/`.
-- ✅ Гарантировать **детерминированность** сборки (одинаковый вход → одинаковый результат).
-- ✅ Экспортировать модель в:
-  - **OWL/Turtle** для семантических сценариев,
-  - **Mermaid** для документирования и визуального анализа.
+```
+Operating Metamodel          Язык и грамматика: какие типы сущностей и связей бывают
+        │
+        ▼
+    Онтология                Семантический словарь: конкретные понятия домена (Клиент, Продукт, Риск)
+        │
+        ▼
+Business Architecture       Модели бизнеса: процессы, способности, оргструктура, KPI
+        │
+        ▼
+   Digital Twin              Живой двойник: модели + фактические данные + время + сценарии
+```
+
+| Слой | На что отвечает | Изменчивость |
+|------|----------------|--------------|
+| **Metamodel** | Как вообще можно моделировать? | Редко |
+| **Онтология** | Что именно есть в нашем домене? | При смене понимания домена |
+| **Business Architecture** | Как устроен и работает бизнес? | При изменениях стратегии |
+| **Digital Twin** | Как бизнес реально ведёт себя во времени? | Постоянно |
 
 ---
 
-## Архитектура репозитория
+## Ценность
+
+### Снижение структурной сложности
+
+Один способ описывать процессы, события, решения, данные — вместо «зоопарка» форматов в разных командах. Автоматизация типа задач (кейсы, инциденты, запросы) делается один раз и тиражируется по всему банку.
+
+### Конфигурация вместо разработки
+
+Новый процесс или правило — это изменение модели, а не новый проект. Новый продукт — комбинация уже описанных сущностей и связей, а не переизобретение с нуля.
+
+### Машиночитаемый каркас для AI
+
+LLM и AI-агенты могут читать и генерировать бизнес-модели в единых нотациях. Метамодель создаёт каркас, с которым агенты понимают процессы, точки принятия решений и контексты.
+
+### Единый словарь для всех AI-инициатив
+
+Единые сущности, признаки, связи — вместо локальных дата-моделей в каждом проекте. Решения AI объясняются в терминах Клиентов, Продуктов, Сделок, а не колонок в таблицах.
+
+---
+
+## Уровни метамодели
+
+| Уровень | Смысл | Примеры сущностей |
+|---------|-------|-------------------|
+| **Strategic View** | Зачем и что в целом: цели, направления, capabilities | Стратегические цели, KPI, ценностные цепочки, capabilities |
+| **Business Details** | Как бизнес устроен и работает | Бизнес-функции, процессы, роли, бизнес-сервисы, правила |
+| **Data Details** | Какие данные используются и как устроены | Информационные объекты, модели данных, потоки, метаданные |
+| **Solution Details** | Какими решениями поддерживается бизнес | Прикладные решения, сервисы, интерфейсы, интеграции |
+| **Component Details** | Из чего состоят решения внутри | Компоненты, внутренние контракты, конфигурации |
+| **Infrastructure Details** | На чём всё работает | Платформы, ресурсы, среды, сетевые зоны |
+
+---
+
+## Что умеет этот репозиторий
+
+- Загрузка и валидация метамодели по каноническим правилам
+- Проверка целостности relation catalog и архитектурных ограничений
+- Семантический линтинг (именование, алиасы, консистентность)
+- Построение projection-представлений (профили проекций, например `atlas_mvp`)
+- Генерация детерминированных release-бандлов (`generated/`)
+- Экспорт в OWL/Turtle для семантических сценариев
+- Экспорт в Mermaid для визуального анализа и документирования
+
+---
+
+## Быстрый старт
+
+```bash
+make validate      # Валидация: loader + validator + lint + relation catalog
+make lint          # Семантический линтер
+make test          # Pytest-тесты
+make bundle        # Генерация бандла → generated/
+make diff          # Дельта bundle vs baseline
+make determinism   # Проверка воспроизводимости сборки
+make all           # validate + lint + test
+```
+
+> **Хотите внести изменения?** Читайте [`CONTRIBUTING.md`](CONTRIBUTING.md) — пошаговые инструкции: как добавить сущность, связь, атрибут или квалификатор.
+
+---
+
+## Структура репозитория
 
 ```
 metamodel/
-├── model/                        # Авторинг метамодели
-│   ├── metamodel.yaml            #   Entity kinds + dictionaries
-│   ├── relation_catalog.yaml     #   Relation kinds + qualifiers
-│   ├── profiles/                 #   Профили проекций
-│   ├── templates/                #   Шаблоны для контрибьюторов
-│   └── schema/                   #   Валидационные контракты
-├── tools/                        # Инструменты (harness, генераторы)
-├── tests/                        # Тесты регрессии и стабильности
-├── generated/                    # Иммутабельные release-бандлы
-├── docs/                         # Архитектурные контракты и решения
-├── metamodel2owl/                # OWL-конвертер
-└── metamodel_to_mermaid/         # Mermaid-конвертер
+├── model/                          # Авторинг метамодели
+│   ├── metamodel.yaml              #   Entity kinds + атрибуты + словари
+│   ├── relation_catalog.yaml       #   Relation kinds + квалификаторы
+│   ├── profiles/                   #   Профили проекций (atlas_mvp)
+│   ├── templates/                  #   Шаблоны для контрибьюторов
+│   ├── schema/                     #   JSON Schema валидационные контракты
+│   └── glossary/                   #   Термины, алиасы, политики именования
+├── tools/                          # Инструменты (harness, генераторы)
+│   └── wave1/                      #   Loader → Validator → Lint → Projection → Bundle
+├── tests/                          # Тесты регрессии и стабильности
+├── generated/                      # Иммутабельные release-бандлы
+│   └── atlas_candidates/           #   Версионированные бандлы
+├── docs/                           # Архитектурные контракты и решения
+│   ├── architecture/               #   Контракты entity, relation, attribute, qualifier
+│   ├── decisions/                  #   ADR (Architecture Decision Records)
+│   └── atlas-bundle/               #   Контракт выходных артефактов
+├── metamodel2owl/                  # OWL/Turtle-конвертер + CLI
+└── metamodel_to_mermaid/           # Mermaid-конвертер (flow, ER, уровни)
 ```
-
-Подробнее о том, почему `model/` содержит два файла, а не file-per-kind —
-см. [Структура авторинга: обоснование](#структура-авторинга-обоснование).
 
 ---
 
-## Быстрый старт для разработчика
+## Пайплайн
 
-### 1) Запуск полного validation harness
-
-```bash
-python -m tools.wave1.harness \
-  model/metamodel.yaml \
-  --relation-catalog-path model/relation_catalog.yaml
+```
+  YAML-авторинг          Контроль качества         Проекция           Release
+┌──────────────┐    ┌──────────────────────┐    ┌────────────┐    ┌────────────┐
+│ metamodel    │    │ Harness              │    │ Projection │    │ Bundle     │
+│   .yaml      │───▶│  loader              │───▶│ Builder    │───▶│ Generator  │──▶ generated/
+│ relation_    │    │  validator           │    │ (profile)  │    │            │
+│   catalog    │    │  lint                │    └────────────┘    └────────────┘
+│   .yaml      │    │  relation catalog    │
+└──────────────┘    │  checks              │
+                    └──────────────────────┘
 ```
 
-Этот сценарий запускает канонический набор проверок:
-loader + validator + lint + relation catalog checks.
-
-### 2) Генерация Atlas bundle
-
-```bash
-python - <<'PY'
-from pathlib import Path
-from tools.wave1.loader import load_ontology
-from tools.wave1.projection_builder import build_projection_model
-from tools.wave1.atlas_bundle_generator import generate_atlas_bundle
-
-root = Path(".")
-ontology = load_ontology(
-    root / "model/metamodel.yaml",
-    relation_catalog_path=root / "model/relation_catalog.yaml",
-)
-projection = build_projection_model(ontology, profile="atlas_mvp")
-result = generate_atlas_bundle(projection, root / "generated")
-print(result.bundle_root)
-PY
-```
-
-### 3) Проверка детерминированности bundle
-
-```bash
-python - <<'PY'
-from pathlib import Path
-from tools.wave1.loader import load_ontology
-from tools.wave1.projection_builder import build_projection_model
-from tools.wave1.bundle_determinism import verify_bundle_determinism
-
-root = Path(".")
-ontology = load_ontology(
-    root / "model/metamodel.yaml",
-    relation_catalog_path=root / "model/relation_catalog.yaml",
-)
-projection = build_projection_model(ontology, profile="atlas_mvp")
-result = verify_bundle_determinism(projection, root / "generated")
-print(result.is_deterministic, result.diagnostics)
-PY
-```
+Каждый бандл содержит:
+- `metamodel_snapshot.json` — компактное runtime-представление
+- `type_catalog.json` — типы сущностей и атрибуты
+- `relation_catalog.json` — типы связей и правила
+- `search_aliases.json` — алиасы для поиска
+- `compatibility_report.md` — отчёт совместимости
 
 ---
 
 ## Экспорт и визуализация
 
-### OWL + Mermaid из `metamodel2owl`
+### OWL/Turtle
+
+```bash
+metamodel2owl \
+  --input model/metamodel.yaml \
+  --output build/bank-metamodel.ttl \
+  --format turtle \
+  --base-iri "https://bank.example.com/metamodel#"
+```
+
+### Mermaid-диаграммы
+
+```bash
+# Полная диаграмма с группировкой по уровням
+python -m metamodel_to_mermaid \
+  --input model/metamodel.yaml \
+  --output docs/metamodel-all.mmd \
+  --view all --diagram-type flow --group-by level --with-notes
+
+# ER-срез по data-слою
+python -m metamodel_to_mermaid \
+  --input model/metamodel.yaml \
+  --output docs/metamodel-data.mmd \
+  --view data --diagram-type er
+```
+
+Комбинированный экспорт (OWL + Mermaid одной командой):
 
 ```bash
 metamodel2owl \
@@ -118,102 +181,28 @@ metamodel2owl \
   --base-iri "https://bank.example.com/metamodel#"
 ```
 
-`--mermaid-output` создаёт Mermaid-диаграмму (`graph LR`):
-- узлы — сущности и их атрибуты,
-- рёбра — связи из метамодели.
+---
 
-### Расширенные Mermaid-представления (`metamodel_to_mermaid`)
+## Философия авторинга
 
-```bash
-python -m metamodel_to_mermaid \
-  --input model/metamodel.yaml \
-  --output docs/metamodel-all.mmd \
-  --view all \
-  --diagram-type flow \
-  --group-by level \
-  --with-notes
-```
+Метамодель хранится в **двух файлах**, а не разбита по файлам на каждый kind. Это осознанное решение: метамодель — это схема с высокой связностью, редкими изменениями и потребностью в целостном ревью.
 
-Пример точечного ER-среза:
+| Файл | Содержимое | Кто меняет |
+|------|-----------|------------|
+| `model/metamodel.yaml` | Entity kinds, атрибуты, словари | Доменные архитекторы |
+| `model/relation_catalog.yaml` | Связи, квалификаторы, traversal | Graph/platform-архитекторы |
+| `model/profiles/atlas_mvp.yaml` | Видимость kinds/relations | Продуктовая команда |
 
-```bash
-python -m metamodel_to_mermaid \
-  --input model/metamodel.yaml \
-  --output docs/metamodel-data.mmd \
-  --view data \
-  --diagram-type er
-```
+Подробное обоснование с индустриальными референсами (Schema.org, ArchiMate, TOGAF, OMG ODM):
+[`docs/architecture/authoring_rationale.md`](docs/architecture/authoring_rationale.md).
 
 ---
 
-## Структура авторинга: обоснование
+## RBank Atlas
 
-### Почему не file-per-kind?
+Atlas — graph-first enterprise registry, один из downstream-потребителей метамодели. Изменения в `model/` проходят валидацию, собираются в профильный бандл (`atlas_mvp`) и синхронизируются с Atlas через версионированные артефакты в `generated/`.
 
-Интуитивный подход к inner-source — разбить метамодель на один файл на каждый
-entity kind (как one-class-per-file в коде). Мы сознательно **не делаем этого**,
-потому что метамодель — это схема, а не кодовая база:
-
-| Фактор | Кодовая база (тысячи файлов) | Метамодель (26 kinds, 39 relations) |
-|--------|------------------------------|--------------------------------------|
-| Частота изменений | Ежедневно, десятки разработчиков | Раз в квартал, 2-5 архитекторов |
-| Связность изменений | Низкая — фичи независимы | Высокая — новый kind = новые relations + qualifiers + profile |
-| Стиль ревью | Diff по модулю | Целостный: вписывается ли новый kind в онтологию? |
-| Merge-конфликты | Реальная проблема | Не проблема при ~600 строках YAML |
-| Навигация | Нужна структура | 600 строк = 2-3 экрана |
-
-### Индустриальные референсы
-
-Крупнейшие онтологические и метамодельные проекты хранят определения типов
-в одном или нескольких файлах, даже при значительно большем масштабе:
-
-- **[Schema.org](https://github.com/schemaorg/schemaorg)** — 803 типа,
-  1461 свойство в **одном файле** (`data/schema.ttl`). Расширения отдельно
-  (`data/ext/*/`), но ядро — монолит.
-- **[ArchiMate 3.2](https://pubs.opengroup.org/architecture/archimate3-doc/ch-Generic-Metamodel.html)**
-  — ~57 типов элементов, ~11 типов связей. Единая спецификация.
-- **[TOGAF Content Metamodel](https://pubs.opengroup.org/architecture/togaf9-doc/arch/chap30.html)**
-  — 11 core-сущностей (до ~50 с расширениями). Один документ + extension-модули.
-- **[OMG ODM](https://www.omg.org/odm/)** — семейство метамоделей, каждая —
-  единая спецификация с модульными профилями.
-
-Паттерн единообразен: **метамодель = один документ на concern**,
-расширения — отдельными модулями, когда аудитория или lifecycle расходятся.
-
-### Рекомендуемая структура
-
-**Два исходных файла, а не двадцать шесть.** Разделение — по concern и lifecycle:
-
-| Файл | Что меняется | Кто меняет | Как часто |
-|------|-------------|------------|-----------|
-| `model/metamodel.yaml` | Entity kinds, атрибуты, словари | Доменные архитекторы | Редко |
-| `model/relation_catalog.yaml` | Связи, квалификаторы, traversal | Graph/platform-архитекторы | Иногда |
-| `model/profiles/atlas_mvp.yaml` | Какие kinds/relations видны | Продуктовая команда | На каждый релиз |
-
-### Что обеспечивает inner-source (а не структура файлов)
-
-1. **Шаблоны** ([`model/templates/`](model/templates/)) — контрибьютор копирует готовый блок,
-   заполняет 6 полей, вставляет в [`metamodel.yaml`](model/metamodel.yaml).
-
-2. **Мгновенная CI-обратная связь** — harness работает за секунды.
-   PR-бот комментирует: "Добавлен kind `data_quality_rule`, 2 новых relation,
-   дельта бандла +38 строк, обратная совместимость: OK."
-
-3. **Bundle diff в PR** — ревьюер видит как изменились runtime-артефакты,
-   а не сырой YAML.
-
-4. **Единый CODEOWNERS** — одна группа `@metamodel-architects` владеет обоими
-   файлами. Дробить ownership по уровням метамодели = фрагментировать решение,
-   требующее целостного взгляда.
-
-5. **PR-шаблон с чеклистом** — ведёт контрибьютора через обязательные поля
-   и правила именования.
-
-### Когда пересмотреть
-
-Если метамодель вырастет за **~80 entity kinds** или relation catalog за
-**~120 relations** — рассмотреть разделение по **домену** (не по metamodel level):
-`kinds/payments.yaml`, `kinds/lending.yaml` и т.д.
+Контракт выходных артефактов: [`docs/atlas-bundle/README.md`](docs/atlas-bundle/README.md).
 
 ---
 
@@ -221,33 +210,36 @@ entity kind (как one-class-per-file в коде). Мы сознательно
 
 ### Для контрибьюторов
 
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) — как добавить сущность, связь, атрибут или квалификатор
-- [`docs/metamodel_yaml_format.md`](docs/metamodel_yaml_format.md) — формат YAML-файла метамодели
-- [`docs/metamodel_contribution_rules.md`](docs/metamodel_contribution_rules.md) — правила контрибьюшена и проверки
+| Документ | Описание |
+|----------|----------|
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Как добавить сущность, связь, атрибут или квалификатор |
+| [`docs/metamodel_yaml_format.md`](docs/metamodel_yaml_format.md) | Формат YAML-файла метамодели |
+| [`docs/metamodel_contribution_rules.md`](docs/metamodel_contribution_rules.md) | Правила контрибьюшена и проверки |
 
 ### Архитектурные контракты
 
-- [`docs/architecture/entity_kind_contract_v2.md`](docs/architecture/entity_kind_contract_v2.md) — контракт типа сущности
-- [`docs/architecture/relation_kind_contract_v2.md`](docs/architecture/relation_kind_contract_v2.md) — контракт типа связи
-- [`docs/architecture/attribute_def_contract_v2.md`](docs/architecture/attribute_def_contract_v2.md) — контракт атрибутов
-- [`docs/architecture/qualifier_def_contract_v2.md`](docs/architecture/qualifier_def_contract_v2.md) — контракт квалификаторов
-- [`docs/architecture/glossary_alias_naming_policy.md`](docs/architecture/glossary_alias_naming_policy.md) — правила именования
-- [`docs/architecture/relation_catalog_v2_rules.md`](docs/architecture/relation_catalog_v2_rules.md) — правила каталога связей
+| Документ | Описание |
+|----------|----------|
+| [`entity_kind_contract_v2.md`](docs/architecture/entity_kind_contract_v2.md) | Контракт типа сущности |
+| [`relation_kind_contract_v2.md`](docs/architecture/relation_kind_contract_v2.md) | Контракт типа связи |
+| [`attribute_def_contract_v2.md`](docs/architecture/attribute_def_contract_v2.md) | Контракт атрибутов |
+| [`qualifier_def_contract_v2.md`](docs/architecture/qualifier_def_contract_v2.md) | Контракт квалификаторов |
+| [`glossary_alias_naming_policy.md`](docs/architecture/glossary_alias_naming_policy.md) | Правила именования |
+| [`relation_catalog_v2_rules.md`](docs/architecture/relation_catalog_v2_rules.md) | Правила каталога связей |
 
 ### Дизайн и решения
 
-- [`docs/architecture/ontology_schema_v2_high_level_design.md`](docs/architecture/ontology_schema_v2_high_level_design.md) — высокоуровневый дизайн схемы онтологии
-- [`docs/architecture/business_layer_semantic_alignment.md`](docs/architecture/business_layer_semantic_alignment.md) — семантическое выравнивание бизнес-слоя
-- [`docs/architecture/business_layer_relation_matrix.md`](docs/architecture/business_layer_relation_matrix.md) — матрица связей бизнес-слоя
-- [`docs/decisions/`](docs/decisions/) — журнал архитектурных решений (ADR)
-  - [`formal_decision_business_operation.md`](docs/decisions/formal_decision_business_operation.md) — решение по сущности business_operation
+| Документ | Описание |
+|----------|----------|
+| [`ontology_schema_v2_high_level_design.md`](docs/architecture/ontology_schema_v2_high_level_design.md) | Высокоуровневый дизайн схемы онтологии |
+| [`authoring_rationale.md`](docs/architecture/authoring_rationale.md) | Обоснование структуры авторинга |
+| [`docs/decisions/`](docs/decisions/) | Журнал архитектурных решений (ADR) |
 
 ### Внутренние справочники
 
-- [`model/README.md`](model/README.md) — содержимое и статус директории модели
-- [`tools/README.md`](tools/README.md) — обзор инструментов и сценариев
-- [`generated/README.md`](generated/README.md) — сгенерированные артефакты и бандлы
-- [`docs/atlas-bundle/README.md`](docs/atlas-bundle/README.md) — контракт выходных артефактов Atlas-бандла
-- [`docs/repo-intelligence/`](docs/repo-intelligence/) — структурный аудит и заметки по репозиторию
-  - [`metamodel_structural_audit.md`](docs/repo-intelligence/metamodel_structural_audit.md) — структурный аудит метамодели
-  - [`wave1_repo_structure_note.md`](docs/repo-intelligence/wave1_repo_structure_note.md) — заметки по структуре репозитория
+| Документ | Описание |
+|----------|----------|
+| [`model/README.md`](model/README.md) | Содержимое и статус директории модели |
+| [`tools/README.md`](tools/README.md) | Обзор инструментов и сценариев |
+| [`generated/README.md`](generated/README.md) | Сгенерированные артефакты и бандлы |
+| [`docs/atlas-bundle/README.md`](docs/atlas-bundle/README.md) | Контракт выходных артефактов Atlas-бандла |
