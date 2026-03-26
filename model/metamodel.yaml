@@ -1331,23 +1331,17 @@ relation_kinds:
     direction: directed
     description: "Реализация операции выполняется логическим компонентом приложения."
 
-  - id: rel_process_uses_function
-    name: "Process использует Function"
-    from_kind: business_process
-    to_kind: business_function
-    metamodel_level: business_details
-    category: association
-    direction: directed
-    description: "Процесс включает набор бизнес-функций."
+  # rel_process_uses_function REMOVED — по TTL онтологии функцию выполняет роль,
+  # а не процесс. Заменена на rel_role_performs_function (см. ниже).
 
-  - id: rel_capability_aggregates_processes
-    name: "Capability агрегирует процессы"
-    from_kind: business_capability
-    to_kind: business_process
+  - id: rel_process_implements_capability
+    name: "Process реализует Capability"
+    from_kind: business_process
+    to_kind: business_capability
     metamodel_level: business_details
-    category: aggregation
+    category: realization
     direction: directed
-    description: "Способность включает связанные бизнес-процессы."
+    description: "Бизнес-процесс реализует бизнес-способность."
 
   - id: rel_capability_serves_value_stream
     name: "Capability поддерживает Value Stream"
@@ -1537,6 +1531,130 @@ relation_kinds:
     category: service
     direction: directed
     description: "Инфраструктура размещает компонент ПО."
+
+  # =========================================================================
+  # BUSINESS RELATIONS FROM TTL ONTOLOGY (fixing orphans)
+  # =========================================================================
+
+  # Goal → Goal (иерархия целей, TTL: hasSubGoal)
+  - id: rel_goal_has_subgoal
+    name: "Goal имеет подцель"
+    from_kind: goal
+    to_kind: goal
+    metamodel_level: strategic_view
+    category: aggregation
+    direction: directed
+    description: "Цель может декомпозироваться на подцели (иерархия)."
+
+  # Product → BusinessDomain (TTL: belongsToDomain)
+  - id: rel_product_belongs_to_domain
+    name: "Product принадлежит Domain"
+    from_kind: bank_product
+    to_kind: business_domain
+    metamodel_level: strategic_view
+    category: association
+    direction: directed
+    description: "Продукт принадлежит бизнес-домену."
+
+  # BusinessCapability → BusinessDomain (TTL: partOfDomain)
+  - id: rel_capability_part_of_domain
+    name: "Capability часть Domain"
+    from_kind: business_capability
+    to_kind: business_domain
+    metamodel_level: strategic_view
+    category: composition
+    direction: directed
+    description: "Бизнес-способность является частью бизнес-домена."
+
+  # ValueStreamStage → BusinessCapability (TTL: realizesCapability)
+  - id: rel_stage_realizes_capability
+    name: "Stage реализует Capability"
+    from_kind: value_stream_stage
+    to_kind: business_capability
+    metamodel_level: business_details
+    category: realization
+    direction: directed
+    description: "Стадия потока создания ценности реализует бизнес-способность."
+
+  # BusinessOperation → BusinessAction (TTL: consistsOfAction)
+  - id: rel_operation_consists_of_actions
+    name: "Operation состоит из Actions"
+    from_kind: business_operation
+    to_kind: business_action
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Бизнес-операция состоит из элементарных бизнес-действий."
+
+  # BusinessAction → BusinessEntity (TTL: operatesOn)
+  - id: rel_action_operates_on_entity
+    name: "Action работает с Entity"
+    from_kind: business_action
+    to_kind: business_entity
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Бизнес-действие оперирует бизнес-сущностью."
+
+  # BusinessEntity → BusinessAttribute (TTL: hasAttribute)
+  - id: rel_entity_has_attribute
+    name: "Entity имеет Attribute"
+    from_kind: business_entity
+    to_kind: business_attribute
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Бизнес-сущность имеет бизнес-атрибуты."
+
+  # OrganizationalUnit → BusinessRole (TTL: hasRole)
+  - id: rel_org_unit_has_role
+    name: "Org Unit включает Role"
+    from_kind: organizational_unit
+    to_kind: business_role
+    metamodel_level: strategic_view
+    category: composition
+    direction: directed
+    description: "Организационная единица включает бизнес-роли."
+
+  # BusinessRole → BusinessFunction (TTL: performsFunction)
+  - id: rel_role_performs_function
+    name: "Role выполняет Function"
+    from_kind: business_role
+    to_kind: business_function
+    metamodel_level: business_details
+    category: realization
+    direction: directed
+    description: "Бизнес-роль выполняет бизнес-функцию."
+
+  # ValueStream → CustomerSegment (TTL: servesCustomerSegment)
+  - id: rel_value_stream_serves_segment
+    name: "Value Stream обслуживает Segment"
+    from_kind: value_stream
+    to_kind: customer_segment
+    metamodel_level: business_details
+    category: service
+    direction: directed
+    description: "Поток создания ценности обслуживает клиентский сегмент."
+
+  # ValueStream → Channel (TTL: usedViaChannel)
+  - id: rel_value_stream_uses_channel
+    name: "Value Stream использует Channel"
+    from_kind: value_stream
+    to_kind: channel
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Поток создания ценности использует канал для доставки."
+
+  # Product → Value (TTL: deliversValue)
+  - id: rel_product_delivers_value
+    name: "Product доставляет Value"
+    from_kind: bank_product
+    to_kind: value
+    metamodel_level: business_details
+    category: produces
+    direction: directed
+    description: "Продукт предоставляет ценность потребителю."
 
   # =========================================================================
   # DATA CONTEXT RELATIONS (from data-context diagram)
