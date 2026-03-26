@@ -699,28 +699,20 @@ entity_kinds:
     usage_purpose: "Создает управляемость системы, централизация документации и контрактов."
     status: active
     introduced_in: "1.0"
+    attributes:
+      - id: api.schema_format
+        name: "Формат схемы"
+        description: "Формат описания контракта API."
+        properties:
+          allowed_values: ["openapi", "asyncapi", "graphql", "grpc", "json_schema", "avro", "protobuf"]
+      - id: api.schema_url
+        name: "URL схемы"
+        description: "Ссылка на спецификацию/контракт API."
+      - id: api.schema_version
+        name: "Версия схемы"
+        description: "Версия контракта API."
 
-  - id: api_schema
-    name: "Schema"
-    name_ru: "Схема"
-    metamodel_level: component_details
-    category: interface
-    description: >-
-      Определяет структуру данных, семантику, правила валидации, гарантии качества и
-      ответственность сторон. Является версионированным соглашением, описывающей данные,
-      передаваемые через API.
-    scope_notes: >-
-      Имеет явную версию. Является артефактом для автоматической проверки. Владелец
-      контракта. Формализация: описывает формат (OpenAPI/AsyncAPI, JSON Schema/Avro/Protobuf,
-      GraphQL Schema). Гарантии: обязательные/опциональные поля, SLA/SLO на данные.
-    aliases:
-      - {value: "схема API", lang: ru, alias_type: synonym, status: active}
-      - {value: "API schema", lang: en, alias_type: synonym, status: active}
-      - {value: "контракт API", lang: ru, alias_type: synonym, status: active}
-    examples: []
-    usage_purpose: "Формализация структуры данных и правил валидации для API."
-    status: active
-    introduced_in: "1.0"
+  # api_schema REMOVED as entity_kind — это атрибут/свойство API (schema_url, schema_format).
 
   - id: api_method
     name: "API Method"
@@ -880,6 +872,13 @@ entity_kinds:
     usage_purpose: "Предоставлять автономные наборы данных для решения бизнес-задач."
     status: active
     introduced_in: "1.0"
+    attributes:
+      - id: data_product.owner_id
+        name: "Владелец (DOA)"
+        description: "Ответственный бизнес-владелец дата-продукта."
+      - id: data_product.sensitive_level
+        name: "Категория чувствительной информации"
+        description: "Классификационный уровень конфиденциальности данных, определяющий правила обработки, хранения и передачи."
 
   - id: data_object
     name: "Data Object"
@@ -901,6 +900,20 @@ entity_kinds:
     usage_purpose: "Понимать атомарные единицы хранения данных."
     status: active
     introduced_in: "1.0"
+    attributes:
+      - id: data_object.object_type
+        name: "Тип объекта данных"
+        description: "Физическое представление объекта данных."
+        properties:
+          allowed_values: ["Data_Table", "Topic", "ML_Model", "File", "Report", "Notebook"]
+      - id: data_object.schema_format
+        name: "Формат схемы данных"
+        description: "Формальный язык описания структуры данных."
+        properties:
+          allowed_values: ["avro", "json_schema", "protobuf", "parquet", "sql_ddl"]
+      - id: data_object.schema_url
+        name: "URL схемы данных"
+        description: "Ссылка на формальное описание структуры данных."
 
   - id: data_contract
     name: "Data Contract"
@@ -948,24 +961,7 @@ entity_kinds:
     status: active
     introduced_in: "1.0"
 
-  - id: data_scheme
-    name: "Data Scheme"
-    name_ru: "Схема данных"
-    metamodel_level: component_details
-    category: data
-    description: >-
-      Формальное описание структуры данных, включая типы, форматы и отношения между
-      элементами, используемое для валидации и интерпретации данных.
-    scope_notes: >-
-      Может быть определением для таблицы или потока данных (topic). Часто описывается
-      на формальном языке (например, Avro).
-    aliases:
-      - {value: "схема", lang: ru, alias_type: abbreviation, status: active}
-      - {value: "data schema", lang: en, alias_type: synonym, status: active}
-    examples: ["Avro-схема для сообщений о транзакциях"]
-    usage_purpose: "Формализовать структуру данных для валидации и интерпретации."
-    status: active
-    introduced_in: "1.0"
+  # data_scheme REMOVED as entity_kind — это атрибут/свойство data_object и delivery_contract.
 
   - id: data_attribute
     name: "Data Attribute"
@@ -1064,48 +1060,8 @@ entity_kinds:
     status: active
     introduced_in: "1.0"
 
-  - id: sensitive_level
-    name: "Sensitive Level"
-    name_ru: "Категория чувствительной информации"
-    metamodel_level: ~
-    category: governance
-    description: >-
-      Классификационный уровень, который определяет степень конфиденциальности данных
-      и предписывает правила их обработки, хранения и передачи.
-    scope_notes: >-
-      Определяет обязательные меры защиты в зависимости от уровня. Содержит инструкции
-      по обращению с чувствительными данными. [Draft] Первичный набор категорий информации
-      для разметки данных.
-    aliases:
-      - {value: "уровень чувствительности", lang: ru, alias_type: synonym, status: active}
-      - {value: "classification level", lang: en, alias_type: synonym, status: active}
-    examples: []
-    usage_purpose: "Определять меры защиты данных в зависимости от уровня конфиденциальности."
-    status: draft
-    introduced_in: "1.0"
-
-  - id: owner
-    name: "Owner"
-    name_ru: "Владелец объекта"
-    metamodel_level: ~
-    category: governance
-    description: >-
-      Роль (сотрудник, команда или организационная единица), несущая полную ответственность
-      за объект (систему, данные, процесс, продукт и т.д.) на протяжении его жизненного
-      цикла, включая его стратегическое развитие, качество, соответствие требованиям,
-      безопасность и удовлетворение потребностей потребителей.
-    scope_notes: >-
-      Может быть назначена на различные объекты мета-модели. Владелец обладает полномочиями
-      принимать ключевые решения. Для данных используется термин Data Owner, для систем —
-      System Owner или Product Owner.
-    aliases:
-      - {value: "владелец", lang: ru, alias_type: abbreviation, status: active}
-      - {value: "PO", lang: neutral, alias_type: abbreviation, status: active}
-      - {value: "product owner", lang: en, alias_type: synonym, status: active}
-    examples: ["Product Owner системы Кредитный конвейер", "Data Owner витрины Скоринг клиентов"]
-    usage_purpose: "Определять ответственного за объект на протяжении его жизненного цикла."
-    status: active
-    introduced_in: "1.0"
+  # sensitive_level REMOVED as entity_kind — это атрибут/свойство дата-продукта.
+  # owner REMOVED as entity_kind — это атрибут сущности, а не сущность.
 
   - id: event
     name: "Event"
