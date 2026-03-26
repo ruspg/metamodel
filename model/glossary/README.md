@@ -1,5 +1,16 @@
 # model/glossary
 
-Каноническое расположение терминов глоссария, алиасов и артефактов политики именования.
+Глоссарий терминов метамодели живёт непосредственно в `model/metamodel.yaml` в секции `entity_kinds`.
 
-Исходные документы политики в настоящее время находятся в `docs/architecture/` и будут материализованы здесь в последующих задачах.
+Каждый `entity_kind` содержит глоссарные поля:
+- `description` — формальное определение
+- `scope_notes` — границы, ограничения, правила именования экземпляров
+- `aliases[]` — управляемые синонимы `{value, lang, alias_type, status}`
+- `examples[]` — конкретные примеры экземпляров
+- `usage_purpose` — зачем сущность нужна
+- `status` — `active` / `draft` / `deprecated`
+- `introduced_in` — версия глоссария
+
+Источник: **Глоссарий 1.0** (SSCAR-615105454)
+
+Структура записей: см. [glossary_alias_naming_policy.md](../../docs/architecture/glossary_alias_naming_policy.md)

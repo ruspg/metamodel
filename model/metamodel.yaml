@@ -1,8 +1,10 @@
 meta:
-  version: 1
+  version: 2
+  glossary_version: "1.0"
+  glossary_source: "Глоссарий 1.0 (SSCAR-615105454)"
   bank_code: "BANK"
   model_name: "bank_metamodel_horizontal"
-  last_updated: "2025-01-14"
+  last_updated: "2026-03-26"
   locale: "ru-RU"
   title: "Горизонтальный сценарий: от цели и ценности до компонентов и инфраструктуры"
   description: >-
@@ -66,14 +68,66 @@ dictionaries:
     - id: flows_over
       name: "Передает по потоку"
       description: "Информационный поток транспортирует бизнес-сущности."
+    - id: specialization
+      name: "Частный случай"
+      description: "Source является частным случаем (специализацией) target."
+  entity_categories:
+    - id: goal
+    - id: business_structure
+    - id: offering
+    - id: value_definition
+    - id: stakeholder
+    - id: channel
+    - id: value_delivery
+    - id: capability
+    - id: process
+    - id: business_object
+    - id: application
+    - id: vendor_solution
+    - id: interface
+    - id: integration
+    - id: infrastructure
+    - id: data
+    - id: technology
+    - id: source_tracking
+    - id: governance
+    - id: operational
+
+# ===========================================================================
+# ENTITY KINDS
+# ===========================================================================
+# Glossary fields per entity_kind:
+#   description     — полное формальное определение (из Глоссарий 1.0)
+#   scope_notes     — границы, ограничения, правила именования экземпляров
+#   aliases         — управляемые синонимы [{value, lang, alias_type, status}]
+#   examples        — 1-4 конкретных примера экземпляров
+#   usage_purpose   — зачем сущность нужна, какой вопрос она решает
+#   status          — active | draft | deprecated
+#   introduced_in   — версия глоссария
+# ===========================================================================
 
 entity_kinds:
+
+  # =========================================================================
+  # STRATEGIC VIEW
+  # =========================================================================
+
   - id: goal
     name: "Goal"
     name_ru: "Цель"
     metamodel_level: strategic_view
     category: goal
-    description: "Стратегическая бизнес-цель банка."
+    description: >-
+      Будущий результат деятельности банка, отвечающий интересам его акционеров.
+    scope_notes: >-
+      Формулируется по SMART. Допускается иерархия целей.
+    aliases:
+      - {value: "цель", lang: ru, alias_type: synonym, status: active}
+      - {value: "strategic goal", lang: en, alias_type: synonym, status: active}
+    examples: ["Повысить индекс NPS до 70 к концу года"]
+    usage_purpose: "Понимать что должен достичь банк."
+    status: active
+    introduced_in: "1.0"
 
   - id: job_family
     name: "Job Family"
@@ -81,104 +135,429 @@ entity_kinds:
     metamodel_level: strategic_view
     category: business_structure
     description: "Группа ролей/должностей, в рамках которой продаются продукты банка."
+    scope_notes: ""
+    aliases:
+      - {value: "JF", lang: neutral, alias_type: abbreviation, status: active}
+    examples: []
+    usage_purpose: "Группировать продукты по бизнес-направлениям."
+    status: active
+    introduced_in: "0.1"
 
   - id: bank_product
-    name: "Bank Product"
-    name_ru: "Продукт Банка"
+    name: "Product"
+    name_ru: "Продукт"
     metamodel_level: strategic_view
     category: offering
-    description: "Коммерческий продукт/предложение банка, через который продается ценность."
+    description: >-
+      Оформленное предложение банка (финансовое или нефинансовое), которое обеспечивает
+      конкретную ценность, удовлетворяет определенную потребность и может быть продано
+      конечному клиенту (внешний продукт) или предоставлено внутреннему стейкхолдеру
+      (внутренний продукт), обслужено и управляемо в рамках бизнес- и операционной
+      модели банка.
+    scope_notes: >-
+      Продукт является группировкой потоков создания ценностей и характеризуется ими.
+      Продукт = Ценность + "Упаковка" для продажи.
+      Ведутся в отдельном реестре (редактируется только PO).
+      Имеет продуктовые метрики. Имеет целевую аудиторию (сегменты).
+    aliases:
+      - {value: "продукт банка", lang: ru, alias_type: synonym, status: active}
+      - {value: "банковский продукт", lang: ru, alias_type: synonym, status: active}
+      - {value: "product", lang: en, alias_type: synonym, status: active}
+    examples: ["ПотребКредит"]
+    usage_purpose: "Понимать что предлагается клиенту и является предметом договора."
+    status: active
+    introduced_in: "1.0"
 
   - id: organizational_unit
-    name: "Organizational Unit"
+    name: "Organisational Unit"
     name_ru: "Организационная единица"
     metamodel_level: strategic_view
     category: business_structure
-    description: "Подразделение банка, создающее продукты и ответственное за системы и способности."
+    description: >-
+      Формальная структурная часть банка (job family, департамент, отдел, филиал, бизнес-
+      или операционная функция), обладающая определенными ролями, ответственностью и
+      ресурсами для выполнения бизнес-функций.
+    scope_notes: >-
+      Является элементом оргструктуры банка. Допускается иерархия.
+    aliases:
+      - {value: "оргединица", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "подразделение", lang: ru, alias_type: synonym, status: active}
+      - {value: "org unit", lang: en, alias_type: abbreviation, status: active}
+    examples: ["JF Borrow"]
+    usage_purpose: "Понимать оргструктуру и ее функциональную ответственность."
+    status: active
+    introduced_in: "1.0"
+
+  - id: business_domain
+    name: "Business Domain"
+    name_ru: "Бизнес-домен"
+    metamodel_level: strategic_view
+    category: business_structure
+    description: >-
+      Крупная, стратегически значимая область бизнеса, которая объединяет набор связанных
+      бизнес-способностей, продуктов и потоков создания ценности, ориентированных на
+      достижение общих бизнес-целей. Домены представляют собой основные "столпы" бизнеса,
+      часто отражающие ключевые направления деятельности или рынки.
+    scope_notes: >-
+      Название должно отражать крупную и устойчивую область бизнеса (существительное).
+      Может быть организован в иерархию доменов и поддоменов.
+      Фокусируется на "что" делает бизнес, а не "как" это делается.
+    aliases:
+      - {value: "домен", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "domain", lang: en, alias_type: abbreviation, status: active}
+    examples: ["Retail", "CIB", "Finance", "Risk&Compliance", "Operations", "HRTech", "Infrastructure"]
+    usage_purpose: "Понимать области бизнеса банка."
+    status: active
+    introduced_in: "1.0"
+
+  - id: customer_segment
+    name: "Customer Segment"
+    name_ru: "Клиентский сегмент"
+    metamodel_level: strategic_view
+    category: stakeholder
+    description: >-
+      Группа потребителей ценности (клиентов, партнеров, внутренних стейкхолдеров),
+      объединенных общими характеристиками, потребностями или поведением, в отношении
+      которых банк применяет целенаправленный подход к созданию и доставке ценности.
+    scope_notes: >-
+      Название должно четко идентифицировать группу по демографическим, поведенческим
+      или иным признакам. Сегменты могут быть иерархическими (например, "Retail" -> "Premium").
+      Один потребитель ценности может принадлежать к нескольким сегментам.
+    aliases:
+      - {value: "сегмент", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "segment", lang: en, alias_type: abbreviation, status: active}
+    examples: ["Retail", "SME", "Private"]
+    usage_purpose: "Понимать кто является целевой аудиторией продукта."
+    status: active
+    introduced_in: "1.0"
+
+  - id: business_role
+    name: "Business Role"
+    name_ru: "Бизнес-роль"
+    metamodel_level: strategic_view
+    category: business_structure
+    description: >-
+      Сотрудник банка, принадлежащий определенной оргединице и обладающий ответственностью
+      и полномочиями для выполнения бизнес-функций.
+    scope_notes: >-
+      Может выполняться сотрудником, либо AI-агентом.
+    aliases:
+      - {value: "роль", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "role", lang: en, alias_type: abbreviation, status: active}
+    examples: ["CTO"]
+    usage_purpose: "Понимать функциональную ответственность ролей."
+    status: active
+    introduced_in: "1.0"
+
+  # =========================================================================
+  # BUSINESS DETAILS
+  # =========================================================================
 
   - id: value
-    name: "Value"
+    name: "Value Proposition"
     name_ru: "Ценность"
     metamodel_level: business_details
     category: value_definition
-    description: "Ценностное предложение для клиента, которое создается и продается банком."
+    description: >-
+      Полезный и значимый результат, который банк создает для своих клиентов, акционеров,
+      сотрудников или других стейкхолдеров через свои продукты, услуги, процессы и
+      взаимодействия, способствуя достижению стратегических целей и устойчивому развитию.
+    scope_notes: >-
+      Название формируется по правилу: <Бизнес-объект><Законченное действие над объектом>,
+      <пояснение по тому, что дает ценность>.
+      Ценности не ведутся в отдельном реестре, а являются частью VS.
+    aliases:
+      - {value: "ценностное предложение", lang: ru, alias_type: synonym, status: active}
+      - {value: "value proposition", lang: en, alias_type: synonym, status: active}
+      - {value: "VP", lang: neutral, alias_type: abbreviation, status: active}
+    examples: ["Кредит получен, Клиент имеет доступ к средствам и может их тратить"]
+    usage_purpose: "Понимать какая ценность создается для клиента и потребляется им в JTBD."
+    status: active
+    introduced_in: "1.0"
 
   - id: value_consumer
     name: "Value Consumer"
     name_ru: "Потребитель ценности"
     metamodel_level: business_details
     category: stakeholder
-    description: "Клиент или иной актор, который потребляет создаваемую банком ценность."
+    description: >-
+      Лицо, группа лиц или организация (внутренний или внешний стейкхолдер), которая
+      получает, использует или извлекает выгоду из создаваемой банком ценности через
+      продукты, услуги, процессы или взаимодействия.
+    scope_notes: >-
+      Ведутся в отдельном реестре, конечный справочник: Клиент-Заемщик, Клиент-Инвестор,
+      Наследник прав, Банк, Коллектор, ГосОрган и т.д.
+    aliases:
+      - {value: "потребитель", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "клиент", lang: ru, alias_type: synonym, status: active}
+      - {value: "consumer", lang: en, alias_type: abbreviation, status: active}
+    examples: ["Клиент-Заемщик"]
+    usage_purpose: "Понимать для кого создается ценность."
+    status: active
+    introduced_in: "1.0"
 
   - id: channel
     name: "Channel"
     name_ru: "Канал"
     metamodel_level: business_details
     category: channel
-    description: "Канал взаимодействия, обеспечивающий контакт с клиентом и доставку ценности."
+    description: >-
+      Точка взаимодействия банка с клиентами, партнерами или внутренними пользователями,
+      через которую предоставляются продукты, услуги и коммуникации, обеспечивая доступ
+      и обмен информацией.
+    scope_notes: >-
+      Может быть как физическим, так и цифровым.
+    aliases:
+      - {value: "канал взаимодействия", lang: ru, alias_type: synonym, status: active}
+      - {value: "interaction channel", lang: en, alias_type: synonym, status: active}
+    examples: ["ДБО"]
+    usage_purpose: "Понимать точки контакта клиентов с продуктами банка."
+    status: active
+    introduced_in: "1.0"
 
   - id: value_stream
     name: "Value Stream"
     name_ru: "Поток создания ценности"
     metamodel_level: business_details
     category: value_delivery
-    description: "Сквозной поток действий, в результате которых создаётся ценность для клиента."
+    description: >-
+      Сквозная последовательность стадий, включающая все этапы, необходимые для
+      предоставления ценности потребителю.
+    scope_notes: >-
+      Название — отглагольное существительное. Имеет ценность для потребителя.
+      Имеет законченность: четкий вход и выход. Имеет возможность оптимизации
+      (== отсутствие/минимизация зависимости от других цепочек).
+      Имеет критичность, заданную руководителем домена (tier).
+      Может давать ценность разным потребителям.
+    aliases:
+      - {value: "VS", lang: neutral, alias_type: abbreviation, status: active}
+      - {value: "цепочка создания ценности", lang: ru, alias_type: synonym, status: active}
+      - {value: "поток ценности", lang: ru, alias_type: search_form, status: active}
+    examples: ["Выдача кредита"]
+    usage_purpose: "Понимать как создается ценность E2E, рассчитывать E2E затраты, оптимизировать lead time."
+    status: active
+    introduced_in: "1.0"
 
   - id: value_stream_stage
     name: "Value Stream Stage"
-    name_ru: "Стадия потока"
+    name_ru: "Стадия потока создания ценности"
     metamodel_level: business_details
     category: value_delivery
-    description: "Логический шаг/этап внутри value stream."
+    description: >-
+      Логически выделенный и управляемый шаг или группа взаимосвязанных действий в потоке
+      создания ценности, который преобразует входящие ресурсы, данные или бизнес-объекты
+      в более ценное состояние, приближая процесс к достижению конечного результата для
+      потребителя ценности.
+    scope_notes: >-
+      Название — отглагольное существительное. Название отражает область ответственности.
+      Реализуется бизнес-процессом самого высокого уровня. Стадии потока не ведутся в
+      отдельном реестре, а являются частью VS. Входным и выходным условием является
+      состояние определенных бизнес-сущностей.
+    aliases:
+      - {value: "стадия потока", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "VS Stage", lang: en, alias_type: abbreviation, status: active}
+    examples: ["Андеррайтинг заявки"]
+    usage_purpose: "Понимать ответственных и оптимизировать отдельные этапы создания ценности."
+    status: active
+    introduced_in: "1.0"
 
   - id: business_capability
     name: "Business Capability"
     name_ru: "Бизнес-способность"
     metamodel_level: business_details
     category: capability
-    description: "Устойчивое умение организации выполнять набор действий и сервисов."
-
-  - id: business_process
-    name: "Business Process"
-    name_ru: "Бизнес-процесс"
-    metamodel_level: business_details
-    category: process
-    description: "Процесс, который реализует стадии потока и изменяет состояние бизнес-сущностей."
-
-  - id: business_operation
-    name: "Business Operation"
-    name_ru: "Бизнес-операция"
-    metamodel_level: business_details
-    category: process
-    description: "Исполняемый шаг внутри бизнес-процесса, связывающий процесс с ИТ-реализацией."
+    description: >-
+      Устойчивая, независимая от оргструктуры и повторяемая способность банка выполнять
+      определенный вид деятельности или достигать конкретной бизнес-цели посредством
+      сочетания процессов, людей, технологий и информации.
+    scope_notes: >-
+      Название — существительное с пояснением. Не использовать глаголы — фокус не на
+      действии, а на способности его выполнять. Может быть задана иерархия бизнес-способностей.
+      Не зависит от оргструктуры.
+    aliases:
+      - {value: "БС", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "capability", lang: en, alias_type: abbreviation, status: active}
+      - {value: "бизнес-возможность", lang: ru, alias_type: synonym, status: active}
+    examples: ["Loan origination", "Loan disbursement"]
+    usage_purpose: "Иметь стратегическое понимание что должен уметь делать банк для реализации своих целей."
+    status: active
+    introduced_in: "1.0"
 
   - id: business_function
     name: "Business Function"
     name_ru: "Бизнес-функция"
     metamodel_level: business_details
     category: process
-    description: "Шаг/функция внутри бизнес-процесса."
+    description: >-
+      Устойчивая (относительно постоянная) область ответственности организации выполнять
+      определенный набор действий (обычно сгруппированных по требуемым навыкам, ресурсам
+      и компетенциям) для достижения определенных результатов.
+    scope_notes: >-
+      Функция отвечает на вопрос "Что делает организация (как область деятельности)?".
+      За функцию всегда отвечает одна бизнес-роль (индивидуальная функция) либо одна
+      оргединица (общебанковская функция). Реализуется одним или несколькими бизнес-процессами
+      и обеспечивает одну бизнес-способность. В случае автоматизации может указываться на
+      диаграмме Solution Architecture внутри ИТ-системы. Результат одной функции часто
+      является входом для другой.
+    aliases:
+      - {value: "БФ", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "BF", lang: en, alias_type: abbreviation, status: active}
+      - {value: "функция", lang: ru, alias_type: abbreviation, status: active}
+    examples: ["KYC", "Подбор и найм персонала", "Ведение бухучета"]
+    usage_purpose: "Понимать из каких функциональных компонентов состоит банк, понимать чем заняты бизнес-роли и оргединицы."
+    status: active
+    introduced_in: "1.0"
+
+  - id: business_process
+    name: "Business Process"
+    name_ru: "Бизнес-процесс"
+    metamodel_level: business_details
+    category: process
+    description: >-
+      Упорядоченная последовательность действий, выполняемых внутри банка для достижения
+      определенного бизнес-результата с вовлечением сотрудников и ИТ-систем, и направленная
+      на создание ценности для внешнего или внутреннего стейкхолдера.
+    scope_notes: >-
+      Название — отглагольное существительное. Имеет вход и выход как состояния
+      бизнес-сущностей. Выход одного процесса часто является входом для другого.
+      Состоит из последовательности бизнес-операций, выполняемых бизнес-ролями/оргединицами.
+      Не содержит деталей автоматизации (в т.ч. названий ИТ-систем).
+      Как правило моделируется в нотации BPMN.
+    aliases:
+      - {value: "БП", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "BP", lang: en, alias_type: abbreviation, status: active}
+      - {value: "процесс", lang: ru, alias_type: abbreviation, status: active}
+    examples: ["Закрытие счета", "Регистрация входящего документа", "Найм сотрудника в штат"]
+    usage_purpose: "Понимать как взаимодействуют бизнес-роли и оргединицы для получения нужного результата."
+    status: active
+    introduced_in: "1.0"
+
+  - id: business_operation
+    name: "Business Operation"
+    name_ru: "Бизнес-операция"
+    metamodel_level: business_details
+    category: process
+    description: >-
+      Определяет набор логически связанных бизнес-действий, который может выполняться
+      в рамках бизнес-процесса как единое целое (шаг процесса), используя бизнес-сущности
+      и обеспечивая управляемые взаимодействия между различными бизнес-функциями.
+    scope_notes: >-
+      Название — глагол + бизнес-сущность. Относится к одной бизнес-функции.
+      Может рассматриваться как шаг бизнес-процесса. Может быть как целиком
+      автоматизирована (ИТ-системой с доступом через API), так и выполняться полностью
+      вручную. Может состоять из набора логически связанных бизнес-действий.
+    aliases:
+      - {value: "операция", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "шаг процесса", lang: ru, alias_type: synonym, status: active}
+      - {value: "operation", lang: en, alias_type: abbreviation, status: active}
+    examples: ["Учесть комиссию за транзакцию"]
+    usage_purpose: "Понимать из каких шагов состоит бизнес-процесс и уровень автоматизации."
+    status: active
+    introduced_in: "1.0"
+
+  - id: business_action
+    name: "Business Action"
+    name_ru: "Бизнес-действие"
+    metamodel_level: business_details
+    category: process
+    description: >-
+      Элементарная активность, выполняемая в рамках бизнес-операции.
+    scope_notes: >-
+      Атомарное действие, т.е. не может быть декомпозировано. Может быть либо выполнено
+      целиком, либо не выполнено совсем. В случае автоматизации соответствует вызову API.
+    aliases:
+      - {value: "действие", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "action", lang: en, alias_type: abbreviation, status: active}
+    examples: ["Выполнение проводки"]
+    usage_purpose: "Понимать из каких действий состоит бизнес-операция и отслеживать тайминг."
+    status: active
+    introduced_in: "1.0"
 
   - id: business_entity
     name: "Business Entity"
     name_ru: "Бизнес-сущность"
     metamodel_level: business_details
     category: business_object
-    description: "Ключевой бизнес-объект, состояние которого изменяют процессы."
+    description: >-
+      Идентифицируемая сущность или ресурс, который имеет значение для бизнеса,
+      используется или создается в бизнес-деятельности, и служит носителем информации
+      или ценности в бизнес-процессах, потоках создания ценности и бизнес-способностях.
+    scope_notes: >-
+      Название — существительное / прилагательное + существительное. Ведутся в отдельном
+      реестре. Пассивный элемент — сам бизнес-объект не выполняет действий над другими
+      объектами или над собой.
+    aliases:
+      - {value: "бизнес-объект", lang: ru, alias_type: synonym, status: active}
+      - {value: "business object", lang: en, alias_type: synonym, status: active}
+    examples: ["Заявка на кредит"]
+    usage_purpose: "Понимать с какими информационными концепциями работают бизнес-процессы."
+    status: active
+    introduced_in: "1.0"
+
+  - id: business_attribute
+    name: "Business Attribute"
+    name_ru: "Бизнес-атрибут"
+    metamodel_level: business_details
+    category: business_object
+    description: >-
+      Характеристика или свойство бизнес-сущности, которое имеет значение для бизнеса
+      и представляет собой элементарную единицу информации (поле, метрику), используемую
+      в процессах, отчетности или для принятия решений.
+    scope_notes: >-
+      Имеет бизнес-ориентированное название и определение. Всегда принадлежит ровно
+      одной бизнес-сущности. Содержит бизнес-логику: правила валидации, форматирования,
+      примеры значений. Может быть замаплен на один или несколько Data Attribute.
+    aliases:
+      - {value: "атрибут", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "свойство сущности", lang: ru, alias_type: synonym, status: active}
+    examples: ["Сумма кредита в заявке", "Дата рождения клиента", "Статус заявки"]
+    usage_purpose: "Понимать какие свойства сущности необходимо учитывать."
+    status: active
+    introduced_in: "1.0"
+
+  # =========================================================================
+  # SOLUTION DETAILS
+  # =========================================================================
 
   - id: information_flow
     name: "Information Flow"
     name_ru: "Информационный поток"
     metamodel_level: solution_details
     category: integration
-    description: "Логический поток данных между системами, являющийся источником или потребителем бизнес-сущностей."
+    description: >-
+      Канал передачи данных бизнес-сущности(ей) или команд от системы-источника
+      к системе-приемнику.
+    scope_notes: >-
+      Может быть только однонаправленным.
+    aliases:
+      - {value: "инфопоток", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "info flow", lang: en, alias_type: abbreviation, status: active}
+    examples: []
+    usage_purpose: "Понимать каналы передачи данных между системами."
+    status: active
+    introduced_in: "1.0"
 
   - id: it_system
     name: "IT System"
-    name_ru: "ИТ-система"
+    name_ru: "Информационная система"
     metamodel_level: solution_details
     category: application
-    description: "Прикладная система банка (мастер-система для части бизнес-сущностей)."
+    description: >-
+      Набор ПО, реализующий логически связанный набор функциональности для выполнения
+      необходимых бизнес- или технологических задач. Под функциональностью ИС, в ряде
+      случаев, могут пониматься конкретные микросервисы ИС.
+    scope_notes: >-
+      Является единицей учета ИТ-ландшафта. Имеет ЖЦ (от ввода в эксплуатацию до
+      декомиссии). Разворачивается на серверах и предоставляет доступ к своим данным
+      и функционалу посредством UI или API.
+    aliases:
+      - {value: "ИС", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "ИТ-система", lang: ru, alias_type: synonym, status: active}
+      - {value: "система", lang: ru, alias_type: abbreviation, status: active}
+    examples: ["CSP"]
+    usage_purpose: "Понимать ИТ-ландшафт банка."
+    status: active
+    introduced_in: "1.0"
 
   - id: functional_subsystem
     name: "Functional Subsystem"
@@ -186,20 +565,61 @@ entity_kinds:
     metamodel_level: solution_details
     category: application
     description: "Функциональный блок внутри ИТ-системы."
+    scope_notes: ""
+    aliases:
+      - {value: "подсистема", lang: ru, alias_type: abbreviation, status: active}
+    examples: []
+    usage_purpose: "Понимать функциональную декомпозицию ИТ-системы."
+    status: active
+    introduced_in: "0.1"
+
+  # =========================================================================
+  # COMPONENT DETAILS
+  # =========================================================================
 
   - id: component
-    name: "Component"
-    name_ru: "Компонент"
+    name: "Component IT System"
+    name_ru: "Компонент ИС"
     metamodel_level: component_details
     category: application
-    description: "Логический компонент приложения, реализующий часть функциональности."
+    description: >-
+      Часть ИС/ФП, представляющий собой элемент дистрибутива ПО в составе ИС/ФП,
+      размещенный на инфраструктурном ресурсе. Компонент используется для описания
+      внутренних и внешних взаимодействий, а также для проектирования схемы размещения
+      (деплоймента).
+    scope_notes: >-
+      Как правило, реализуется в виде микросервиса. Может включать в себя несколько
+      Конфигурационных единиц.
+    aliases:
+      - {value: "компонент", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "микросервис", lang: ru, alias_type: synonym, status: active}
+      - {value: "component", lang: en, alias_type: abbreviation, status: active}
+    examples: ["Микросервис", "библиотека"]
+    usage_purpose: "Понимать из чего состоит ИС и как размещается."
+    status: active
+    introduced_in: "1.0"
 
   - id: vendor_product
     name: "Vendor Product"
-    name_ru: "Вендорский продукт"
+    name_ru: "Вендорское ПО"
     metamodel_level: component_details
     category: vendor_solution
-    description: "Поставляемый вендором программный продукт, на базе которого реализуется компонент."
+    description: >-
+      Конкретный программный продукт вендора, используемый компонентами или ресурсами,
+      и реализующий одну или несколько технологий.
+    scope_notes: >-
+      Описывает реальный продукт вендора, а не класс решений. Обязательно должен быть
+      связан хотя бы с одной технологией. Один вендорский ПО может быть связан с
+      несколькими компонентами ИС и/или ресурсами. Связывается с компонентом ИС или
+      ресурсом (компонент ИС или ресурс не может работать без этого продукта, есть
+      SLA/vendor support).
+    aliases:
+      - {value: "вендорский продукт", lang: ru, alias_type: synonym, status: active}
+      - {value: "vendor software", lang: en, alias_type: synonym, status: active}
+    examples: ["Confluence", "Kafka"]
+    usage_purpose: "Учет зависимостей от продуктов вендора, управление лицензиями, анализ vendor lock-in."
+    status: active
+    introduced_in: "1.0"
 
   - id: software_component
     name: "Software Component"
@@ -207,20 +627,113 @@ entity_kinds:
     metamodel_level: component_details
     category: application
     description: "Конкретная реализация компонента в коде или артефакте поставки."
+    scope_notes: ""
+    aliases:
+      - {value: "артефакт поставки", lang: ru, alias_type: synonym, status: active}
+    examples: []
+    usage_purpose: "Понимать конкретные артефакты поставки ПО."
+    status: active
+    introduced_in: "0.1"
+
+  - id: technology
+    name: "Technology"
+    name_ru: "Технология"
+    metamodel_level: component_details
+    category: technology
+    description: >-
+      Сущность, описывающая технологию или техническое средство, используемое при реализации
+      Компонента ИС или Ресурса. Описывает с помощью какой технологии реализован и
+      эксплуатируется Компонент ИС или Ресурс.
+    scope_notes: >-
+      Ведется как централизованный источник. Фиксирует факт использования технологии,
+      не описывает конфигурацию. Связан с Component, Resource. Используется для governance
+      (lifecycle management, security policies, risk, impact analysis).
+    aliases:
+      - {value: "технология", lang: ru, alias_type: synonym, status: active}
+      - {value: "tech stack", lang: en, alias_type: synonym, status: active}
+    examples: []
+    usage_purpose: "Унифицировать описание технологического стека, обеспечить анализ рисков и зависимостей."
+    status: active
+    introduced_in: "1.0"
+
+  - id: source
+    name: "Source"
+    name_ru: "Источник"
+    metamodel_level: component_details
+    category: source_tracking
+    description: >-
+      Описывает источник, из которого получаются, обновляются или синхронизируются сущности
+      Компонент ИС или Схема данных. Фиксирует, откуда этот Компонент ИС или Схема
+      берется, где находится первичное описание и/или код.
+    scope_notes: >-
+      Является исходным источником (System of Record), следовательно должен быть один
+      основной Source, являющийся источником правды. Допустимо несколько Source при явной
+      роли primary/secondary. Обязан поддерживать автоматическое извлечение метаданных.
+    aliases:
+      - {value: "источник данных", lang: ru, alias_type: synonym, status: active}
+      - {value: "SoR", lang: neutral, alias_type: abbreviation, status: active}
+    examples: []
+    usage_purpose: "Связать компонент ИС с источником правды, обеспечить автоматическое обнаружение и аудит."
+    status: active
+    introduced_in: "1.0"
 
   - id: api
     name: "API"
     name_ru: "API"
     metamodel_level: component_details
     category: interface
-    description: "Программный интерфейс компонента, предоставляющий операции наружу."
+    description: >-
+      Набор правил и протоколов, который позволяет различным ИС взаимодействовать друг
+      с другом по сети. Определяет, как один программный компонент может запрашивать
+      услуги или данные у другого. Логический интерфейс/контракт, через который Компонент
+      ИС предоставляет функциональность.
+    scope_notes: >-
+      Как правило, API направлен на работу с одной бизнес-сущностью и имеет в своем
+      составе ряд методов. Основные свойства: тип контракта (openapi, asyncapi, graphql,
+      grpc), версия контракта, владелец, жизненный цикл (prod, deprecated), связи
+      (кто предоставляет, кто потребляет).
+    aliases:
+      - {value: "Application Programming Interface", lang: en, alias_type: synonym, status: active}
+      - {value: "программный интерфейс", lang: ru, alias_type: synonym, status: active}
+    examples: []
+    usage_purpose: "Создает управляемость системы, централизация документации и контрактов."
+    status: active
+    introduced_in: "1.0"
+    attributes:
+      - id: api.schema_format
+        name: "Формат схемы"
+        description: "Формат описания контракта API."
+        properties:
+          allowed_values: ["openapi", "asyncapi", "graphql", "grpc", "json_schema", "avro", "protobuf"]
+      - id: api.schema_url
+        name: "URL схемы"
+        description: "Ссылка на спецификацию/контракт API."
+      - id: api.schema_version
+        name: "Версия схемы"
+        description: "Версия контракта API."
+
+  # api_schema REMOVED as entity_kind — это атрибут/свойство API (schema_url, schema_format).
 
   - id: api_method
     name: "API Method"
     name_ru: "Метод API"
     metamodel_level: component_details
     category: interface
-    description: "Конкретная операция/эндпоинт API."
+    description: >-
+      Конкретная операция/endpoint/функциональный вызов в рамках API.
+    scope_notes: >-
+      Привязка к конкретным бизнес-шагам. Прямое влияние на SLO. Документирование
+      контракта на уровне операций. Участвует в code-generation, документации, контрактном
+      тестировании. Не определяет границы, не имеет владельца, не используется в
+      интеграционном планировании.
+    aliases:
+      - {value: "метод", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "endpoint", lang: en, alias_type: synonym, status: active}
+      - {value: "эндпоинт", lang: ru, alias_type: synonym, status: active}
+    examples: ["POST /payments"]
+    usage_purpose: "Создает функциональность, привязка к конкретным бизнес-шагам."
+    status: active
+    introduced_in: "1.0"
 
   - id: api_method_parameter
     name: "API Method Parameter"
@@ -228,20 +741,58 @@ entity_kinds:
     metamodel_level: component_details
     category: interface
     description: "Параметр или поле запроса/ответа метода API."
+    scope_notes: ""
+    aliases:
+      - {value: "параметр API", lang: ru, alias_type: abbreviation, status: active}
+    examples: []
+    usage_purpose: "Понимать структуру запросов/ответов API."
+    status: active
+    introduced_in: "0.1"
 
   - id: integration
     name: "Integration"
     name_ru: "Интеграция"
     metamodel_level: component_details
     category: integration
-    description: "Интеграционное взаимодействие, использующее методы API и логические ресурсы."
+    description: >-
+      Технические компоненты, реализующие взаимодействие (инфопотоки) между ИС.
+      В описании интеграции могут описываться используемые Ресурсы (Resource).
+    scope_notes: >-
+      Синхронная или асинхронная. Онлайн или пакетная. Как правило, реализуется
+      посредством REST/RPC, очередей, стриминга, обмена файлами, ETL. Регистрируется
+      в CMDB как Интеграционная Единица.
+    aliases:
+      - {value: "интеграционное взаимодействие", lang: ru, alias_type: synonym, status: active}
+      - {value: "ИВ", lang: ru, alias_type: abbreviation, status: active}
+    examples: []
+    usage_purpose: "Понимать технические взаимодействия между системами."
+    status: active
+    introduced_in: "1.0"
+
+  # =========================================================================
+  # INFRASTRUCTURE DETAILS
+  # =========================================================================
 
   - id: logical_resource
     name: "Logical Resource"
     name_ru: "Логический ресурс"
     metamodel_level: infrastructure_details
     category: infrastructure
-    description: "Логический ресурс хранения или обмена (DB, Namespace, Bucket, Topic, Queue)."
+    description: >-
+      Объект, предоставляющий внешний или внутренний ресурс, необходимый для работы
+      компонентов. Описывает базовые сущности: база данных (название БД), брокеры
+      сообщений (название топиков, очередей), хранилища (бакеты S3, файловые хранилища),
+      k8s (название кластеров, namespace'ов).
+    scope_notes: >-
+      Не содержит бизнес-логики, предоставляет возможности или данные. Ссылается на
+      техническую реализацию в Компонент (Component). Регистрируется в CMDB.
+    aliases:
+      - {value: "ресурс", lang: ru, alias_type: abbreviation, status: active}
+      - {value: "resource", lang: en, alias_type: abbreviation, status: active}
+    examples: []
+    usage_purpose: "Понимать инфраструктурные ресурсы, необходимые для работы компонентов."
+    status: active
+    introduced_in: "1.0"
     attributes:
       - id: logical_resource.resource_kind
         name: "Тип ресурса"
@@ -251,11 +802,336 @@ entity_kinds:
           allowed_values: ["DB", "Namespace", "Bucket", "Topic", "Queue"]
 
   - id: infra_resource
-    name: "Infrastructure Resource"
-    name_ru: "Инфраструктурный ресурс"
+    name: "Configuration Item"
+    name_ru: "Конфигурационная единица"
     metamodel_level: infrastructure_details
     category: infrastructure
-    description: "Физический/виртуальный инфраструктурный ресурс или стенд, обслуживающий логические ресурсы и компоненты."
+    description: >-
+      Управляемая единица ИТ-среды или приложения, которая имеет уникальный идентификатор,
+      свойства и связи с другими CI и может быть связана с бизнес-процессами, формируя
+      граф зависимостей для процесса оценки последствий изменения или сбоя одного элемента
+      ИТ-инфраструктуры на связанные с ним элементы ИТ-среды или бизнес-процессы
+      (impact analysis).
+    scope_notes: >-
+      CI служит узлом графа зависимостей (это не только запись в базе). Один CI может
+      быть логическим описанием (например, Payment API Cluster). Один кластер может
+      содержать сотни инстансов (один CI управляет масштабом).
+    aliases:
+      - {value: "CI", lang: neutral, alias_type: abbreviation, status: active}
+      - {value: "инфраструктурный ресурс", lang: ru, alias_type: legacy_name, status: active}
+      - {value: "Infrastructure Resource", lang: en, alias_type: legacy_name, status: active}
+    examples: []
+    usage_purpose: "Понимать инфраструктурные зависимости и проводить impact analysis."
+    status: active
+    introduced_in: "1.0"
+
+  - id: component_instance
+    name: "Component Instance"
+    name_ru: "Экземпляр компонента ИС"
+    metamodel_level: infrastructure_details
+    category: application
+    description: >-
+      Запущенный как Конфигурационная Единица и находящийся в определенном окружении
+      (среде) компонент информационной системы.
+    scope_notes: ""
+    aliases:
+      - {value: "инстанс", lang: ru, alias_type: synonym, status: active}
+      - {value: "instance", lang: en, alias_type: abbreviation, status: active}
+    examples: []
+    usage_purpose: "Понимать размещение компонентов в окружениях."
+    status: active
+    introduced_in: "1.0"
+
+  # =========================================================================
+  # DATA CONTEXT
+  # =========================================================================
+
+  - id: data_product
+    name: "Data Product"
+    name_ru: "Дата Продукт"
+    metamodel_level: business_details
+    category: data
+    description: >-
+      Объединение дата-сущностей и процессов/сущностей, производных от данных. Имеет все
+      свойства продукта: бизнес-цель, пользователи, владелец, жизненный цикл. Автономный,
+      доступный для обнаружения и повторного использования набор дата-объектов, снабженный
+      всеми необходимыми метаданными и механизмами доступа, который создается для решения
+      конкретных бизнес-задач и предоставляет измеримую ценность своим потребителям.
+    scope_notes: >-
+      Должен иметь ответственного бизнес-владельца (DOA). Должен иметь связь с
+      дата-контрактом. Связан с бизнес-контекстом (бизнес-сущности). Может иметь
+      сложные связи с другими Дата Продуктами. Имеет жизненный цикл (статус). Может
+      агрегировать несколько Объектов данных (>=1). Сам по себе несет ценность
+      пользователям. Описывается в CAP / DH / Domain services.
+      Добровольная система подписок: подписчиками автоматически становятся владельцы
+      зависимых по горизонтальному линеаджу продуктов.
+    aliases:
+      - {value: "дата-продукт", lang: ru, alias_type: search_form, status: active}
+      - {value: "DP", lang: neutral, alias_type: abbreviation, status: active}
+    examples: ["Справочник клиентов", "Витрина кредитного портфеля", "Скоринговая модель для кредитных заявок"]
+    usage_purpose: "Предоставлять автономные наборы данных для решения бизнес-задач."
+    status: active
+    introduced_in: "1.0"
+    attributes:
+      - id: data_product.owner_id
+        name: "Владелец (DOA)"
+        description: "Ответственный бизнес-владелец дата-продукта."
+      - id: data_product.sensitive_level
+        name: "Категория чувствительной информации"
+        description: "Классификационный уровень конфиденциальности данных, определяющий правила обработки, хранения и передачи."
+
+  - id: data_object
+    name: "Data Object"
+    name_ru: "Объект данных"
+    metamodel_level: component_details
+    category: data
+    description: >-
+      Атомарная сущность, которая хранит в себе информацию в рамках Дата Продукта или
+      технического решения. Имеющее разное физическое представление.
+    scope_notes: >-
+      Может конкретизироваться типом: Data_Table, Topic, ML_Model, File, Report, Notebook и др.
+      Связан с бизнес-контекстом (бизнес-сущности). Является целевым объектом для Дата
+      Контрактов, проверок качества данных, метрик и политик доступа. Имеет жизненный
+      цикл (статус). Может быть связан с дата-продуктом.
+    aliases:
+      - {value: "дата-объект", lang: ru, alias_type: search_form, status: active}
+      - {value: "DO", lang: neutral, alias_type: abbreviation, status: active}
+    examples: ["Таблица clients в DWH", "Топик transaction_events", "ML-модель credit_scoring_v1"]
+    usage_purpose: "Понимать атомарные единицы хранения данных."
+    status: active
+    introduced_in: "1.0"
+    attributes:
+      - id: data_object.object_type
+        name: "Тип объекта данных"
+        description: "Физическое представление объекта данных."
+        properties:
+          allowed_values: ["Data_Table", "Topic", "ML_Model", "File", "Report", "Notebook"]
+      - id: data_object.schema_format
+        name: "Формат схемы данных"
+        description: "Формальный язык описания структуры данных."
+        properties:
+          allowed_values: ["avro", "json_schema", "protobuf", "parquet", "sql_ddl"]
+      - id: data_object.schema_url
+        name: "URL схемы данных"
+        description: "Ссылка на формальное описание структуры данных."
+
+  - id: data_contract
+    name: "Data Contract"
+    name_ru: "Дата Контракт"
+    metamodel_level: business_details
+    category: data
+    description: >-
+      Свойство дата-продукта, включающее в себя объект контракта, метрики, целевые
+      значения и многоуровневую модель ответственности (матрицу эскалации) и любую
+      дополнительную документацию. Формальное, подлежащее контролю исполнения соглашение
+      между владельцем/поставщиком и потребителями Дата Продукта, которое устанавливает
+      взаимные обязательства и регламенты взаимодействия, включая требования к качеству,
+      надежности, своевременности, предсказуемости и управляемости данных.
+    scope_notes: >-
+      Содержит технические и бизнес-требования к данным, которые можно измерить и/или
+      контролировать. Верифицируется автоматизированными проверками выполнения требований.
+      Владелец — DOA. Включает контракты на поставку как составную часть.
+    aliases:
+      - {value: "дата-контракт", lang: ru, alias_type: search_form, status: active}
+      - {value: "DC", lang: neutral, alias_type: abbreviation, status: active}
+    examples: ["Data Contract. Zoe"]
+    usage_purpose: "Формализовать обязательства по качеству и надежности данных."
+    status: active
+    introduced_in: "1.0"
+
+  - id: delivery_contract
+    name: "Delivery Contract"
+    name_ru: "Контракт на поставку"
+    metamodel_level: component_details
+    category: data
+    description: >-
+      Обязательство на поставку данных в целевую систему, состоящее из набора атрибутов,
+      их типов и описаний, которые определяют схему и формат. Включает согласованный
+      набор правил изменения схем, соответствие требованиям backward-валидации,
+      согласование изменений и алерты при нарушении схемы.
+    scope_notes: >-
+      Включает в себя механизмы валидации изменений. Является частью дата-контракта.
+      Публикуется через Private API Portal (спецификации) и SDP / Entity Store.
+      Может быть привязан к API или Data Object.
+    aliases:
+      - {value: "контракт поставки", lang: ru, alias_type: synonym, status: active}
+      - {value: "SDP contract", lang: en, alias_type: synonym, status: active}
+    examples: []
+    usage_purpose: "Формализовать обязательства по поставке данных."
+    status: active
+    introduced_in: "1.0"
+
+  # data_scheme REMOVED as entity_kind — это атрибут/свойство data_object и delivery_contract.
+
+  - id: data_attribute
+    name: "Data Attribute"
+    name_ru: "Атрибут данных"
+    metamodel_level: component_details
+    category: data
+    description: >-
+      Отдельное поле или столбец в структуре данных (таблице, сообщении), которое имеет
+      техническое имя, описание, тип данных, и другие физические характеристики.
+    scope_notes: >-
+      Содержит технические метаданные (тип, длина, признак NULL). Может являться целевым
+      объектом для Дата Контрактов, проверок качества данных, метрик и политик доступа.
+      Является физической реализацией бизнес-атрибута.
+    aliases:
+      - {value: "поле", lang: ru, alias_type: synonym, status: active}
+      - {value: "столбец", lang: ru, alias_type: synonym, status: active}
+      - {value: "column", lang: en, alias_type: synonym, status: active}
+    examples: ["Столбец client_birth_dt (DATE) в таблице clients"]
+    usage_purpose: "Понимать физическую структуру данных."
+    status: active
+    introduced_in: "1.0"
+
+  - id: data_process
+    name: "Data Process"
+    name_ru: "Дата-процесс"
+    metamodel_level: component_details
+    category: data
+    description: >-
+      Формализованная, управляемая, повторяемая или непрерывная последовательность
+      вычислительных шагов над дата-объектами, которая может, но не обязана порождать
+      новый дата-объект или изменять существующий дата-объект (один или несколько).
+      Может, но не обязана порождать side-effects: индикаторы, логи, и т.д.
+    scope_notes: >-
+      Формализуется в виде кода, конфигураций, параметров или объектов в системе управления
+      дата-процессами (например профиль DQ в DQS). Подразделяется на: непрерывный процесс
+      (stream), пакетный процесс (batch). Запуск дата-процесса порождает экземпляр и
+      имеет контекст исполнения (среда, переменные окружения, параметры запуска). Имеет
+      конкретную логику и последовательность вычислений над дата-объектами: логический
+      план / граф вычислений. Может группироваться в более сложные процессы.
+      Создается IT Component (MSH / Other). Управляется через DH/DC/API.
+    aliases:
+      - {value: "пайплайн", lang: ru, alias_type: synonym, status: active}
+      - {value: "pipeline", lang: en, alias_type: synonym, status: active}
+      - {value: "ETL", lang: neutral, alias_type: synonym, status: active}
+    examples: ["Task в Airflow", "Dag в Airflow", "Kafka Mirror/Connector", "DQ check (профиль)"]
+    usage_purpose: "Понимать вычислительные процессы над данными."
+    status: active
+    introduced_in: "1.0"
+
+  # =========================================================================
+  # CROSS-CONTEXT (GOVERNANCE & OPERATIONAL)
+  # =========================================================================
+
+  - id: requirement
+    name: "Requirement"
+    name_ru: "Требование"
+    metamodel_level: ~
+    category: governance
+    description: >-
+      Формализованная и измеримая потребность, условие или критерий, которые должны быть
+      выполнены для объекта (системы, данных, процесса, продукта и т.д.) для достижения
+      бизнес-целей, соответствия стандартам качества, нормативным актам или техническим
+      спецификациям.
+    scope_notes: >-
+      Может быть применено к различным объектам мета-модели. Должно быть сформулировано
+      измеримо и проверяемо. Может иметь приоритет, статус (активно, выполнено, отклонено)
+      и источник (регулятор, бизнес-заказчик, архитектура). Может быть связано с метриками.
+    aliases:
+      - {value: "требование", lang: ru, alias_type: synonym, status: active}
+      - {value: "NFR", lang: neutral, alias_type: abbreviation, status: active}
+    examples: ["Время отклика API не должно превышать 200 мс", "Данные в витрине должны обновляться ежедневно к 08:00"]
+    usage_purpose: "Формализовать критерии, которым должен соответствовать объект."
+    status: active
+    introduced_in: "1.0"
+
+  - id: sla
+    name: "Service Level Agreement"
+    name_ru: "Соглашение об уровне поддержки"
+    metamodel_level: ~
+    category: governance
+    description: >-
+      Обязательство по реагированию и разрешению инцидентов, связанных с нарушением
+      требования/ий (или соглашения/ий). Формализует ответственность определенной
+      организационной единицы за поддержание объекта в целевом состоянии, соответствующем
+      заданным требованиям (соглашениям).
+    scope_notes: >-
+      Привязан к конкретному объекту (дата-продукт, ИТ-система, интеграция и т.д.).
+      Определяет уровни серьезности, время реакции и время разрешения.
+      Содержит матрицу эскалации. Связан с метриками, по которым контролируется
+      выполнение SLA.
+    aliases:
+      - {value: "SLA", lang: neutral, alias_type: abbreviation, status: active}
+      - {value: "соглашение об уровне обслуживания", lang: ru, alias_type: synonym, status: active}
+    examples: []
+    usage_purpose: "Формализовать ответственность за поддержание объекта в целевом состоянии."
+    status: active
+    introduced_in: "1.0"
+
+  # sensitive_level REMOVED as entity_kind — это атрибут/свойство дата-продукта.
+  # owner REMOVED as entity_kind — это атрибут сущности, а не сущность.
+
+  - id: event
+    name: "Event"
+    name_ru: "Событие"
+    metamodel_level: ~
+    category: operational
+    description: >-
+      Факт наступления значимого изменения состояния в рамках бизнес-процесса, работы
+      системы или жизненного цикла данных, который фиксируется, имеет временную метку
+      и может служить триггером для других процессов, уведомлений или аналитики.
+    scope_notes: >-
+      Всегда имеет тип события (Business Event, System Event, Data Event), временную
+      метку и источник. Может содержать полезную нагрузку (payload). Регистрируется в
+      логах, мониторинговых системах или хабе/шине событий. Используется для
+      автоматического реагирования (алерты).
+    aliases:
+      - {value: "событие", lang: ru, alias_type: synonym, status: active}
+      - {value: "бизнес-событие", lang: ru, alias_type: synonym, status: active}
+    examples: ["Заявка переведена в статус Одобрена", "Пайплайн завершился с ошибкой"]
+    usage_purpose: "Фиксировать значимые изменения состояния для триггеров и аналитики."
+    status: active
+    introduced_in: "1.0"
+
+  - id: metric
+    name: "Metric"
+    name_ru: "Метрика"
+    metamodel_level: ~
+    category: operational
+    description: >-
+      Измеримый показатель состояния объекта(ов) данных или процессов, связанных с ним(и).
+      Метрика служит объективной основой для мониторинга, контроля и управления объектом.
+    scope_notes: >-
+      Индикатор однозначно определен: имеет имя, прямую связь с объектом измерения
+      (дата-объект или дата-процесс), дату/период измерения, собственно значение
+      индикатора, единицы измерения. Вычисляется на регулярной основе. Может быть
+      интерпретирован: значение индикатора несет понятную смысловую нагрузку.
+      Фиксирует значение по результатам дата-процесса. Управляется через
+      DQS / DOA(Metrics) / Other (e.g. DH). Может быть привязана к требованиям
+      (Agreement/Requirement) и SLA.
+    aliases:
+      - {value: "показатель", lang: ru, alias_type: synonym, status: active}
+      - {value: "KPI", lang: neutral, alias_type: synonym, status: active}
+      - {value: "индикатор", lang: ru, alias_type: synonym, status: active}
+    examples: ["Дата поставки", "Продолжительность работы ETL-дага", "Статус DQ проверки"]
+    usage_purpose: "Объективно оценивать состояние или эффективность объекта."
+    status: active
+    introduced_in: "1.0"
+
+  - id: incident
+    name: "Incident"
+    name_ru: "Инцидент"
+    metamodel_level: ~
+    category: operational
+    description: >-
+      Зарегистрированное событие, которое указывает на нарушение в работе системы,
+      качестве данных или процессе поставки данных, требующее реакции и разрешения.
+    scope_notes: >-
+      Имеет степень серьезности и статус обработки. Связывается с затронутыми объектами
+      (компонентами, Дата Продуктами, бизнес-процессами).
+    aliases:
+      - {value: "инцидент", lang: ru, alias_type: synonym, status: active}
+      - {value: "сбой", lang: ru, alias_type: synonym, status: active}
+    examples: []
+    usage_purpose: "Фиксировать и управлять нарушениями в работе систем и данных."
+    status: active
+    introduced_in: "1.0"
+
+# ===========================================================================
+# RELATION KINDS
+# ===========================================================================
 
 relation_kinds:
   - id: rel_job_family_aggregates_product
@@ -411,23 +1287,17 @@ relation_kinds:
     direction: directed
     description: "Реализация операции выполняется логическим компонентом приложения."
 
-  - id: rel_process_uses_function
-    name: "Process использует Function"
-    from_kind: business_process
-    to_kind: business_function
-    metamodel_level: business_details
-    category: association
-    direction: directed
-    description: "Процесс включает набор бизнес-функций."
+  # rel_process_uses_function REMOVED — по TTL онтологии функцию выполняет роль,
+  # а не процесс. Заменена на rel_role_performs_function (см. ниже).
 
-  - id: rel_capability_aggregates_processes
-    name: "Capability агрегирует процессы"
-    from_kind: business_capability
-    to_kind: business_process
+  - id: rel_process_implements_capability
+    name: "Process реализует Capability"
+    from_kind: business_process
+    to_kind: business_capability
     metamodel_level: business_details
-    category: aggregation
+    category: realization
     direction: directed
-    description: "Способность включает связанные бизнес-процессы."
+    description: "Бизнес-процесс реализует бизнес-способность."
 
   - id: rel_capability_serves_value_stream
     name: "Capability поддерживает Value Stream"
@@ -438,14 +1308,14 @@ relation_kinds:
     direction: directed
     description: "Способность поддерживает поток создания ценности."
 
-  - id: rel_org_unit_supports_capability
-    name: "Org Unit поддерживает Capability"
+  - id: rel_org_unit_performs_capability
+    name: "Org Unit выполняет Capability"
     from_kind: organizational_unit
     to_kind: business_capability
     metamodel_level: strategic_view
-    category: support
+    category: execution
     direction: directed
-    description: "Подразделение обеспечивает работу бизнес-способности."
+    description: "Подразделение выполняет бизнес-способность."
 
   - id: rel_info_flow_serves_entity
     name: "Information Flow передаёт сущность"
@@ -483,23 +1353,23 @@ relation_kinds:
     direction: directed
     description: "Система поддерживает выполнение бизнес-способности."
 
-  - id: rel_org_unit_owns_it_system
-    name: "Org Unit отвечает за IT System"
+  - id: rel_org_unit_serves_it_system
+    name: "Org Unit обслуживает (отвечает за) IT System"
     from_kind: organizational_unit
     to_kind: it_system
     metamodel_level: strategic_view
-    category: ownership
+    category: serves
     direction: directed
-    description: "Подразделение владеет и поддерживает систему."
+    description: "Подразделение обслуживает и отвечает за ИТ-систему."
 
-  - id: rel_subsystem_composed_of_systems
-    name: "Functional Subsystem состоит из IT Systems"
-    from_kind: functional_subsystem
-    to_kind: it_system
+  - id: rel_it_system_composed_of_subsystems
+    name: "IT System состоит из Functional Subsystems"
+    from_kind: it_system
+    to_kind: functional_subsystem
     metamodel_level: solution_details
     category: composition
     direction: directed
-    description: "Подсистема агрегирует один или несколько ИТ-систем."
+    description: "ИТ-система состоит из функциональных подсистем."
 
   - id: rel_component_composed_of_subsystems
     name: "Component состоит из Subsystems"
@@ -519,14 +1389,23 @@ relation_kinds:
     direction: directed
     description: "Вендорский продукт реализует компонент."
 
-  - id: rel_software_component_composed_of_vendor_product
-    name: "Software Component состоит из Vendor Product"
-    from_kind: software_component
-    to_kind: vendor_product
+  - id: rel_vendor_product_specializes_it_system
+    name: "Vendor Product является частным случаем IT System"
+    from_kind: vendor_product
+    to_kind: it_system
+    metamodel_level: component_details
+    category: specialization
+    direction: directed
+    description: "Вендорский продукт (ПО) является частным случаем ИТ-системы."
+
+  - id: rel_vendor_product_composed_of_software_components
+    name: "Vendor Product состоит из Software Components"
+    from_kind: vendor_product
+    to_kind: software_component
     metamodel_level: component_details
     category: composition
     direction: directed
-    description: "Компонент ПО построен на вендорском продукте."
+    description: "Вендорский продукт состоит из компонентов ПО."
 
   - id: rel_component_exposes_api
     name: "Component состоит из API"
@@ -608,3 +1487,271 @@ relation_kinds:
     category: service
     direction: directed
     description: "Инфраструктура размещает компонент ПО."
+
+  # =========================================================================
+  # BUSINESS RELATIONS FROM TTL ONTOLOGY (fixing orphans)
+  # =========================================================================
+
+  # Goal → Goal (иерархия целей, TTL: hasSubGoal)
+  - id: rel_goal_has_subgoal
+    name: "Goal имеет подцель"
+    from_kind: goal
+    to_kind: goal
+    metamodel_level: strategic_view
+    category: aggregation
+    direction: directed
+    description: "Цель может декомпозироваться на подцели (иерархия)."
+
+  # Product → BusinessDomain (TTL: belongsToDomain)
+  - id: rel_product_belongs_to_domain
+    name: "Product принадлежит Domain"
+    from_kind: bank_product
+    to_kind: business_domain
+    metamodel_level: strategic_view
+    category: association
+    direction: directed
+    description: "Продукт принадлежит бизнес-домену."
+
+  # BusinessCapability → BusinessDomain (TTL: partOfDomain)
+  - id: rel_capability_part_of_domain
+    name: "Capability часть Domain"
+    from_kind: business_capability
+    to_kind: business_domain
+    metamodel_level: strategic_view
+    category: composition
+    direction: directed
+    description: "Бизнес-способность является частью бизнес-домена."
+
+  # ValueStreamStage → BusinessCapability (TTL: realizesCapability)
+  - id: rel_stage_realizes_capability
+    name: "Stage реализует Capability"
+    from_kind: value_stream_stage
+    to_kind: business_capability
+    metamodel_level: business_details
+    category: realization
+    direction: directed
+    description: "Стадия потока создания ценности реализует бизнес-способность."
+
+  # BusinessOperation → BusinessAction (TTL: consistsOfAction)
+  - id: rel_operation_consists_of_actions
+    name: "Operation состоит из Actions"
+    from_kind: business_operation
+    to_kind: business_action
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Бизнес-операция состоит из элементарных бизнес-действий."
+
+  # BusinessAction → BusinessEntity (TTL: operatesOn)
+  - id: rel_action_operates_on_entity
+    name: "Action работает с Entity"
+    from_kind: business_action
+    to_kind: business_entity
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Бизнес-действие оперирует бизнес-сущностью."
+
+  # BusinessEntity → BusinessAttribute (TTL: hasAttribute)
+  - id: rel_entity_has_attribute
+    name: "Entity имеет Attribute"
+    from_kind: business_entity
+    to_kind: business_attribute
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Бизнес-сущность имеет бизнес-атрибуты."
+
+  # OrganizationalUnit → BusinessRole (TTL: hasRole)
+  - id: rel_org_unit_has_role
+    name: "Org Unit включает Role"
+    from_kind: organizational_unit
+    to_kind: business_role
+    metamodel_level: strategic_view
+    category: composition
+    direction: directed
+    description: "Организационная единица включает бизнес-роли."
+
+  # BusinessRole → BusinessFunction (TTL: performsFunction)
+  - id: rel_role_performs_function
+    name: "Role выполняет Function"
+    from_kind: business_role
+    to_kind: business_function
+    metamodel_level: business_details
+    category: realization
+    direction: directed
+    description: "Бизнес-роль выполняет бизнес-функцию."
+
+  # ValueStream → CustomerSegment (TTL: servesCustomerSegment)
+  - id: rel_value_stream_serves_segment
+    name: "Value Stream обслуживает Segment"
+    from_kind: value_stream
+    to_kind: customer_segment
+    metamodel_level: business_details
+    category: service
+    direction: directed
+    description: "Поток создания ценности обслуживает клиентский сегмент."
+
+  # ValueStream → Channel (TTL: usedViaChannel)
+  - id: rel_value_stream_uses_channel
+    name: "Value Stream использует Channel"
+    from_kind: value_stream
+    to_kind: channel
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Поток создания ценности использует канал для доставки."
+
+  # Product → Value (TTL: deliversValue)
+  - id: rel_product_delivers_value
+    name: "Product доставляет Value"
+    from_kind: bank_product
+    to_kind: value
+    metamodel_level: business_details
+    category: produces
+    direction: directed
+    description: "Продукт предоставляет ценность потребителю."
+
+  # =========================================================================
+  # DATA CONTEXT RELATIONS (from data-context diagram)
+  # =========================================================================
+
+  # Бизнес-сущность → описывает → Дата Продукт
+  - id: rel_business_entity_describes_data_product
+    name: "Business Entity описывает Data Product"
+    from_kind: business_entity
+    to_kind: data_product
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Бизнес-сущность описывает предметную область Дата Продукта."
+
+  # Data Product → входит → Data Object (агрегация)
+  - id: rel_data_product_contains_data_object
+    name: "Data Product содержит Data Object"
+    from_kind: data_product
+    to_kind: data_object
+    metamodel_level: business_details
+    category: aggregation
+    direction: directed
+    description: "Дата Продукт агрегирует один или несколько объектов данных."
+
+  # Data Contract → входит → Data Object (контракт привязан к объекту)
+  - id: rel_data_contract_covers_data_object
+    name: "Data Contract покрывает Data Object"
+    from_kind: data_contract
+    to_kind: data_object
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Дата Контракт определяет требования к объекту данных."
+
+  # Data Contract → входит → Data Product (контракт является свойством продукта)
+  - id: rel_data_contract_part_of_data_product
+    name: "Data Contract входит в Data Product"
+    from_kind: data_contract
+    to_kind: data_product
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Дата Контракт является свойством Дата Продукта."
+
+  # Data Object ←→ Data Process (двусторонняя связь: процесс читает/пишет объекты)
+  - id: rel_data_process_operates_on_data_object
+    name: "Data Process оперирует Data Object"
+    from_kind: data_process
+    to_kind: data_object
+    metamodel_level: component_details
+    category: association
+    direction: directed
+    description: "Дата-процесс читает, создает или изменяет объект данных."
+
+  # Data Object ← мета → Data Contract (метаданные контракта)
+  - id: rel_data_object_has_meta_data_contract
+    name: "Data Object имеет метаописание в Data Contract"
+    from_kind: data_object
+    to_kind: data_contract
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Объект данных имеет метаописание в дата-контракте."
+
+  # IT Component → создает → Data Process
+  - id: rel_component_creates_data_process
+    name: "Component создает Data Process"
+    from_kind: component
+    to_kind: data_process
+    metamodel_level: component_details
+    category: produces
+    direction: directed
+    description: "IT-компонент создает и исполняет дата-процесс."
+
+  # Delivery Contract → контрактует поставку → IT Component
+  - id: rel_delivery_contract_contracts_component
+    name: "Delivery Contract контрактует поставку IT Component"
+    from_kind: delivery_contract
+    to_kind: component
+    metamodel_level: component_details
+    category: association
+    direction: directed
+    description: "Контракт на поставку формализует обязательства IT-компонента по поставке данных."
+
+  # Delivery Contract → является частью → Data Contract
+  - id: rel_delivery_contract_part_of_data_contract
+    name: "Delivery Contract входит в Data Contract"
+    from_kind: delivery_contract
+    to_kind: data_contract
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Контракт на поставку является частью дата-контракта."
+
+  # Metric → фиксирует значение → Data Process (процесс порождает метрику)
+  - id: rel_data_process_produces_metric
+    name: "Data Process фиксирует Metric"
+    from_kind: data_process
+    to_kind: metric
+    metamodel_level: component_details
+    category: produces
+    direction: directed
+    description: "Дата-процесс вычисляет и фиксирует значение метрики."
+
+  # Requirement → привязан к → Data Object / Data Process (через metric)
+  - id: rel_requirement_applies_to_data_object
+    name: "Requirement применяется к Data Object"
+    from_kind: requirement
+    to_kind: data_object
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Требование определяет целевое состояние объекта данных."
+
+  # SLA → привязан к → Data Object
+  - id: rel_sla_covers_data_object
+    name: "SLA покрывает Data Object"
+    from_kind: sla
+    to_kind: data_object
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "SLA формализует ответственность за поддержание объекта данных."
+
+  # Бизнес-сущность → ИТ-система (from diagram top row)
+  - id: rel_business_entity_managed_by_it_system
+    name: "Business Entity управляется IT System"
+    from_kind: business_entity
+    to_kind: it_system
+    metamodel_level: solution_details
+    category: association
+    direction: directed
+    description: "Бизнес-сущность управляется в ИТ-системе (CAP / DH / Domain services)."
+
+  # IT System → IT Component (from diagram top row)
+  - id: rel_it_system_contains_component
+    name: "IT System содержит Component"
+    from_kind: it_system
+    to_kind: component
+    metamodel_level: component_details
+    category: composition
+    direction: directed
+    description: "ИТ-система содержит компоненты (MSH / Other)."
