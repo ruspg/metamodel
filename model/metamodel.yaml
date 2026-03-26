@@ -860,15 +860,19 @@ entity_kinds:
     metamodel_level: business_details
     category: data
     description: >-
-      Автономный, доступный для обнаружения и повторного использования набор дата-объектов,
-      снабженный всеми необходимыми метаданными и механизмами доступа, который создается
-      для решения конкретных бизнес-задач и предоставляет измеримую ценность своим
-      потребителям.
+      Объединение дата-сущностей и процессов/сущностей, производных от данных. Имеет все
+      свойства продукта: бизнес-цель, пользователи, владелец, жизненный цикл. Автономный,
+      доступный для обнаружения и повторного использования набор дата-объектов, снабженный
+      всеми необходимыми метаданными и механизмами доступа, который создается для решения
+      конкретных бизнес-задач и предоставляет измеримую ценность своим потребителям.
     scope_notes: >-
-      Должен иметь ответственного бизнес-владельца. Должен иметь связь с дата-контрактом.
-      Связан с бизнес-контекстом (бизнес-сущности). Может иметь сложные связи с другими
-      Дата Продуктами. Имеет жизненный цикл (статус). Может агрегировать несколько
-      Объектов данных (>=1). Сам по себе несет ценность пользователям.
+      Должен иметь ответственного бизнес-владельца (DOA). Должен иметь связь с
+      дата-контрактом. Связан с бизнес-контекстом (бизнес-сущности). Может иметь
+      сложные связи с другими Дата Продуктами. Имеет жизненный цикл (статус). Может
+      агрегировать несколько Объектов данных (>=1). Сам по себе несет ценность
+      пользователям. Описывается в CAP / DH / Domain services.
+      Добровольная система подписок: подписчиками автоматически становятся владельцы
+      зависимых по горизонтальному линеаджу продуктов.
     aliases:
       - {value: "дата-продукт", lang: ru, alias_type: search_form, status: active}
       - {value: "DP", lang: neutral, alias_type: abbreviation, status: active}
@@ -904,13 +908,16 @@ entity_kinds:
     metamodel_level: business_details
     category: data
     description: >-
-      Формальное, подлежащее контролю исполнения соглашение между владельцем/поставщиком
-      и потребителями Дата Продукта, которое устанавливает взаимные обязательства и
-      регламенты взаимодействия, включая требования к качеству, надежности, своевременности,
-      предсказуемости и управляемости данных.
+      Свойство дата-продукта, включающее в себя объект контракта, метрики, целевые
+      значения и многоуровневую модель ответственности (матрицу эскалации) и любую
+      дополнительную документацию. Формальное, подлежащее контролю исполнения соглашение
+      между владельцем/поставщиком и потребителями Дата Продукта, которое устанавливает
+      взаимные обязательства и регламенты взаимодействия, включая требования к качеству,
+      надежности, своевременности, предсказуемости и управляемости данных.
     scope_notes: >-
       Содержит технические и бизнес-требования к данным, которые можно измерить и/или
       контролировать. Верифицируется автоматизированными проверками выполнения требований.
+      Владелец — DOA. Включает контракты на поставку как составную часть.
     aliases:
       - {value: "дата-контракт", lang: ru, alias_type: search_form, status: active}
       - {value: "DC", lang: neutral, alias_type: abbreviation, status: active}
@@ -925,12 +932,17 @@ entity_kinds:
     metamodel_level: component_details
     category: data
     description: >-
-      Контракт поставки — это обязательство на поставку данных в целевую систему, состоящее
-      из набора атрибутов, их типов и описаний, которые определяют схему и формат.
+      Обязательство на поставку данных в целевую систему, состоящее из набора атрибутов,
+      их типов и описаний, которые определяют схему и формат. Включает согласованный
+      набор правил изменения схем, соответствие требованиям backward-валидации,
+      согласование изменений и алерты при нарушении схемы.
     scope_notes: >-
       Включает в себя механизмы валидации изменений. Является частью дата-контракта.
+      Публикуется через Private API Portal (спецификации) и SDP / Entity Store.
+      Может быть привязан к API или Data Object.
     aliases:
       - {value: "контракт поставки", lang: ru, alias_type: synonym, status: active}
+      - {value: "SDP contract", lang: en, alias_type: synonym, status: active}
     examples: []
     usage_purpose: "Формализовать обязательства по поставке данных."
     status: active
@@ -984,13 +996,16 @@ entity_kinds:
     description: >-
       Формализованная, управляемая, повторяемая или непрерывная последовательность
       вычислительных шагов над дата-объектами, которая может, но не обязана порождать
-      новый дата-объект или изменять существующий дата-объект.
+      новый дата-объект или изменять существующий дата-объект (один или несколько).
+      Может, но не обязана порождать side-effects: индикаторы, логи, и т.д.
     scope_notes: >-
       Формализуется в виде кода, конфигураций, параметров или объектов в системе управления
-      дата-процессами. Подразделяется на: непрерывный процесс (stream), пакетный процесс
-      (batch). Запуск дата-процесса порождает экземпляр и имеет контекст исполнения.
-      Имеет конкретную логику и последовательность вычислений. Может группироваться
-      в более сложные процессы.
+      дата-процессами (например профиль DQ в DQS). Подразделяется на: непрерывный процесс
+      (stream), пакетный процесс (batch). Запуск дата-процесса порождает экземпляр и
+      имеет контекст исполнения (среда, переменные окружения, параметры запуска). Имеет
+      конкретную логику и последовательность вычислений над дата-объектами: логический
+      план / граф вычислений. Может группироваться в более сложные процессы.
+      Создается IT Component (MSH / Other). Управляется через DH/DC/API.
     aliases:
       - {value: "пайплайн", lang: ru, alias_type: synonym, status: active}
       - {value: "pipeline", lang: en, alias_type: synonym, status: active}
@@ -1023,6 +1038,29 @@ entity_kinds:
       - {value: "NFR", lang: neutral, alias_type: abbreviation, status: active}
     examples: ["Время отклика API не должно превышать 200 мс", "Данные в витрине должны обновляться ежедневно к 08:00"]
     usage_purpose: "Формализовать критерии, которым должен соответствовать объект."
+    status: active
+    introduced_in: "1.0"
+
+  - id: sla
+    name: "Service Level Agreement"
+    name_ru: "Соглашение об уровне поддержки"
+    metamodel_level: ~
+    category: governance
+    description: >-
+      Обязательство по реагированию и разрешению инцидентов, связанных с нарушением
+      требования/ий (или соглашения/ий). Формализует ответственность определенной
+      организационной единицы за поддержание объекта в целевом состоянии, соответствующем
+      заданным требованиям (соглашениям).
+    scope_notes: >-
+      Привязан к конкретному объекту (дата-продукт, ИТ-система, интеграция и т.д.).
+      Определяет уровни серьезности, время реакции и время разрешения.
+      Содержит матрицу эскалации. Связан с метриками, по которым контролируется
+      выполнение SLA.
+    aliases:
+      - {value: "SLA", lang: neutral, alias_type: abbreviation, status: active}
+      - {value: "соглашение об уровне обслуживания", lang: ru, alias_type: synonym, status: active}
+    examples: []
+    usage_purpose: "Формализовать ответственность за поддержание объекта в целевом состоянии."
     status: active
     introduced_in: "1.0"
 
@@ -1097,18 +1135,21 @@ entity_kinds:
     metamodel_level: ~
     category: operational
     description: >-
-      Измеримый показатель, который количественно оценивает определённый аспект объекта.
+      Измеримый показатель состояния объекта(ов) данных или процессов, связанных с ним(и).
       Метрика служит объективной основой для мониторинга, контроля и управления объектом.
     scope_notes: >-
-      Метрика однозначно определена: имеет имя, прямую связь с объектом измерения,
-      дату/период измерения, методику расчета, значение индикатора, единицы измерения.
-      Вычисляется на регулярной основе. Всегда принадлежит конкретному объекту.
-      Может быть привязана к требованиям.
+      Индикатор однозначно определен: имеет имя, прямую связь с объектом измерения
+      (дата-объект или дата-процесс), дату/период измерения, собственно значение
+      индикатора, единицы измерения. Вычисляется на регулярной основе. Может быть
+      интерпретирован: значение индикатора несет понятную смысловую нагрузку.
+      Фиксирует значение по результатам дата-процесса. Управляется через
+      DQS / DOA(Metrics) / Other (e.g. DH). Может быть привязана к требованиям
+      (Agreement/Requirement) и SLA.
     aliases:
       - {value: "показатель", lang: ru, alias_type: synonym, status: active}
       - {value: "KPI", lang: neutral, alias_type: synonym, status: active}
       - {value: "индикатор", lang: ru, alias_type: synonym, status: active}
-    examples: ["Метрика Задержка данных", "Метрика Процент валидных записей"]
+    examples: ["Дата поставки", "Продолжительность работы ETL-дага", "Статус DQ проверки"]
     usage_purpose: "Объективно оценивать состояние или эффективность объекта."
     status: active
     introduced_in: "1.0"
@@ -1133,7 +1174,7 @@ entity_kinds:
     introduced_in: "1.0"
 
 # ===========================================================================
-# RELATION KINDS (unchanged — new relations for new entity_kinds TBD)
+# RELATION KINDS
 # ===========================================================================
 
 relation_kinds:
@@ -1496,3 +1537,147 @@ relation_kinds:
     category: service
     direction: directed
     description: "Инфраструктура размещает компонент ПО."
+
+  # =========================================================================
+  # DATA CONTEXT RELATIONS (from data-context diagram)
+  # =========================================================================
+
+  # Бизнес-сущность → описывает → Дата Продукт
+  - id: rel_business_entity_describes_data_product
+    name: "Business Entity описывает Data Product"
+    from_kind: business_entity
+    to_kind: data_product
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Бизнес-сущность описывает предметную область Дата Продукта."
+
+  # Data Product → входит → Data Object (агрегация)
+  - id: rel_data_product_contains_data_object
+    name: "Data Product содержит Data Object"
+    from_kind: data_product
+    to_kind: data_object
+    metamodel_level: business_details
+    category: aggregation
+    direction: directed
+    description: "Дата Продукт агрегирует один или несколько объектов данных."
+
+  # Data Contract → входит → Data Object (контракт привязан к объекту)
+  - id: rel_data_contract_covers_data_object
+    name: "Data Contract покрывает Data Object"
+    from_kind: data_contract
+    to_kind: data_object
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Дата Контракт определяет требования к объекту данных."
+
+  # Data Contract → входит → Data Product (контракт является свойством продукта)
+  - id: rel_data_contract_part_of_data_product
+    name: "Data Contract входит в Data Product"
+    from_kind: data_contract
+    to_kind: data_product
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Дата Контракт является свойством Дата Продукта."
+
+  # Data Object ←→ Data Process (двусторонняя связь: процесс читает/пишет объекты)
+  - id: rel_data_process_operates_on_data_object
+    name: "Data Process оперирует Data Object"
+    from_kind: data_process
+    to_kind: data_object
+    metamodel_level: component_details
+    category: association
+    direction: directed
+    description: "Дата-процесс читает, создает или изменяет объект данных."
+
+  # Data Object ← мета → Data Contract (метаданные контракта)
+  - id: rel_data_object_has_meta_data_contract
+    name: "Data Object имеет метаописание в Data Contract"
+    from_kind: data_object
+    to_kind: data_contract
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Объект данных имеет метаописание в дата-контракте."
+
+  # IT Component → создает → Data Process
+  - id: rel_component_creates_data_process
+    name: "Component создает Data Process"
+    from_kind: component
+    to_kind: data_process
+    metamodel_level: component_details
+    category: produces
+    direction: directed
+    description: "IT-компонент создает и исполняет дата-процесс."
+
+  # Delivery Contract → контрактует поставку → IT Component
+  - id: rel_delivery_contract_contracts_component
+    name: "Delivery Contract контрактует поставку IT Component"
+    from_kind: delivery_contract
+    to_kind: component
+    metamodel_level: component_details
+    category: association
+    direction: directed
+    description: "Контракт на поставку формализует обязательства IT-компонента по поставке данных."
+
+  # Delivery Contract → является частью → Data Contract
+  - id: rel_delivery_contract_part_of_data_contract
+    name: "Delivery Contract входит в Data Contract"
+    from_kind: delivery_contract
+    to_kind: data_contract
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Контракт на поставку является частью дата-контракта."
+
+  # Metric → фиксирует значение → Data Process (процесс порождает метрику)
+  - id: rel_data_process_produces_metric
+    name: "Data Process фиксирует Metric"
+    from_kind: data_process
+    to_kind: metric
+    metamodel_level: component_details
+    category: produces
+    direction: directed
+    description: "Дата-процесс вычисляет и фиксирует значение метрики."
+
+  # Requirement → привязан к → Data Object / Data Process (через metric)
+  - id: rel_requirement_applies_to_data_object
+    name: "Requirement применяется к Data Object"
+    from_kind: requirement
+    to_kind: data_object
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Требование определяет целевое состояние объекта данных."
+
+  # SLA → привязан к → Data Object
+  - id: rel_sla_covers_data_object
+    name: "SLA покрывает Data Object"
+    from_kind: sla
+    to_kind: data_object
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "SLA формализует ответственность за поддержание объекта данных."
+
+  # Бизнес-сущность → ИТ-система (from diagram top row)
+  - id: rel_business_entity_managed_by_it_system
+    name: "Business Entity управляется IT System"
+    from_kind: business_entity
+    to_kind: it_system
+    metamodel_level: solution_details
+    category: association
+    direction: directed
+    description: "Бизнес-сущность управляется в ИТ-системе (CAP / DH / Domain services)."
+
+  # IT System → IT Component (from diagram top row)
+  - id: rel_it_system_contains_component
+    name: "IT System содержит Component"
+    from_kind: it_system
+    to_kind: component
+    metamodel_level: component_details
+    category: composition
+    direction: directed
+    description: "ИТ-система содержит компоненты (MSH / Other)."
