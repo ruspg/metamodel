@@ -210,7 +210,7 @@ Each entity kind should be a first-class object with these semantic groups:
 - review class;
 - evidence expectations if relevant.
 
-Detailed mandatory fields and invariants are deferred to Session 8.
+Детальный контракт: [Entity Kind Contract](entity_kind_contract_v2.md).
 
 ## 8. High-level contract for `relation_kind`
 
@@ -249,7 +249,7 @@ Each relation kind should be a first-class object with these semantic groups:
 - deprecation/replacement metadata;
 - breaking-change sensitivity.
 
-Detailed mandatory fields and invariants are deferred to Session 10.
+Детальный контракт: [Relation Kind Contract](relation_kind_contract_v2.md).
 
 ## 9. High-level contract for `attribute_def`
 
@@ -266,7 +266,7 @@ Each `attribute_def` should carry these semantic groups:
 - external-link or evidence semantics where applicable;
 - runtime serialization hints.
 
-Detailed mandatory fields and invariants are deferred to Session 9.
+Детальный контракт: [Attribute Definition Contract](attribute_def_contract_v2.md).
 
 ## 10. High-level contract for `qualifier_def`
 
@@ -281,7 +281,7 @@ Each `qualifier_def` should carry these semantic groups:
 - export/runtime serialization hints;
 - traversal influence flags when needed.
 
-Detailed mandatory fields and invariants are deferred to Session 11.
+Детальный контракт: [Qualifier Definition Contract](qualifier_def_contract_v2.md).
 
 ## 11. Lifecycle and deprecation model
 
@@ -319,7 +319,7 @@ This enables:
 - search recall and disambiguation;
 - migration from old naming without ID churn.
 
-Detailed naming and glossary policy is deferred to Session 12.
+Детальная политика: [Glossary и Naming Policy](glossary_alias_naming_policy.md).
 
 ## 13. UI, search, and runtime hints
 
@@ -437,7 +437,7 @@ This is a conceptual shape, not the final formal schema.
 
 ## 19. What Schema v2 must enable next
 
-This high-level design must enable the next sessions to produce:
+На основе этого дизайна реализуются:
 1. exact `entity_kind` contract;
 2. exact `attribute_def` contract;
 3. exact `relation_kind` contract;

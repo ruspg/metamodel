@@ -18,16 +18,16 @@
 
 ---
 
-## 2. Scope (Wave 1)
+## 2. Scope
 
-Wave 1 relation catalog включает:
+Каталог связей включает:
 
 1. **Business-layer backbone** из P0 relation matrix.
 2. **Минимум P1**, который реально улучшает neighbors/paths/impact/BPMN context.
 3. **Минимум cross-layer relations** для полезного process-centric traversal:
-   - process/operation -> IT support;
-   - operation -> data context;
-   - operation -> ownership/responsibility context.
+   - process/operation → IT support;
+   - operation → data context;
+   - operation → ownership/responsibility context.
 4. Relation kinds, необходимые для:
    - entity card relations tab;
    - neighbors;
@@ -35,7 +35,7 @@ Wave 1 relation catalog включает:
    - impact;
    - BPMN activity context через `business_operation`.
 
-В Wave 1 **отложено**:
+**Отложено на следующие итерации:**
 
 - полный universe relation kinds по всем слоям;
 - rich lineage map beyond MVP-critical edges;
@@ -77,7 +77,7 @@ Wave 1 relation catalog включает:
 - `exportable` — включается ли в runtime export/profile snapshot.
 - `status` — `active | deprecated | experimental`.
 - `introduced_in` — версия модели, где relation зафиксирован.
-- `applies_to_profiles` — профили, где relation разрешён (Wave 1: минимум `atlas_mvp`).
+- `applies_to_profiles` — профили, где relation разрешён (MVP: минимум `atlas_mvp`).
 
 ---
 
@@ -140,7 +140,7 @@ Wave 1 relation catalog включает:
 3. `secondary` — relation валиден, но должен уступать `primary` при прочих равных.
 4. `tertiary` — relation допустим как fallback и не должен доминировать в top paths.
 5. `excluded` — relation не должен использоваться path ranking даже если edge физически существует.
-6. Для Wave 1 ranking policy:
+6. Для MVP ranking policy:
    - structural/process backbone relations обычно должны outrank contextual/support relations;
    - ownership/context relations не должны доминировать над process/data/technology bridge paths;
    - relations с `path_priority=excluded` всегда исключаются из path ranking.
@@ -151,7 +151,7 @@ Wave 1 relation catalog включает:
 2. `propagate` — relation может расширять blast radius.
 3. `explain_only` — relation может отображаться в impact results как контекст, но не распространяет impact дальше.
 4. `exclude` — relation не участвует в impact results.
-5. `allowed_in_impact` сохраняется как coarse gate для совместимости Wave 1; `impact_mode` является более сильной семантикой интерпретации.
+5. `allowed_in_impact` сохраняется как coarse gate для совместимости MVP; `impact_mode` является более сильной семантикой интерпретации.
 6. Если `allowed_in_impact=false`, runtime обязан трактовать relation как effectively excluded для impact независимо от `impact_mode`.
 
 ### Rule 7 — Qualifiers policy
@@ -185,23 +185,23 @@ Wave 1 relation catalog включает:
 - нужна отдельная discoverable карточка;
 - связь сама имеет много собственных relations/ownership/governance.
 
-Такие случаи фиксируются как deferred link-entity pattern (post-Wave 1).
+Такие случаи фиксируются как deferred link-entity pattern (post-MVP).
 
 ### Rule 11 — Lifecycle and deprecation
 
-1. `status=active` для Wave 1 production catalog.
+1. `status=active` для MVP production catalog.
 2. Для замены relation используется soft deprecation: `status=deprecated`, указание replacement relation, сохранение backward compatibility window.
 3. Физическое удаление relation ID возможно только после removal window и migration.
 
 ---
 
-## 5. Wave 1 modeling policy
+## 5. MVP modeling policy
 
 1. Начинать от business backbone (P0 matrix) и сохранять его как traversal spine.
 2. Предпочитать direct edges.
 3. Qualified edges вводить только при материальной добавке к анализу/объяснимости.
 4. Каталог держать **minimal-but-strong**: меньше relation kinds, но каждый реально полезен для MVP UX/API.
-5. Не расширять каталог «на будущее» без конкретного Wave 1 use case.
+5. Не расширять каталог «на будущее» без конкретного MVP use case.
 6. `business_operation` — обязательный first-class bridge для BPMN activity context и cross-layer navigation.
 
 ---
