@@ -218,13 +218,18 @@ Atlas — graph-first enterprise registry, один из downstream-потреб
 
 ## Документация
 
+### Видение и концепции
+
+| Документ | Описание |
+|----------|----------|
+| [`docs/vision.md`](docs/vision.md) | Зачем банку метамодель, индустриальный контекст, целевое видение |
+| [`docs/concepts.md`](docs/concepts.md) | Ключевые концепции: Composable Enterprise, Data Contracts, сертификация, граф знаний |
+
 ### Для контрибьюторов
 
 | Документ | Описание |
 |----------|----------|
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Как добавить сущность, связь, атрибут или квалификатор |
-| [`docs/metamodel_yaml_format.md`](docs/metamodel_yaml_format.md) | Формат YAML-файла метамодели |
-| [`docs/metamodel_contribution_rules.md`](docs/metamodel_contribution_rules.md) | Правила контрибьюшена и проверки |
 
 ### Архитектурные контракты
 
@@ -244,6 +249,7 @@ Atlas — graph-first enterprise registry, один из downstream-потреб
 | [`ontology_schema_v2_high_level_design.md`](docs/architecture/ontology_schema_v2_high_level_design.md) | Высокоуровневый дизайн схемы онтологии |
 | [`authoring_rationale.md`](docs/architecture/authoring_rationale.md) | Обоснование структуры авторинга |
 | [`docs/decisions/`](docs/decisions/) | Журнал архитектурных решений (ADR) |
+| [`key_design_decisions.md`](docs/decisions/key_design_decisions.md) | Сводка 10 ключевых проектных решений |
 
 ### Внутренние справочники
 

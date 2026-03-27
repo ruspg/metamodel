@@ -559,19 +559,7 @@ entity_kinds:
     status: active
     introduced_in: "1.0"
 
-  - id: functional_subsystem
-    name: "Functional Subsystem"
-    name_ru: "Функциональная подсистема"
-    metamodel_level: solution_details
-    category: application
-    description: "Функциональный блок внутри ИТ-системы."
-    scope_notes: ""
-    aliases:
-      - {value: "подсистема", lang: ru, alias_type: abbreviation, status: active}
-    examples: []
-    usage_purpose: "Понимать функциональную декомпозицию ИТ-системы."
-    status: active
-    introduced_in: "0.1"
+  # functional_subsystem removed — replaced by recursive it_system (KDD-3)
 
   # =========================================================================
   # COMPONENT DETAILS
@@ -1362,23 +1350,14 @@ relation_kinds:
     direction: directed
     description: "Подразделение обслуживает и отвечает за ИТ-систему."
 
-  - id: rel_it_system_composed_of_subsystems
-    name: "IT System состоит из Functional Subsystems"
+  - id: rel_it_system_contains_subsystem
+    name: "IT System contains child IT System"
     from_kind: it_system
-    to_kind: functional_subsystem
+    to_kind: it_system
     metamodel_level: solution_details
     category: composition
     direction: directed
-    description: "ИТ-система состоит из функциональных подсистем."
-
-  - id: rel_component_composed_of_subsystems
-    name: "Component состоит из Subsystems"
-    from_kind: component
-    to_kind: functional_subsystem
-    metamodel_level: component_details
-    category: composition
-    direction: directed
-    description: "Компонент опирается на функциональные подсистемы."
+    description: "ИТ-система содержит дочернюю ИТ-систему (рекурсивная декомпозиция, KDD-3)."
 
   - id: rel_component_realized_by_vendor_product
     name: "Vendor Product реализует Component"

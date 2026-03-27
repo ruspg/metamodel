@@ -1020,17 +1020,17 @@ relation_catalog:
       introduced_in: "2.0.0"
       applies_to_profiles: [atlas_mvp]
 
-    - id: rel_operation_owned_by_team
-      name: Operation owned by team
-      description: Assigns accountable team ownership for business operation.
+    - id: rel_operation_owned_by_org_unit
+      name: Operation owned by organizational unit
+      description: Assigns accountable organizational unit ownership for business operation.
       from_kind: business_operation
-      to_kind: team
+      to_kind: organizational_unit
       category: ownership
       direction: directed
       source_cardinality: many
       target_cardinality: many
       has_inverse: true
-      inverse_relation_id: rel_team_owns_operation
+      inverse_relation_id: rel_org_unit_owns_operation
       is_traversable_by_default: true
       allowed_in_neighbors: true
       allowed_in_paths: true
@@ -1042,7 +1042,7 @@ relation_catalog:
       allowed_qualifiers: [role]
       required_qualifiers: []
       evidence_required: true
-      ui_label_out: owned by team
+      ui_label_out: owned by
       ui_label_in: owns operation
       ui_group: ownership
       exportable: true
@@ -1050,17 +1050,17 @@ relation_catalog:
       introduced_in: "2.0.0"
       applies_to_profiles: [atlas_mvp]
 
-    - id: rel_team_owns_operation
-      name: Team owns operation
-      description: Inverse of operation owned by team.
-      from_kind: team
+    - id: rel_org_unit_owns_operation
+      name: Organizational unit owns operation
+      description: Inverse of operation owned by organizational unit.
+      from_kind: organizational_unit
       to_kind: business_operation
       category: ownership
       direction: directed
       source_cardinality: many
       target_cardinality: many
       has_inverse: true
-      inverse_relation_id: rel_operation_owned_by_team
+      inverse_relation_id: rel_operation_owned_by_org_unit
       is_traversable_by_default: true
       allowed_in_neighbors: true
       allowed_in_paths: true
@@ -1073,7 +1073,7 @@ relation_catalog:
       required_qualifiers: []
       evidence_required: true
       ui_label_out: owns operation
-      ui_label_in: owned by team
+      ui_label_in: owned by
       ui_group: ownership
       exportable: true
       status: active
