@@ -1,14 +1,12 @@
 # Business Layer Semantic Alignment
 
-Status: draft-for-freeze  
-Session: 13  
-Scope: semantic alignment of core business-layer concepts for `metamodel` and downstream `rbank-atlas`
+> Каноническое определение и разграничение ключевых бизнес-концепций онтологии.
 
 ---
 
-## 1. Purpose
+## 1. Назначение
 
-This document fixes the canonical meaning and boundaries of the core business-layer concepts used in the ontology and runtime graph. Its job is to eliminate semantic drift before relation modeling, BPMN mapping, bundle generation, and Codex implementation.
+Этот документ фиксирует каноническое значение и границы ключевых бизнес-концепций, используемых в онтологии и runtime-графе. Его задача — исключить семантический дрейф при моделировании связей, маппинге BPMN и построении bundle.
 
 The concepts covered here are:
 - `value_stream`
@@ -541,13 +539,9 @@ If a proposed kind cannot be populated distinctly from sources and produces no d
 
 ---
 
-## 12. Open follow-up artifacts
+## 12. Связанные контракты
 
-This document is an input to:
-- formal decision on `business_operation`
-- business-layer relation matrix
-- relation catalog v2
-- source-to-ontology matrix
-- ingestability review
-- minimum demonstrable slice design
+- [Business Layer Relation Matrix](business_layer_relation_matrix.md)
+- [Entity Kind Contract](entity_kind_contract_v2.md)
+- [Решение: business_operation](../decisions/formal_decision_business_operation.md)
 

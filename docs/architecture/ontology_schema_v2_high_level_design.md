@@ -1,19 +1,8 @@
-# Ontology Schema v2 — High-Level Design
+# Ontology Schema — High-Level Design
 
-Status: draft-for-review  
-Session: 7  
-Wave: 2 — ontology schema v2 и semantic core  
-Depends on:
-- execution_model.md
-- north_star_mvp_boundaries.md
-- storage_model_and_source_layers.md
-- program_governance_and_artifact_contour.md
-- metamodel_structural_audit.md
-- rbank_atlas_structural_audit.md
-- upstream_downstream_contract.md
-- master_artifact_register.md
+> Архитектурный обзор authoring-контракта онтологии: блоки, принципы, границы.
 
-## 1. Purpose
+## 1. Назначение
 
 Ontology Schema v2 is the authoring contract of the upstream `metamodel` repository. It is the canonical machine-readable schema for describing:
 - model metadata;
@@ -458,31 +447,21 @@ This high-level design must enable the next sessions to produce:
 7. bundle generator inputs;
 8. compatibility and validation rules.
 
-## 20. Key decisions captured by this session
+## 20. Ключевые принципы
 
-1. Schema v2 is an **authoring contract**, not a runtime API format.
-2. `metamodel` owns this schema; `rbank-atlas` consumes only generated release artifacts.
-3. Types, relations, attributes, and qualifiers are all first-class ontology elements.
-4. Aliases/glossary and lifecycle metadata are mandatory parts of the model, not optional prose.
-5. UI/search/runtime hints belong in authoring only as projection-friendly metadata.
-6. A normalization layer is mandatory before atlas bundle generation.
-7. Profiles/subsets are native features of the ontology authoring model.
+1. Схема онтологии — **authoring contract**, а не формат runtime API.
+2. `metamodel` владеет схемой; `rbank-atlas` потребляет только сгенерированные release-артефакты.
+3. Types, relations, attributes и qualifiers — first-class элементы онтологии.
+4. Aliases/glossary и lifecycle metadata — обязательные части модели, а не опциональная проза.
+5. UI/search/runtime hints хранятся в authoring как projection-friendly metadata.
+6. Нормализация обязательна перед генерацией bundle.
+7. Profiles/subsets — нативная функция authoring-модели.
 
-## 21. Open questions intentionally deferred
+## 21. Связанные контракты
 
-1. Exact field set and invariants for `entity_kind`.
-2. Exact field set and invariants for `attribute_def`.
-3. Exact field set and invariants for `relation_kind`.
-4. Exact field set and invariants for `qualifier_def`.
-5. Exact naming policy and glossary normalization rules.
-6. Exact directory structure and multi-file authoring layout.
-7. Exact SemVer and compatibility matrix.
-8. Exact runtime normalized JSON contracts.
-
-## 22. Exit criteria for Session 7
-
-Session 7 is considered complete when:
-- the top-level authoring blocks are fixed;
-- the role of each block is unambiguous;
-- the authoring/runtime boundary is explicit;
-- the next detailing sessions can proceed without changing the overall frame.
+- [Entity Kind Contract](entity_kind_contract_v2.md)
+- [Attribute Definition Contract](attribute_def_contract_v2.md)
+- [Relation Kind Contract](relation_kind_contract_v2.md)
+- [Qualifier Definition Contract](qualifier_def_contract_v2.md)
+- [Glossary и Naming Policy](glossary_alias_naming_policy.md)
+- [Relation Catalog Rules](relation_catalog_v2_rules.md)

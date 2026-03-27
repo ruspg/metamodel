@@ -1,12 +1,10 @@
 # Glossary, Alias, and Naming Policy
 
-Дата: 2026-03-09
-Статус: frozen-for-wave
-Сессия: 12 — правила именования, aliases и glossary model
+> Правила именования, управление синонимами и glossary-модель.
 
 ## 1. Цель
 
-Этот документ фиксирует единые правила именования для ontology schema v2, управляемую модель синонимов и glossary model, чтобы:
+Этот документ фиксирует единые правила именования, управляемую модель синонимов и glossary model, чтобы:
 - исключить терминологический хаос в `metamodel`;
 - обеспечить стабильные machine-readable identifiers;
 - поддержать поиск, дизамбигуацию и человеко-читаемый UI в `rbank-atlas`;
@@ -393,19 +391,9 @@ Glossary не должен быть buried inside free-form docs only; он до
 - display labels могут быть короче canonical terms, но не должны менять смысл;
 - search normalization живёт в search-layer/runtime projection, а не в canonical ontology identity.
 
-## 15. Выходы этой сессии
+## 15. Связанные контракты
 
-Этот документ должен использоваться как вход для:
-- semantic alignment бизнес-слоя;
-- ontology authoring structure;
-- atlas projection bundle (`search_aliases.json`);
-- quality gates / ontology lint rules;
-- Codex tasks на validators и generators.
-
-## 16. Критерий завершения
-
-Сессию можно считать завершённой, если:
-- каждый `kind`, `relation`, `attribute`, `qualifier` имеет canonical naming model;
-- glossary и aliases отделены от display/UI labels;
-- RU/EN strategy и search normalization policy определены;
-- команда может добавлять новые термины без стихийных naming decisions.
+- [Entity Kind Contract](entity_kind_contract_v2.md)
+- [Attribute Definition Contract](attribute_def_contract_v2.md)
+- [Qualifier Definition Contract](qualifier_def_contract_v2.md)
+- [Business Layer Semantic Alignment](business_layer_semantic_alignment.md)

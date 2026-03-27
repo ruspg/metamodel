@@ -1,15 +1,10 @@
-# Relation Catalog v2 — Rules (Wave 1 / MVP)
+# Relation Catalog — Нормативные правила
 
-Дата: 2026-03-14  
-Статус: wave1-frozen-input  
-Depends on: `relation_kind_contract_v2.md`, `qualifier_def_contract_v2.md`, `business_layer_relation_matrix.md`, `formal_decision_business_operation.md`  
-Consumed by: relation catalog generator, atlas projection bundle, `/v1/meta/model`
+> Канонический контракт relation kinds, допускаемых в runtime-проекцию.
 
----
+## 1. Назначение
 
-## 1. Purpose and role
-
-`relation_catalog_v2` — канонический машиночитаемый контракт relation kinds, которые допускаются в atlas runtime projection.
+`relation_catalog` — канонический машиночитаемый контракт relation kinds, которые допускаются в runtime projection.
 
 Он фиксирует **какие relation kinds разрешены и как они должны интерпретироваться в runtime**, включая traversal, impact, UI labels, qualifier policy и evidence policy.
 

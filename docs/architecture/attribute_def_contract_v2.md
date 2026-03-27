@@ -1,8 +1,6 @@
-# Attribute Definition Contract v2
+# Attribute Definition Contract
 
-Дата: 2026-03-09
-Статус: frozen-for-wave
-Сессия: 9 — точный контракт `attribute_def`
+> Контракт определения атрибута сущности в онтологии.
 
 ## 1. Назначение
 
@@ -433,24 +431,10 @@ introduced_in: 2.0.0
 
 ---
 
-## 11. Что это разблокирует дальше
+## 11. Связанные контракты
 
-После фиксации этого контракта можно без импровизации проектировать:
-- `relation_kind`;
-- `qualifier_def`;
-- naming / alias policy;
-- `type_catalog.json` generator;
-- runtime normalized metamodel contract;
-- validators/lints для schema v2;
-- import expectations со стороны `rbank-atlas`.
-
----
-
-## 12. Решения, принятые в этой сессии
-
-1. `attribute_def` становится first-class authoring object, а не вложенным свободным описанием.
-2. Reference-поля моделируются как `data_type=urn_ref`, а не как обычные string IDs.
-3. UI/search/filter/export behavior задаётся явными флагами, а не выводится эвристикой.
-4. Evidence/external-link semantics фиксируются уже на уровне attribute contract.
-5. Runtime получает нормализованную проекцию, а не весь authoring payload.
+- [Entity Kind Contract](entity_kind_contract_v2.md)
+- [Relation Kind Contract](relation_kind_contract_v2.md)
+- [Qualifier Definition Contract](qualifier_def_contract_v2.md)
+- [Glossary и Naming Policy](glossary_alias_naming_policy.md)
 

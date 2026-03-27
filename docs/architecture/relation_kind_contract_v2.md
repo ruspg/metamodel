@@ -1,22 +1,8 @@
-# Relation Kind Contract v2
+# Relation Kind Contract
 
-Status: frozen-for-wave  
-Session: 10  
-Wave: 2 — ontology schema v2 и semantic core  
-Depends on:
-- execution_model.md
-- north_star_mvp_boundaries.md
-- storage_model_and_source_layers.md
-- program_governance_and_artifact_contour.md
-- metamodel_structural_audit.md
-- rbank_atlas_structural_audit.md
-- upstream_downstream_contract.md
-- master_artifact_register.md
-- ontology_schema_v2_high_level_design.md
-- entity_kind_contract_v2.md
-- attribute_def_contract_v2.md
+> Контракт определения типа связи между сущностями в онтологии.
 
-## 1. Purpose
+## 1. Назначение
 
 `relation_kind` — это first-class authoring-объект upstream-онтологии, который определяет допустимый тип связи между двумя `entity_kind` и несёт достаточно метаданных для:
 - runtime relation catalog;
@@ -401,12 +387,11 @@ relation_kinds:
 
 ---
 
-## 12. Open questions for next sessions
+## 12. Связанные контракты
 
-Следующей сессии потребуется уточнить:
-- полный контракт `qualifier_def`;
-- controlled vocabulary для `ui_group` и `graph_style_hint`;
-- relation matrix бизнес-слоя;
-- policy для producer/consumer-style relations и symmetric flows;
-- правила перехода relation → link entity в data lineage и contract-heavy scenarios.
+- [Entity Kind Contract](entity_kind_contract_v2.md)
+- [Attribute Definition Contract](attribute_def_contract_v2.md)
+- [Qualifier Definition Contract](qualifier_def_contract_v2.md)
+- [Relation Catalog Rules](relation_catalog_v2_rules.md)
+- [Business Layer Relation Matrix](business_layer_relation_matrix.md)
 
