@@ -1,156 +1,156 @@
-# Vision: Why the Bank Needs an Operating Metamodel
+# Видение: зачем банку Operating Metamodel
 
-> The companies that build a machine-readable map of themselves will operate at a fundamentally different speed than those that don't.
-
----
-
-## The Problem
-
-A modern bank is a system of thousands of moving parts: products, processes, regulations, IT systems, data pipelines, organizational units — all deeply interconnected. Today, the knowledge about how these parts fit together lives in three places:
-
-1. **People's heads** — the architect who knows which systems support the mortgage pipeline, the analyst who remembers why that reporting field changed last quarter
-2. **Scattered documentation** — Confluence pages, spreadsheets, slide decks, Figma diagrams — each telling a partial story in a different format
-3. **Siloed systems** — CMDB knows about servers, the process tool knows about workflows, the data catalog knows about tables, but none of them talk to each other
-
-This creates real, measurable problems:
-
-- **Impact analysis takes days, not minutes.** When a system goes down at 2am, who knows what customer journeys are affected? When a regulation changes, which processes, systems, and data products need to adapt? The answer exists — but assembling it requires calling five people and checking three systems.
-
-- **Key-person risk is high.** Critical institutional knowledge walks out the door every time someone changes roles or leaves. Onboarding a new architect takes months because the real architecture isn't written down — it's distributed across conversations and tribal knowledge.
-
-- **Regulatory questions are hard to answer quickly.** Auditors ask "show me every process that handles PII" or "which systems participate in this value chain." These are reasonable questions. The struggle to answer them reveals a structural gap.
-
-- **AI initiatives hit a wall.** Every AI project starts by building its own local data model because there's no shared ontology. LLMs hallucinate about bank processes because there's no authoritative, machine-readable source of truth to ground them.
-
-- **New products are slower than they should be.** Launching a new product means rediscovering which capabilities already exist, which systems can be reused, which data is available — instead of assembling from known building blocks.
+> Компании, которые построят машиночитаемую карту самих себя, будут работать на принципиально другой скорости.
 
 ---
 
-## The Solution
+## Проблема
 
-The Operating Metamodel is a **formal, machine-readable map** of the bank: products, processes, capabilities, systems, data, infrastructure — and all the connections between them.
+Современный банк — это система из тысяч движущихся частей: продукты, процессы, регуляторные требования, IT-системы, дата-пайплайны, организационные единицы — и все они глубоко связаны между собой. Сегодня знание о том, как эти части соединяются, живёт в трёх местах:
 
-It is not documentation. It is a **living, validated, queryable graph**.
+1. **В головах людей** — архитектор, который знает какие системы поддерживают ипотечный конвейер; аналитик, который помнит почему поменялось поле в отчётности в прошлом квартале
+2. **В разрозненной документации** — страницы в Confluence, таблицы Excel, презентации, диаграммы в Figma — каждый источник рассказывает часть истории в своём формате
+3. **В изолированных системах** — CMDB знает о серверах, процессный инструмент — о workflow, дата-каталог — о таблицах, но они не общаются между собой
+
+Это создаёт реальные, измеримые проблемы:
+
+- **Impact analysis занимает дни, а не минуты.** Когда система падает в 2 часа ночи — кто знает какие клиентские сценарии затронуты? Когда меняется регуляторное требование — какие процессы, системы и дата-продукты нужно адаптировать? Ответ существует — но его сборка требует пяти звонков и трёх систем.
+
+- **Key-person risk высок.** Критическое институциональное знание уходит при каждой смене роли или увольнении. Онбординг нового архитектора занимает месяцы, потому что реальная архитектура не записана — она распределена по разговорам и племенному знанию.
+
+- **На вопросы регулятора трудно ответить быстро.** Аудиторы спрашивают: «покажите все процессы, обрабатывающие ПДн» или «какие системы участвуют в этой цепочке создания ценности». Это разумные вопросы. Трудность с ответом выявляет структурный разрыв.
+
+- **AI-инициативы упираются в стену.** Каждый AI-проект начинает с построения собственной локальной модели данных, потому что нет единой онтологии. LLM галлюцинируют о процессах банка, потому что нет авторитетного машиночитаемого источника правды.
+
+- **Новые продукты запускаются медленнее, чем могли бы.** Запуск нового продукта означает заново выяснять какие capabilities уже есть, какие системы можно переиспользовать, какие данные доступны — вместо сборки из известных кирпичиков.
+
+---
+
+## Решение
+
+Operating Metamodel — это **формальная, машиночитаемая карта** банка: продукты, процессы, capabilities, системы, данные, инфраструктура — и все связи между ними.
+
+Это не документация. Это **живой, валидированный, запрашиваемый граф**.
 
 ```
-Operating Metamodel       Language & grammar: what types of entities and relationships exist
+Operating Metamodel       Язык и грамматика: какие типы сущностей и связей существуют
         │
         ▼
-    Ontology              Semantic vocabulary: concrete domain concepts (Customer, Product, Risk)
+    Онтология             Семантический словарь: конкретные понятия домена (Клиент, Продукт, Риск)
         │
         ▼
-Business Architecture     Business models: processes, capabilities, org structure, KPIs
+Бизнес-архитектура        Модели бизнеса: процессы, capabilities, оргструктура, KPI
         │
         ▼
-   Knowledge Graph         Populated instance: models + actual data + time + scenarios
+   Граф знаний            Наполненный экземпляр: модели + реальные данные + время + сценарии
 ```
 
-The metamodel defines the rules. The ontology fills in the vocabulary. The business architecture applies it to the real organization. The knowledge graph makes it queryable and alive.
+Метамодель задаёт правила. Онтология наполняет словарь. Бизнес-архитектура применяет его к реальной организации. Граф знаний делает всё это запрашиваемым и живым.
 
-**Six levels** cover the full stack:
+**Шесть уровней** покрывают весь стек:
 
-| Level | What it answers | Examples |
-|-------|----------------|----------|
-| **Strategic View** | Why does this exist? | Goals, value streams, capabilities, products |
-| **Business Details** | How does the business work? | Processes, operations, functions, business entities |
-| **Data Details** | What data exists and how is it structured? | Data products, contracts, objects, lineage |
-| **Solution Details** | What IT solutions support the business? | IT systems, integrations, APIs |
-| **Component Details** | What are solutions made of inside? | Components, vendor products, software |
-| **Infrastructure** | What does everything run on? | Platforms, resources, environments |
+| Уровень | На какой вопрос отвечает | Примеры |
+|---------|-------------------------|---------|
+| **Strategic View** | Зачем это существует? | Цели, value streams, capabilities, продукты |
+| **Business Details** | Как работает бизнес? | Процессы, операции, функции, бизнес-сущности |
+| **Data Details** | Какие данные есть и как устроены? | Дата-продукты, контракты, объекты, линейдж |
+| **Solution Details** | Какие IT-решения поддерживают бизнес? | IT-системы, интеграции, API |
+| **Component Details** | Из чего состоят решения внутри? | Компоненты, вендорные продукты, ПО |
+| **Infrastructure** | На чём всё работает? | Платформы, ресурсы, среды |
 
-The key insight: **value comes from connections, not just definitions.** Knowing that "Loan Origination" is a process is useful. Knowing that it depends on systems X, Y, Z, produces data products A, B, C, is owned by team T, and is critical for regulatory report R — that's transformative.
+Ключевой инсайт: **ценность — в связях, а не только в определениях.** Знать что «Выдача кредита» — это процесс, полезно. Знать что он зависит от систем X, Y, Z, производит дата-продукты A, B, C, принадлежит команде T и критичен для регуляторного отчёта R — это трансформация.
 
 ---
 
-## Capabilities Unlocked
+## Что становится возможным
 
 ### Composable Enterprise
 
-When the bank needs a new product, the metamodel shows which capabilities already exist. Instead of building from scratch, teams assemble new value streams from proven building blocks — just as microservices compose into applications.
+Когда банку нужен новый продукт, метамодель показывает какие capabilities уже есть. Вместо строительства с нуля команды собирают новые value streams из проверенных кирпичиков — так же как микросервисы компонуются в приложения.
 
-This is the model Gartner calls "Composable Enterprise" and what leading banks are already implementing: capabilities as reusable, governed, well-understood units that can be recombined for speed.
+Это модель, которую Gartner называет «Composable Enterprise», и которую ведущие банки уже реализуют: capabilities как переиспользуемые, управляемые, понятные единицы, которые можно рекомбинировать для скорости.
 
 ### Business Activity Monitoring
 
-Map IT components to the business operations and processes they serve. When a system degrades, immediately understand which customer journeys and value streams are affected. Move from "system X is down" to "the mortgage application flow is impaired for the Premium segment."
+Связь IT-компонентов с бизнес-операциями и процессами, которые они обслуживают. Когда система деградирует — мгновенно понять какие клиентские сценарии и value streams затронуты. Перейти от «система X лежит» к «поток ипотечной заявки нарушен для сегмента Premium».
 
-### AI Agents with Real Context
+### AI-агенты с реальным контекстом
 
-LLMs and AI agents are only as good as the context they receive. The metamodel provides a structured, authoritative knowledge base that agents can query:
+LLM и AI-агенты хороши ровно настолько, насколько хорош контекст, который они получают. Метамодель даёт структурированную, авторитетную базу знаний для запросов:
 
-- **Semantic search**: ask "payments" and get the exact business entities, tables, and systems involved
-- **Text2SQL**: column-level metadata annotations (types, ranges, examples) enable accurate query generation
-- **BPMN generation**: auto-generate process diagrams from structured descriptions
-- **"What-if" analysis**: trace the impact of changing a rate, retiring a system, or launching a product
+- **Семантический поиск**: спросить «платежи» — получить конкретные бизнес-сущности, таблицы и системы
+- **Text2SQL**: аннотации метаданных на уровне колонок (типы, диапазоны, примеры) обеспечивают точную генерацию запросов
+- **Генерация BPMN**: автоматическое построение диаграмм процессов из структурированных описаний
+- **«Что если» анализ**: проследить влияние изменения ставки, вывода системы или запуска продукта
 
-The metamodel becomes the agent's mental model of the bank.
+Метамодель становится ментальной моделью банка для агента.
 
-### Impact Analysis in Seconds
+### Impact Analysis за секунды
 
-Trace any change through the graph: "If we decommission system X, which processes, data products, and value streams are affected?" Today this takes days of investigation. With a connected graph, it's a query.
+Проследить любое изменение через граф: «Если мы выводим систему X — какие процессы, дата-продукты и value streams затронуты?» Сегодня это дни расследования. С связным графом — это запрос.
 
 ### Regulatory Readiness by Design
 
-Regulators increasingly ask questions that require connected, cross-cutting views of the organization. When audit readiness is built into the architecture — not bolted on before each audit — compliance shifts from a cost to a capability.
+Регуляторы всё чаще задают вопросы, требующие связных, сквозных представлений организации. Когда аудит-готовность встроена в архитектуру — а не прикручена перед каждой проверкой — compliance превращается из затрат в capability.
 
-Data certification levels tied to regulatory requirements (reporting, analytics, operational) ensure that data quality is not aspirational but measurable and enforceable.
+Уровни сертификации данных, привязанные к регуляторным требованиям (отчётность, аналитика, операционка), гарантируют что качество данных — не декларация, а измеримое и обеспечиваемое свойство.
 
-### Data Contracts and Lineage Enforcement
+### Data Contracts и Lineage Enforcement
 
-Formalize the obligations between data producers and consumers. Define what "quality" means with measurable SLI/SLO/SLA frameworks borrowed from service reliability engineering. Automatically propagate requirements through the data lineage: if the final report requires certain standards, every upstream source must meet them too.
-
----
-
-## Industry Context
-
-This is not a novel idea. The leading technology and financial companies have been building exactly this — and winning because of it.
-
-**Palantir** built their entire business on the insight that connected data is exponentially more valuable than siloed data. Their Foundry Ontology is a semantic layer that maps business concepts onto raw data, enabling anyone in the organization to work with data through business language, not table names. The operating metamodel follows the same philosophy: a shared ontology that makes complexity navigable.
-
-**Microsoft** is investing heavily in knowledge graphs across the enterprise stack: Microsoft Graph connects people, files, and activity; Fabric's semantic model layer is building toward unified enterprise knowledge. Their bet is clear: the future of enterprise software is graph-structured knowledge. The metamodel makes the same bet, purpose-built for banking.
-
-**Goldman Sachs** operates Legend/PURE — a unified metadata and data modeling platform that powers trading, risk, and regulatory reporting from a single source of truth. Proof that formalizing your data model is not academic — it is a competitive weapon at the highest level of finance.
-
-**JPMorgan Chase** maintains an internal knowledge graph connecting systems, data, processes, and organizational structure across 300,000+ employees and thousands of systems. It enables impact analysis, regulatory reporting, and architectural decision-making at scale.
-
-**ING** demonstrated that a European bank can adopt ontology-driven architecture and achieve measurable improvements in time-to-market and operational transparency.
-
-**Zalando, Netflix, Spotify** pioneered data mesh and metadata platforms (DataHub, Backstage), showing that treating metadata as a product — with ownership, contracts, and discoverability — transforms engineering culture. The metamodel brings this thinking to banking with the rigor that financial services demands.
-
-The pattern is consistent: organizations that formalize their self-knowledge into a queryable, machine-readable graph operate at a different level of speed, transparency, and adaptability.
+Формализация обязательств между производителями и потребителями данных. Определение «качества» через измеримые SLI/SLO/SLA-фреймворки, заимствованные из практик надёжности сервисов. Автоматическая пропагация требований по линейджу: если конечный отчёт требует определённых стандартов — каждый источник вверх по цепочке тоже должен им соответствовать.
 
 ---
 
-## From Metamodel to Knowledge Graph
+## Индустриальный контекст
 
-The metamodel is the **schema** — the types and rules. But the real value emerges when it's populated with actual data from the bank's systems:
+Это не новая идея. Ведущие технологические и финансовые компании строят именно это — и выигрывают благодаря этому.
 
-| Layer | What it is | What it enables |
-|-------|-----------|----------------|
-| **Metamodel** | Types and rules (YAML/OWL) | Validation, contracts, governance |
-| **Ontology** | Domain vocabulary (concrete concepts) | Shared language across teams |
-| **Knowledge Graph** | Populated graph from real systems | Queries, impact analysis, AI context |
+**Palantir** построил весь бизнес на инсайте, что связанные данные экспоненциально ценнее изолированных. Их Foundry Ontology — семантический слой, который маппит бизнес-концепции на сырые данные, позволяя любому в организации работать с данными через бизнес-язык, а не имена таблиц. Operating Metamodel следует той же философии: общая онтология, которая делает сложность навигируемой.
 
-The knowledge graph is built not by entering data from scratch, but by **connecting what already exists**: the component catalog knows about systems, the process tool knows about workflows, the data catalog knows about datasets. The metamodel provides the schema that makes these connections meaningful and traversable.
+**Microsoft** массированно инвестирует в графы знаний по всему enterprise-стеку: Microsoft Graph связывает людей, файлы и активность; семантический слой Fabric строит единое enterprise-знание. Их ставка очевидна: будущее корпоративного ПО — это граф-структурированное знание. Метамодель делает ту же ставку, целенаправленно для банковского сектора.
 
-Storage evolves with scale: relational databases for early hundreds of objects, graph databases (like Neo4j) when the graph grows to tens of thousands of interconnected entities.
+**Goldman Sachs** эксплуатирует Legend/PURE — унифицированную платформу метаданных и моделирования данных, которая обеспечивает трейдинг, риски и регуляторную отчётность из единого источника правды. Доказательство того, что формализация модели данных — не академическое упражнение, а конкурентное оружие на высшем уровне финансов.
 
-Access is programmatic: MCP (Model Context Protocol) interfaces allow AI agents to traverse the graph, ask questions about relationships, and use the metamodel as structured context for any task.
+**JPMorgan Chase** поддерживает внутренний граф знаний, связывающий системы, данные, процессы и оргструктуру для 300 000+ сотрудников и тысяч систем. Это обеспечивает impact analysis, регуляторную отчётность и архитектурные решения в масштабе.
+
+**ING** продемонстрировал, что европейский банк может внедрить онтологически-ориентированную архитектуру и добиться измеримых улучшений time-to-market и операционной прозрачности.
+
+**Zalando, Netflix, Spotify** — пионеры data mesh и платформ метаданных (DataHub, Backstage), показавшие что отношение к метаданным как к продукту — с владением, контрактами и обнаруживаемостью — трансформирует инженерную культуру. Метамодель приносит это мышление в банковский сектор со строгостью, которую требуют финансовые услуги.
+
+Паттерн един: организации, которые формализуют знание о себе в запрашиваемый, машиночитаемый граф, работают на принципиально другом уровне скорости, прозрачности и адаптивности.
 
 ---
 
-## The Journey
+## От метамодели к графу знаний
 
-This is a journey, not a switch. The metamodel delivers value incrementally:
+Метамодель — это **схема**: типы и правила. Но реальная ценность возникает, когда она наполнена данными из систем банка:
 
-**Immediate** — A shared vocabulary. When business says "process" and IT says "process" and data says "process," they mean the same thing. This alone eliminates entire categories of miscommunication.
+| Слой | Что это | Что даёт |
+|------|---------|----------|
+| **Метамодель** | Типы и правила (YAML/OWL) | Валидация, контракты, governance |
+| **Онтология** | Словарь домена (конкретные концепции) | Единый язык между командами |
+| **Граф знаний** | Наполненный граф из реальных систем | Запросы, impact analysis, контекст для AI |
 
-**Near-term** — Connected registries. Systems, processes, and data linked through governed relationships. Impact analysis becomes queryable. Onboarding accelerates because the architecture is navigable.
+Граф знаний строится не с нуля, а путём **соединения того, что уже есть**: каталог компонентов знает о системах, процессный инструмент — о workflow, дата-каталог — о датасетах. Метамодель даёт схему, которая делает эти связи осмысленными и запрашиваемыми.
 
-**Medium-term** — AI-augmented operations. Agents use the graph for context-aware assistance: answering architectural questions, generating documentation, suggesting impact of changes, automating compliance checks.
+Хранилище эволюционирует вместе с масштабом: реляционная БД для первых сотен объектов, графовая БД (Neo4j) при росте до десятков тысяч связанных сущностей.
 
-**Long-term** — The knowledge graph becomes the bank's operating system for institutional knowledge. Not replacing existing systems, but connecting them into a coherent, queryable, machine-readable whole. A digital twin of the organization's architecture — always current, always connected, always available.
+Доступ программный: MCP-интерфейсы (Model Context Protocol) позволяют AI-агентам обходить граф, задавать вопросы о связях и использовать метамодель как структурированный контекст для любой задачи.
 
-The companies that figure this out first will not just operate more efficiently. They will operate at a fundamentally different speed — making decisions with full context, launching products from proven components, and answering any question about their own architecture in seconds instead of weeks.
+---
 
-The metamodel is the foundation that makes all of this possible.
+## Путь
+
+Это путь, а не переключатель. Метамодель приносит ценность инкрементально:
+
+**Сейчас** — Единый словарь. Когда бизнес говорит «процесс», IT говорит «процесс» и Data говорит «процесс» — они имеют в виду одно и то же. Уже это устраняет целые категории miscommunication.
+
+**Ближайшая перспектива** — Связанные реестры. Системы, процессы и данные соединены через управляемые связи. Impact analysis становится запросом. Онбординг ускоряется, потому что архитектура навигируема.
+
+**Средняя перспектива** — AI-усиленные операции. Агенты используют граф для контекстно-зависимой помощи: ответы на архитектурные вопросы, генерация документации, прогнозирование влияния изменений, автоматизация compliance-проверок.
+
+**Долгосрочная перспектива** — Граф знаний становится операционной системой институционального знания банка. Не заменяя существующие системы, а соединяя их в связное, запрашиваемое, машиночитаемое целое. Цифровой двойник архитектуры организации — всегда актуальный, всегда связный, всегда доступный.
+
+Компании, которые разберутся с этим первыми, будут не просто работать эффективнее. Они будут работать на принципиально другой скорости — принимая решения с полным контекстом, запуская продукты из проверенных компонентов и отвечая на любой вопрос о собственной архитектуре за секунды вместо недель.
+
+Метамодель — это фундамент, который всё это делает возможным.
