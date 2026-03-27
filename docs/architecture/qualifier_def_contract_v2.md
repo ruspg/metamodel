@@ -1,21 +1,8 @@
-# Qualifier Definition Contract v2
+# Qualifier Definition Contract
 
-Status: frozen-for-wave  
-Session: 11  
-Wave: 2 — ontology schema v2 и semantic core  
-Depends on:
-- execution_model.md
-- north_star_mvp_boundaries.md
-- storage_model_and_source_layers.md
-- program_governance_and_artifact_contour.md
-- upstream_downstream_contract.md
-- master_artifact_register.md
-- ontology_schema_v2_high_level_design.md
-- entity_kind_contract_v2.md
-- attribute_def_contract_v2.md
-- relation_kind_contract_v2.md
+> Контракт определения edge-level атрибута (квалификатора) для связей в онтологии.
 
-## 1. Purpose
+## 1. Назначение
 
 `qualifier_def` — это first-class authoring-объект upstream-онтологии, который определяет **тип edge-level атрибута** для qualified relations.
 
@@ -490,23 +477,9 @@ supports_multi_source_values: false
 
 ---
 
-## 15. Open questions for later sessions
+## 15. Связанные контракты
 
-1. Нужен ли отдельный global qualifier library profile для `atlas_mvp` vs `enterprise_full`.
-2. Нужно ли различать qualifiers, разрешённые только для inferred edges.
-3. Нужен ли специальный qualifier type для multilingual labels.
-4. Нужно ли выносить confidence/evidence model в отдельный reusable contract.
-5. Должны ли qualifier values участвовать в search index напрямую.
-
----
-
-## 16. Acceptance criteria for this session
-
-Сессия считается завершённой, если:
-1. Можно строго описать qualifier library без ad hoc edge fields.
-2. Можно различать simple edge и qualified edge на уровне authoring contract.
-3. Relation kinds могут ссылаться на qualifier definitions детерминированно.
-4. Runtime serialization edge attributes не зависит от неявных правил.
-5. Export/UI/explainability знают, какие qualifiers выводить и как.
-6. Будущие Codex-валидаторы могут автоматически проверять qualifier usage.
+- [Relation Kind Contract](relation_kind_contract_v2.md)
+- [Attribute Definition Contract](attribute_def_contract_v2.md)
+- [Relation Catalog Rules](relation_catalog_v2_rules.md)
 

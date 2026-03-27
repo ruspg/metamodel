@@ -1,8 +1,6 @@
-# Entity Kind Contract v2
+# Entity Kind Contract
 
-Дата: 2026-03-09
-Статус: frozen-for-wave
-Сессия: 8 — точный контракт `entity_kind`
+> Контракт определения типа сущности в онтологии.
 
 ## 1. Назначение
 
@@ -457,33 +455,9 @@ Authoring-level ожидания качества по kind.
 - warnings для MVP kinds, не готовых к entity card/search/evidence UX;
 - compatibility checker для semver.
 
-## 11. Migration guidance from current metamodel
+## 11. Связанные контракты
 
-Текущая модель already содержит часть нужных полей (`id`, `name`, `description`, `category`, attributes-like blocks), но для v2 необходимо добавить:
-- `layer` в единой таксономии;
-- `status`/`introduced_in`/`deprecated_in`;
-- `aliases`;
-- `key_attributes`;
-- `default_title_attr`;
-- `ui_hints` / `search_hints` / `runtime_hints`;
-- `abstract` / `instantiable`;
-- explicit profile membership.
-
-## 12. Решения, которые остаются на следующий шаг
-
-Этот артефакт **не** фиксирует окончательно:
-- точный контракт `attribute_def`;
-- типизацию qualifier values;
-- full relation catalog contract;
-- glossary/alias normalization algorithm;
-- inheritance merge semantics на уровне normalizer.
-
-Эти вопросы должны быть закрыты отдельными артефактами следующих сессий.
-
-## 13. Критерий завершения сессии
-
-Сессия считается завершённой, если:
-- любой kind можно описать в строгой структуре без произвольных полей;
-- можно реализовать validator для `entity_kind`;
-- можно автоматически собрать runtime-friendly `type_catalog`;
-- UI/search/runtime projection получают все необходимые kind-level hints без ad hoc логики.
+- [Attribute Definition Contract](attribute_def_contract_v2.md)
+- [Qualifier Definition Contract](qualifier_def_contract_v2.md)
+- [Glossary и Naming Policy](glossary_alias_naming_policy.md)
+- [Relation Kind Contract](relation_kind_contract_v2.md)

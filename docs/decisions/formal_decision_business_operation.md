@@ -1,8 +1,6 @@
-# Formal Decision — `business_operation`
+# ADR: business_operation как first-class entity kind
 
-Дата: 2026-03-09  
-Статус: approved  
-Тип: architectural decision record / semantic decision
+> Architectural Decision Record: включение `business_operation` в онтологию.
 
 ## 1. Контекст
 
@@ -256,12 +254,8 @@ BPMN XML, diagram metadata и activity ids остаются artifact/evidence la
 
 **`business_operation` — обязательный first-class узел процессного слоя; BPMN activity/task по умолчанию маппится на `business_operation`; `business_function` остаётся отдельным, более устойчивым semantic layer.**
 
-## 16. Что это разблокирует дальше
+## 16. Связанные контракты
 
-После этого решения можно без смысловой неопределённости проектировать:
-- business-layer relation matrix;
-- relation catalog v2 для process-related edges;
-- BPMN mapping policy;
-- source-to-ontology matrix для BPMN и CSV bootstrap;
-- minimum demonstrable slice;
-- будущие Codex-задачи на generators и import contracts.
+- [Business Layer Semantic Alignment](../architecture/business_layer_semantic_alignment.md)
+- [Business Layer Relation Matrix](../architecture/business_layer_relation_matrix.md)
+- [Entity Kind Contract](../architecture/entity_kind_contract_v2.md)
