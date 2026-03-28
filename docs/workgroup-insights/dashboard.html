@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metamodel Knowledge Dashboard</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161922;
+  --bg3: #1e2130;
+  --border: #2a2d3e;
+  --text: #e1e4ed;
+  --text2: #8b90a5;
+  --accent: #6c5ce7;
+  --accent2: #a29bfe;
+  --green: #00cec9;
+  --orange: #fdcb6e;
+  --pink: #fd79a8;
+  --blue: #74b9ff;
+  --red: #ff7675;
+  --radius: 12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; line-height:1.6; }
+
+/* Scroll Progress Bar */
+.scroll-progress { position:fixed; top:0; left:0; width:0%; height:3px; background:linear-gradient(90deg,var(--accent),var(--green),var(--pink)); z-index:9999; transition:width .05s linear; box-shadow:0 0 8px var(--accent); }
+
+/* Section Reveal */
+.reveal { opacity:0; transform:translateY(30px); transition:opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.container { max-width:1400px; margin:0 auto; padding:0 24px; }
+
+/* Hero */
+.hero { padding:60px 0 40px; text-align:center; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(ellipse at center, rgba(108,92,231,.08) 0%, transparent 60%); pointer-events:none; }
+.hero h1 { font-size:2.8rem; font-weight:800; background:linear-gradient(135deg,var(--accent2),var(--green)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
+.hero .sub { font-size:1.1rem; color:var(--text2); max-width:700px; margin:0 auto; }
+.stats-row { display:flex; justify-content:center; gap:40px; margin-top:32px; flex-wrap:wrap; }
+.stat-box { text-align:center; }
+.stat-num { font-size:2.4rem; font-weight:800; color:var(--green); }
+.stat-label { font-size:.85rem; color:var(--text2); text-transform:uppercase; letter-spacing:1px; }
+
+/* Section */
+section { padding:48px 0; }
+.section-title { font-size:1.6rem; font-weight:700; margin-bottom:24px; display:flex; align-items:center; gap:10px; }
+.section-title .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+
+/* Value Prop */
+.value-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
+.value-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:24px; transition:all .3s; }
+.value-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.value-card h3 { font-size:1.1rem; margin-bottom:8px; }
+.value-card p { font-size:.9rem; color:var(--text2); }
+.value-card .icon { font-size:1.8rem; margin-bottom:8px; }
+
+/* Metamodel Layers */
+.layers { display:flex; flex-direction:column; gap:4px; }
+.layer { border-radius:var(--radius); padding:20px 24px; cursor:pointer; transition:all .3s; position:relative; border:1px solid transparent; }
+.layer:hover { border-color:var(--accent); transform:translateX(4px); }
+.layer.active { border-color:var(--accent); }
+.layer-header { display:flex; justify-content:space-between; align-items:center; }
+.layer-name { font-weight:700; font-size:1.1rem; }
+.layer-count { font-size:.85rem; color:var(--text2); background:var(--bg); padding:2px 10px; border-radius:20px; }
+.layer-entities { display:none; margin-top:12px; flex-wrap:wrap; gap:6px; }
+.layer.active .layer-entities { display:flex; }
+.entity-tag { background:var(--bg); color:var(--text2); padding:4px 12px; border-radius:20px; font-size:.8rem; border:1px solid var(--border); }
+.l-strategic { background:linear-gradient(135deg, rgba(108,92,231,.15), rgba(108,92,231,.05)); }
+.l-business { background:linear-gradient(135deg, rgba(0,206,201,.15), rgba(0,206,201,.05)); }
+.l-solution { background:linear-gradient(135deg, rgba(116,185,255,.15), rgba(116,185,255,.05)); }
+.l-component { background:linear-gradient(135deg, rgba(253,203,110,.15), rgba(253,203,110,.05)); }
+.l-infra { background:linear-gradient(135deg, rgba(255,118,117,.15), rgba(255,118,117,.05)); }
+.l-data { background:linear-gradient(135deg, rgba(253,121,168,.15), rgba(253,121,168,.05)); border:1px dashed var(--pink); }
+
+/* Journey */
+.journey-track { display:flex; gap:0; align-items:stretch; margin-top:16px; }
+.journey-step { flex:1; padding:20px 16px; position:relative; text-align:center; }
+.journey-step::after { content:'→'; position:absolute; right:-8px; top:50%; transform:translateY(-50%); font-size:1.5rem; color:var(--text2); z-index:1; }
+.journey-step:last-child::after { display:none; }
+.journey-step .j-phase { font-size:.75rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; font-weight:700; }
+.journey-step .j-title { font-weight:600; font-size:.95rem; margin-bottom:4px; }
+.journey-step .j-desc { font-size:.8rem; color:var(--text2); }
+@media(max-width:800px){ .journey-track { flex-direction:column; } .journey-step::after { display:none; } }
+
+/* Entity Heatmap */
+.heatmap-grid { display:flex; flex-wrap:wrap; gap:6px; }
+.heat-cell { padding:6px 12px; border-radius:6px; font-size:.8rem; font-weight:600; cursor:default; transition:transform .2s; }
+.heat-cell:hover { transform:scale(1.1); }
+
+/* Timeline */
+.timeline { position:relative; padding-left:32px; }
+.timeline::before { content:''; position:absolute; left:11px; top:0; bottom:0; width:2px; background:var(--border); }
+.tl-item { position:relative; margin-bottom:24px; cursor:pointer; }
+.tl-item::before { content:''; position:absolute; left:-25px; top:6px; width:14px; height:14px; border-radius:50%; border:2px solid var(--accent); background:var(--bg); z-index:1; }
+.tl-item.milestone::before { background:var(--accent); }
+.tl-date { font-size:.8rem; color:var(--accent2); font-weight:600; }
+.tl-title { font-weight:600; margin:2px 0; }
+.tl-desc { font-size:.85rem; color:var(--text2); display:none; margin-top:4px; }
+.tl-item.open .tl-desc { display:block; }
+
+/* Concept Cards */
+.concepts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+.concept-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; cursor:pointer; transition:all .3s; }
+.concept-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.concept-card h3 { font-size:1.05rem; margin-bottom:6px; }
+.concept-card .desc { font-size:.85rem; color:var(--text2); }
+.concept-card .tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; }
+.concept-card .tag { background:var(--bg3); color:var(--accent2); padding:2px 8px; border-radius:12px; font-size:.7rem; }
+
+/* Decisions */
+.decision-list { display:flex; flex-direction:column; gap:8px; }
+.decision-item { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; cursor:pointer; transition:all .2s; }
+.decision-item:hover { border-color:var(--accent); }
+.decision-item .d-head { display:flex; justify-content:space-between; align-items:center; }
+.decision-item .d-id { font-size:.8rem; color:var(--accent2); font-weight:700; min-width:70px; }
+.decision-item .d-topic { font-weight:600; flex:1; margin:0 16px; }
+.decision-item .d-arrow { color:var(--text2); transition:transform .3s; }
+.decision-item.open .d-arrow { transform:rotate(180deg); }
+.decision-item .d-body { display:none; margin-top:12px; font-size:.85rem; color:var(--text2); }
+.decision-item.open .d-body { display:block; }
+
+/* Repo Status */
+.repo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
+.repo-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; }
+.repo-card h4 { font-size:.9rem; color:var(--text2); margin-bottom:8px; }
+.repo-card .r-val { font-size:1.8rem; font-weight:800; }
+.repo-card .r-detail { font-size:.8rem; color:var(--text2); margin-top:4px; }
+
+/* Industry */
+.industry-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
+.industry-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; }
+.industry-card h4 { font-size:.95rem; margin-bottom:4px; }
+.industry-card p { font-size:.8rem; color:var(--text2); }
+
+/* Divider */
+.wg-divider { border:0; border-top:2px dashed var(--border); margin:64px 0 16px; }
+.wg-header { text-align:center; padding:40px 0 32px; }
+.wg-header h2 { font-size:2rem; font-weight:800; background:linear-gradient(135deg,var(--orange),var(--pink)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
+.wg-header p { color:var(--text2); font-size:.95rem; }
+
+/* WG Stats Row */
+.wg-stats { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-bottom:40px; }
+.wg-stat { text-align:center; }
+.wg-stat .num { font-size:2.2rem; font-weight:800; }
+.wg-stat .lbl { font-size:.8rem; color:var(--text2); text-transform:uppercase; letter-spacing:1px; }
+
+/* Bar Chart */
+.bar-row { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.bar-label { width:160px; font-size:.85rem; color:var(--text2); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bar-track { flex:1; height:26px; background:var(--bg); border-radius:4px; overflow:hidden; position:relative; }
+.bar-fill { height:100%; border-radius:4px; transition:width .8s ease; display:flex; align-items:center; padding-left:8px; font-size:.75rem; font-weight:600; color:var(--bg); }
+
+/* Monthly Chart */
+.monthly-chart { display:flex; align-items:flex-end; justify-content:space-around; height:220px; padding-top:20px; }
+.month-bar { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.month-bar .bar { width:56px; border-radius:6px 6px 0 0; transition:height .8s ease; min-height:4px; }
+.month-bar .label { font-size:.8rem; color:var(--text2); }
+.month-bar .val { font-size:.9rem; font-weight:700; }
+
+/* Charts Grid */
+.charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+@media(max-width:900px){ .charts-grid { grid-template-columns:1fr; } }
+.chart-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:24px; }
+.chart-card h3 { font-size:1rem; color:var(--text2); margin-bottom:16px; }
+
+/* Stream Cards */
+.streams-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
+.stream-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; text-align:center; }
+.stream-card .s-icon { font-size:2rem; margin-bottom:6px; }
+.stream-card h4 { font-size:.95rem; margin-bottom:4px; }
+.stream-card p { font-size:.8rem; color:var(--text2); }
+
+/* Top Topics Podium */
+.podium { display:flex; justify-content:center; align-items:flex-end; gap:16px; margin:24px 0; }
+.podium-item { text-align:center; border-radius:var(--radius); padding:16px 20px; min-width:140px; }
+.podium-item .p-rank { font-size:2rem; font-weight:800; }
+.podium-item .p-name { font-size:.85rem; margin-top:4px; }
+.podium-item .p-val { font-size:.75rem; color:var(--text2); margin-top:2px; }
+
+/* Fun Facts */
+.fun-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
+.fun-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; text-align:center; }
+.fun-card .f-num { font-size:2rem; font-weight:800; }
+.fun-card .f-label { font-size:.85rem; color:var(--text2); margin-top:4px; }
+
+/* Decision Frequency */
+.freq-chart { position:relative; height:200px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.freq-chart svg { width:100%; height:100%; }
+.freq-labels { display:flex; justify-content:space-between; padding:8px 16px 0; }
+.freq-labels span { font-size:.75rem; color:var(--text2); }
+.freq-legend { display:flex; justify-content:center; gap:24px; margin-top:8px; }
+.freq-legend span { font-size:.8rem; color:var(--text2); display:flex; align-items:center; gap:6px; }
+.freq-legend .dot-leg { width:8px; height:8px; border-radius:50%; display:inline-block; }
+
+/* Footer */
+footer { text-align:center; padding:40px 0; color:var(--text2); font-size:.8rem; border-top:1px solid var(--border); margin-top:40px; }
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <h1>Operating Metamodel</h1>
+    <p class="sub">Машиночитаемая карта банка: от стратегических целей до инфраструктуры. Язык, на котором организация описывает саму себя.</p>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num">44</div><div class="stat-label">Entity Kinds</div></div>
+      <div class="stat-box"><div class="stat-num">58</div><div class="stat-label">Relations</div></div>
+      <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">Layers</div></div>
+      <div class="stat-box"><div class="stat-num">10</div><div class="stat-label">Design Decisions</div></div>
+      <div class="stat-box"><div class="stat-num">8</div><div class="stat-label">Key Concepts</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- VALUE PROPOSITION -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--green)"></span> Зачем банку метамодель</div>
+  <div class="value-grid" id="value-grid"></div>
+</section>
+
+<!-- METAMODEL LAYERS -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--accent)"></span> Уровни метамодели</div>
+  <div class="layers" id="layers"></div>
+</section>
+
+<!-- JOURNEY -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--blue)"></span> Путь: от словаря к графу знаний</div>
+  <div class="journey-track" id="journey"></div>
+</section>
+
+<!-- HOT TOPICS -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--orange)"></span> Карта сущностей</div>
+  <div class="heatmap-grid" id="entity-heat"></div>
+</section>
+
+<!-- CONCEPTS -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--blue)"></span> Ключевые концепции</div>
+  <div class="concepts-grid" id="concepts"></div>
+</section>
+
+<!-- DECISIONS -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--red)"></span> Проектные решения</div>
+  <div class="decision-list" id="decisions"></div>
+</section>
+
+<!-- INDUSTRY -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--accent2)"></span> Индустриальный контекст</div>
+  <div class="industry-grid" id="industry"></div>
+</section>
+
+<!-- TIMELINE -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--pink)"></span> Эволюция идей</div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- REPO STATUS -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--green)"></span> Статус репозитория</div>
+  <div class="repo-grid" id="repo"></div>
+</section>
+
+<!-- ========== WORKING GROUP STATS ========== -->
+<hr class="wg-divider">
+<div class="wg-header">
+  <h2>📊 Рабочая группа в цифрах</h2>
+  <p>Статистика встреч, контрибьюторов и тем за 4 месяца работы</p>
+</div>
+
+<div class="wg-stats" id="wg-stats"></div>
+
+<!-- WORK STREAMS -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--orange)"></span> Потоки работ</div>
+  <div class="streams-grid" id="streams"></div>
+</section>
+
+<!-- CONTRIBUTORS + MONTHLY -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--accent)"></span> Участники и динамика</div>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Топ контрибьюторов (по встречам)</h3>
+      <div id="contrib-chart"></div>
+    </div>
+    <div class="chart-card">
+      <h3>Встречи по месяцам</h3>
+      <div class="monthly-chart" id="monthly-chart"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP DISCUSSED ENTITIES -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--green)"></span> Самые обсуждаемые сущности</div>
+  <div class="podium" id="podium"></div>
+  <div class="heatmap-grid" id="entity-heat-wg"></div>
+</section>
+
+<!-- DECISION FREQUENCY -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--accent2)"></span> Частота решений</div>
+  <div class="freq-chart" id="freq-chart"></div>
+  <div class="freq-labels" id="freq-labels"></div>
+  <div class="freq-legend">
+    <span><span class="dot-leg" style="background:var(--accent)"></span> Решения</span>
+    <span><span class="dot-leg" style="background:var(--green)"></span> Встречи</span>
+  </div>
+</section>
+
+<!-- FUN FACTS -->
+<section>
+  <div class="section-title"><span class="dot" style="background:var(--pink)"></span> Интересные цифры</div>
+  <div class="fun-grid" id="fun-facts"></div>
+</section>
+
+</div>
+
+<footer>Operating Metamodel &bull; Upstream Ontology for Enterprise Architecture &bull; Рабочая группа Дек 2025 — Мар 2026</footer>
+
+<script>
+// ===== DATA =====
+
+const VALUE_PROPS = [
+  { icon:'🧩', title:'Composable Enterprise', desc:'Новые продукты — сборка из существующих capabilities, а не строительство с нуля.' },
+  { icon:'⚡', title:'Impact Analysis за секунды', desc:'Система упала в 2am — мгновенно понять какие клиентские сценарии затронуты.' },
+  { icon:'🤖', title:'AI-агенты с контекстом', desc:'Семантический поиск, Text2SQL, генерация BPMN, «что если» анализ через MCP-интерфейс.' },
+  { icon:'📋', title:'Regulatory Readiness', desc:'Аудит-готовность встроена в архитектуру: сквозная прослеживаемость от целей до данных.' },
+  { icon:'📝', title:'Data Contracts', desc:'SLI/SLO/SLA-фреймворк для данных. Автоматическая пропагация требований по линейджу.' },
+  { icon:'🔬', title:'Сертификация данных', desc:'Уровни зрелости привязаны к типу потребления: регуляторика > аналитика > операционка.' },
+];
+
+const LAYERS = [
+  { id:'strategic', name:'Strategic View', color:'var(--accent)', cls:'l-strategic',
+    desc:'Зачем и что в целом: цели, направления, capabilities',
+    entities:['goal','job_family','bank_product','organizational_unit','business_domain','customer_segment','business_role'] },
+  { id:'business', name:'Business Details', color:'var(--green)', cls:'l-business',
+    desc:'Как бизнес устроен и работает',
+    entities:['value','value_consumer','channel','value_stream','value_stream_stage','business_capability','business_function','business_process','business_operation','business_action','business_entity','business_attribute','information_flow'] },
+  { id:'data', name:'Data Details', color:'var(--pink)', cls:'l-data',
+    desc:'Какие данные используются и как устроены',
+    entities:['data_product','data_object','data_contract','delivery_contract','data_attribute','data_process','requirement','sla','metric','incident','event'] },
+  { id:'solution', name:'Solution Details', color:'var(--blue)', cls:'l-solution',
+    desc:'Какими решениями поддерживается бизнес',
+    entities:['it_system','component','vendor_product','software_component','technology','source','api','api_method','integration'] },
+  { id:'component', name:'Component Details', color:'var(--orange)', cls:'l-component',
+    desc:'Из чего состоят решения внутри',
+    entities:['api_method_parameter','logical_resource','component_instance'] },
+  { id:'infra', name:'Infrastructure Details', color:'var(--red)', cls:'l-infra',
+    desc:'На чём всё работает',
+    entities:['infra_resource'] },
+];
+
+const JOURNEY = [
+  { phase:'Сейчас', title:'Единый словарь', desc:'Бизнес, IT и Data говорят на одном языке', color:'var(--green)' },
+  { phase:'Ближе', title:'Связанные реестры', desc:'Системы + процессы + данные в одном графе', color:'var(--blue)' },
+  { phase:'Средняя', title:'AI-операции', desc:'Агенты используют граф для контекстной помощи', color:'var(--accent)' },
+  { phase:'Целевая', title:'Граф знаний', desc:'Цифровой двойник архитектуры организации', color:'var(--pink)' },
+];
+
+const ENTITY_HEAT = [
+  ['business_process',22],['it_system',22],['business_entity',20],['business_operation',16],
+  ['organizational_unit',15],['business_action',15],['component',14],['metric',13],
+  ['value_stream',13],['business_capability',12],['sla',12],['requirement',12],
+  ['data_contract',11],['data_product',11],['source',10],['data_object',10],
+  ['integration',10],['business_role',9],['business_function',8],['data_process',8],
+  ['incident',8],['api',8],['value_consumer',8],['business_domain',8],
+  ['data_attribute',7],['api_method',6],['value_stream_stage',6],['bank_product',6],
+  ['channel',5],['logical_resource',5],
+];
+
+const CONCEPTS = [
+  { title:'Data Contracts', desc:'Самостоятельная сущность: обязательства владельца данных перед потребителями. SLI/SLO/SLA-фреймворк. Один продукт = один контракт.', tags:['data_contract','data_product','sla','requirement','metric'], color:'var(--accent)' },
+  { title:'Composable Enterprise', desc:'Value streams собираются из переиспользуемых capability-блоков. Быстрый time-to-market через переиспользование.', tags:['business_capability','value_stream','bank_product'], color:'var(--orange)' },
+  { title:'Граф знаний', desc:'Целевой продукт: метамодель = схема, граф знаний = наполненный экземпляр из существующих систем. OWL/Turtle. MCP-доступ. Postgres → Neo4j.', tags:['business_entity','business_process','it_system','component'], color:'var(--green)' },
+  { title:'Сертификация', desc:'Уровни зрелости привязаны к типу потребления: регуляторика (высший) > аналитика > операционка. Автоотзыв при нарушении SLA.', tags:['data_product','data_contract','requirement','sla'], color:'var(--pink)' },
+  { title:'Модель владения', desc:'Владелец = оргединица, не физлицо. Owner продукта > owner объекта. Открытые контракты. Наследование сверху вниз.', tags:['organizational_unit','business_role','data_product'], color:'var(--red)' },
+  { title:'Кросс-доменные сущности', desc:'metric, incident, sla применимы к любому объекту: процессу, системе, данным, компоненту. Единый мониторинг поверх всех слоёв.', tags:['metric','incident','sla','business_process','it_system'], color:'var(--blue)' },
+  { title:'Lineage Enforcement', desc:'Требования к данным на каждом уровне цепочки не мягче требований конечного потребителя. Автопропагация по линейджу.', tags:['data_product','data_contract','information_flow'], color:'var(--accent2)' },
+  { title:'Тирование данных', desc:'Критичность дата-продукта выводится из критичности потребляющих процессов. Сквозная цепочка атрибутов через слои.', tags:['business_process','data_product','sla'], color:'var(--orange)' },
+];
+
+const DECISIONS = [
+  { id:'KDD-1', topic:'Data contract — самостоятельная сущность', body:'Контракт ≠ свойство продукта. Собственный жизненный цикл (draft → active → certified), участники, формат открытого контракта.' },
+  { id:'KDD-2', topic:'Один дата-продукт = один дата-контракт', body:'Одна таблица в разных системах — разные продукты с разными контрактами. Контракт привязан к контексту поставки.' },
+  { id:'KDD-3', topic:'functional_subsystem → рекурсивный it_system', body:'Единый тип с рекурсивной связью. Граница «подсистема vs система» размыта — бритва Оккама.' },
+  { id:'KDD-4', topic:'metric, incident, sla — кросс-доменные', body:'Применимы к любому объекту: процесс, система, данные, компонент. Единый мониторинг поверх всех слоёв.' },
+  { id:'KDD-5', topic:'AI-агент = label на component', body:'type=agent, не отдельный entity kind. Деплоится как микросервис. Специфика покрывается атрибутами.' },
+  { id:'KDD-6', topic:'Lineage Enforcement', body:'Требования на каждом уровне цепочки ≥ требования конечного потребителя. Нарушение → событие → эскалация.' },
+  { id:'KDD-7', topic:'business_entity — рекурсивная сущность', body:'Сделка → договор → счёт → комиссия. Self-referencing class в OWL.' },
+  { id:'KDD-8', topic:'Сертификация ≠ уровень зрелости', body:'Зрелость контракта (L1/L2/L3) — техполнота. Сертификация — бизнес-соответствие. Разные оси.' },
+  { id:'KDD-9', topic:'Тирность данных из критичности процессов', body:'data_product.tier = max(business_process.criticality). Несоответствие — сигнал к эскалации.' },
+  { id:'KDD-10', topic:'Golden record, а не единая мастер-система', body:'Семантическая унификация через метамодель, физически каждая система-мастер ведёт свой домен.' },
+];
+
+const INDUSTRY = [
+  { name:'Palantir', desc:'Foundry Ontology — семантический слой поверх данных. Бизнес-язык вместо имён таблиц.' },
+  { name:'Goldman Sachs', desc:'Legend/PURE — единый источник правды для трейдинга, рисков и регуляторной отчётности.' },
+  { name:'JPMorgan Chase', desc:'Внутренний граф знаний для 300K+ сотрудников. Impact analysis и архитектурные решения.' },
+  { name:'Microsoft', desc:'Microsoft Graph + Fabric. Ставка: будущее enterprise — граф-структурированное знание.' },
+  { name:'ING', desc:'Онтологически-ориентированная архитектура. Измеримые улучшения time-to-market.' },
+  { name:'Zalando / Netflix / Spotify', desc:'Data mesh, DataHub, Backstage. Метаданные как продукт с владением и контрактами.' },
+];
+
+const TIMELINE = [
+  { date:'Дек 2025', title:'Старт: терминология и потоки работ', desc:'Разделение Metamodel vs Ontology. Composable Enterprise. Business Activity Monitoring как use-case.', mile:true },
+  { date:'Дек 2025', title:'Data Contract = самостоятельная сущность', desc:'Контракт ≠ свойство продукта. Статусная модель: draft → active → certified.', mile:true },
+  { date:'Дек 2025', title:'Data Product — центр каталога', desc:'Сдвиг от таблицы к бизнес-ориентированному дата-продукту. Golden record. LLM/Text2SQL аннотации.', mile:true },
+  { date:'Дек 2025', title:'SLI/SLO/SLA-фреймворк для данных', desc:'Metric = SLI, Requirement = SLO, Contract = SLA. Перенос из «может быть» в «должен быть».', mile:false },
+  { date:'Дек 2025', title:'functional_subsystem упразднён', desc:'Заменён рекурсивным it_system. logical_resource введён. Lifecycle: source → artifact → running.', mile:true },
+  { date:'Дек 2025', title:'Lineage Enforcement', desc:'Один продукт = один контракт. Сертификация > обязательные поля. Требования пропагируются по цепочке.', mile:true },
+  { date:'Янв 2026', title:'AI-агенты в метамодели', desc:'AI agent = label на component (type=agent). MCP-интерфейс. Сервисный аккаунт обязателен.', mile:true },
+  { date:'Фев 2026', title:'Уровни зрелости контракта L1/L2/L3', desc:'L1: только owner. L2: описание + продукты. L3: полный SLI + матрица поддержки.', mile:true },
+  { date:'Мар 2026', title:'Тирование данных из процессов', desc:'data_product.tier = max(criticality потребляющих процессов). TCDO как метрика.', mile:true },
+  { date:'Мар 2026', title:'Метамодель → Git-репозиторий', desc:'YAML + OWL/Turtle + Mermaid. Валидация, линтинг, bundle-генерация. MCP-интерфейс.', mile:true },
+  { date:'Мар 2026', title:'Два уровня онтологии формализованы', desc:'Мета-онтология (абстрактные классы) vs бизнес-онтология банка (конкретные сущности). Разные артефакты.', mile:true },
+  { date:'Мар 2026', title:'Граф знаний = целевой продукт', desc:'KG ≠ метамодель. KG = наполненный экземпляр из существующих систем. business_entity рекурсивен в OWL.', mile:true },
+  { date:'Мар 2026', title:'Модель сертификации кристаллизована', desc:'3 типа потребления: регуляторика > аналитика > операционка. Автоотзыв при нарушении SLA. Data Mesh паттерны.', mile:true },
+];
+
+const REPO_STATUS = [
+  { title:'Entity Kinds', val:'44', detail:'6 уровней: Strategic → Infrastructure', color:'var(--green)' },
+  { title:'Relation Kinds', val:'58', detail:'В metamodel.yaml + relation_catalog.yaml', color:'var(--blue)' },
+  { title:'Архитектурные контракты', val:'6', detail:'Entity, Relation, Attribute, Qualifier, Glossary, Catalog', color:'var(--accent)' },
+  { title:'Design Decisions', val:'10', detail:'ADR-формат в docs/decisions/', color:'var(--red)' },
+  { title:'Валидация', val:'0 errors', detail:'74 тестов passed, 2 warnings (naming hints)', color:'var(--green)' },
+  { title:'Экспорт', val:'3 формата', detail:'JSON Bundle + OWL/Turtle + Mermaid', color:'var(--orange)' },
+];
+
+// ===== WORKING GROUP DATA =====
+
+const WG_STATS = [
+  { num:'55', label:'Встреч', color:'var(--accent)' },
+  { num:'30+', label:'Участников', color:'var(--green)' },
+  { num:'4', label:'Месяца', color:'var(--blue)' },
+  { num:'5', label:'Потоков работ', color:'var(--orange)' },
+  { num:'200+', label:'Часов обсуждений', color:'var(--pink)' },
+  { num:'26', label:'Решений принято', color:'var(--red)' },
+];
+
+const STREAMS = [
+  { icon:'📋', name:'Дата-контракты', desc:'SLI/SLO/SLA, сертификация, lineage enforcement' },
+  { icon:'🏗️', name:'Дата-каталог', desc:'Data product, data object, delivery contract, ownership' },
+  { icon:'💻', name:'IT-слой', desc:'Системы, компоненты, интеграции, ресурсы' },
+  { icon:'⚙️', name:'Бизнес-процессы', desc:'Value streams, capabilities, operations, BPMN-маппинг' },
+  { icon:'📖', name:'Бизнес-глоссарий', desc:'Единый словарь терминов, aliases, мастер-системы' },
+];
+
+const CONTRIBUTORS = [
+  ['Pogorelov R.', 40],
+  ['Yamaletdinov V.', 28],
+  ['Krasova E.', 26],
+  ['Ektov A.', 17],
+  ['Kolesnikova A.', 18],
+  ['Makhov E.', 15],
+  ['Dylko Yu.', 15],
+  ['Fadin D.', 14],
+  ['Klimin M.', 14],
+  ['Molok M.', 13],
+  ['Karimov A.', 13],
+  ['Masterovaya L.', 10],
+  ['Bulavintsev Yu.', 10],
+  ['Balashova K.', 9],
+  ['Pavelko A.', 7],
+];
+
+const MONTHLY = [
+  { label:'Дек 2025', val:14, color:'var(--accent)' },
+  { label:'Янв 2026', val:14, color:'var(--green)' },
+  { label:'Фев 2026', val:14, color:'var(--blue)' },
+  { label:'Мар 2026', val:13, color:'var(--pink)' },
+];
+
+const ENTITY_HEAT_WG = [
+  ['business_process',22],['it_system',22],['business_entity',20],['business_operation',16],
+  ['organizational_unit',15],['business_action',15],['component',14],['metric',13],
+  ['value_stream',13],['business_capability',12],['sla',12],['requirement',12],
+  ['data_contract',11],['data_product',11],['source',10],['data_object',10],
+  ['integration',10],['business_role',9],['business_function',8],['data_process',8],
+  ['incident',8],['api',8],['value_consumer',8],['business_domain',8],
+  ['data_attribute',7],['api_method',6],['value_stream_stage',6],['bank_product',6],
+  ['channel',5],['logical_resource',5],
+];
+
+const FUN_FACTS = [
+  { num:'22', label:'встреч обсуждали business_process — абсолютный лидер', color:'var(--green)' },
+  { num:'3', label:'раза менялась роль data_contract — от свойства до first-class entity', color:'var(--accent)' },
+  { num:'1', label:'сущность упразднена (functional_subsystem → рекурсивный it_system)', color:'var(--red)' },
+  { num:'3', label:'формата экспорта: JSON Bundle, OWL/Turtle, Mermaid', color:'var(--blue)' },
+  { num:'12', label:'дней от Figma-диаграмм до работающего Git-репозитория с CI', color:'var(--orange)' },
+  { num:'6', label:'слоёв метамодели: от стратегических целей до инфраструктуры', color:'var(--pink)' },
+  { num:'44→∞', label:'entity kinds — модель живёт и растёт с банком', color:'var(--accent2)' },
+  { num:'≤2', label:'warnings в валидаторе — naming hints, не ошибки', color:'var(--green)' },
+];
+
+// ===== RENDER =====
+
+function renderValueProps() {
+  const c = document.getElementById('value-grid');
+  VALUE_PROPS.forEach(v => {
+    c.innerHTML += `<div class="value-card"><div class="icon">${v.icon}</div><h3>${v.title}</h3><p>${v.desc}</p></div>`;
+  });
+}
+
+function renderLayers() {
+  const c = document.getElementById('layers');
+  LAYERS.forEach(l => {
+    const div = document.createElement('div');
+    div.className = `layer ${l.cls}`;
+    div.innerHTML = `
+      <div class="layer-header">
+        <span class="layer-name">${l.name} <span style="font-weight:400;font-size:.85rem;color:var(--text2)">— ${l.desc}</span></span>
+        <span class="layer-count">${l.entities.length} сущностей</span>
+      </div>
+      <div class="layer-entities">${l.entities.map(e => `<span class="entity-tag">${e}</span>`).join('')}</div>
+    `;
+    div.onclick = () => div.classList.toggle('active');
+    c.appendChild(div);
+  });
+}
+
+function renderJourney() {
+  const c = document.getElementById('journey');
+  JOURNEY.forEach(j => {
+    c.innerHTML += `
+      <div class="journey-step" style="background:linear-gradient(135deg, ${j.color}15, ${j.color}05); border-radius:var(--radius);">
+        <div class="j-phase" style="color:${j.color}">${j.phase}</div>
+        <div class="j-title">${j.title}</div>
+        <div class="j-desc">${j.desc}</div>
+      </div>`;
+  });
+}
+
+function renderHeatmap() {
+  const c = document.getElementById('entity-heat');
+  const max = ENTITY_HEAT[0][1];
+  ENTITY_HEAT.forEach(([name,val]) => {
+    const intensity = val/max;
+    const h = 260 - intensity*120;
+    const l = 20 + intensity*25;
+    const bg = `hsl(${h},60%,${l}%)`;
+    const fg = intensity > 0.5 ? '#fff' : 'var(--text2)';
+    c.innerHTML += `<div class="heat-cell" style="background:${bg};color:${fg}" title="${name}">${name.replace(/_/g,' ')}</div>`;
+  });
+}
+
+function renderConcepts() {
+  const c = document.getElementById('concepts');
+  CONCEPTS.forEach(con => {
+    const div = document.createElement('div');
+    div.className = 'concept-card';
+    div.style.borderLeft = `3px solid ${con.color}`;
+    div.innerHTML = `
+      <h3>${con.title}</h3>
+      <div class="desc">${con.desc}</div>
+      <div class="tags">${con.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    `;
+    c.appendChild(div);
+  });
+}
+
+function renderDecisions() {
+  const c = document.getElementById('decisions');
+  DECISIONS.forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'decision-item';
+    div.innerHTML = `
+      <div class="d-head">
+        <span class="d-id">${d.id}</span>
+        <span class="d-topic">${d.topic}</span>
+        <span class="d-arrow">&#9660;</span>
+      </div>
+      <div class="d-body">${d.body}</div>
+    `;
+    div.onclick = () => div.classList.toggle('open');
+    c.appendChild(div);
+  });
+}
+
+function renderIndustry() {
+  const c = document.getElementById('industry');
+  INDUSTRY.forEach(i => {
+    c.innerHTML += `<div class="industry-card"><h4>${i.name}</h4><p>${i.desc}</p></div>`;
+  });
+}
+
+function renderTimeline() {
+  const c = document.getElementById('timeline');
+  TIMELINE.forEach(t => {
+    const div = document.createElement('div');
+    div.className = `tl-item${t.mile?' milestone':''}`;
+    div.innerHTML = `
+      <div class="tl-date">${t.date}</div>
+      <div class="tl-title">${t.title}</div>
+      <div class="tl-desc">${t.desc}</div>
+    `;
+    div.onclick = () => div.classList.toggle('open');
+    c.appendChild(div);
+  });
+}
+
+function renderRepo() {
+  const c = document.getElementById('repo');
+  REPO_STATUS.forEach(r => {
+    c.innerHTML += `
+      <div class="repo-card">
+        <h4>${r.title}</h4>
+        <div class="r-val" style="color:${r.color}">${r.val}</div>
+        <div class="r-detail">${r.detail}</div>
+      </div>`;
+  });
+}
+
+// ===== WG RENDER =====
+
+function renderWgStats() {
+  const c = document.getElementById('wg-stats');
+  WG_STATS.forEach(s => {
+    c.innerHTML += `<div class="wg-stat"><div class="num" style="color:${s.color}">${s.num}</div><div class="lbl">${s.label}</div></div>`;
+  });
+}
+
+function renderStreams() {
+  const c = document.getElementById('streams');
+  STREAMS.forEach(s => {
+    c.innerHTML += `<div class="stream-card"><div class="s-icon">${s.icon}</div><h4>${s.name}</h4><p>${s.desc}</p></div>`;
+  });
+}
+
+function renderContributors() {
+  const c = document.getElementById('contrib-chart');
+  const max = CONTRIBUTORS[0][1];
+  const colors = ['var(--accent)','var(--green)','var(--blue)','var(--orange)','var(--pink)','var(--accent2)','var(--red)'];
+  CONTRIBUTORS.forEach(([name,val],i) => {
+    const pct = (val/max*100).toFixed(0);
+    const color = colors[i % colors.length];
+    c.innerHTML += `
+      <div class="bar-row">
+        <div class="bar-label">${name}</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${pct}%;background:${color}">${val}</div>
+        </div>
+      </div>`;
+  });
+}
+
+function renderMonthly() {
+  const c = document.getElementById('monthly-chart');
+  const max = Math.max(...MONTHLY.map(m=>m.val));
+  MONTHLY.forEach(m => {
+    const h = (m.val/max*170);
+    c.innerHTML += `
+      <div class="month-bar">
+        <div class="val" style="color:${m.color}">${m.val}</div>
+        <div class="bar" style="height:${h}px;background:${m.color}"></div>
+        <div class="label">${m.label}</div>
+      </div>`;
+  });
+}
+
+function renderPodium() {
+  const c = document.getElementById('podium');
+  const top3 = ENTITY_HEAT_WG.slice(0,3);
+  const heights = [140, 180, 120];
+  const colors = ['var(--blue)', 'var(--green)', 'var(--orange)'];
+  const order = [1, 0, 2]; // silver, gold, bronze visual order
+  order.forEach(i => {
+    const [name, val] = top3[i];
+    const rank = i + 1;
+    const medals = ['🥇','🥈','🥉'];
+    c.innerHTML += `
+      <div class="podium-item" style="background:${colors[i]}15; height:${heights[i]}px; display:flex; flex-direction:column; justify-content:flex-end;">
+        <div class="p-rank">${medals[i]}</div>
+        <div class="p-name" style="font-weight:700">${name.replace(/_/g,' ')}</div>
+        <div class="p-val">${val} встреч</div>
+      </div>`;
+  });
+}
+
+function renderHeatmapWg() {
+  const c = document.getElementById('entity-heat-wg');
+  const max = ENTITY_HEAT_WG[0][1];
+  ENTITY_HEAT_WG.slice(3).forEach(([name,val]) => {
+    const intensity = val/max;
+    const h = 260 - intensity*120;
+    const l = 20 + intensity*25;
+    const bg = `hsl(${h},60%,${l}%)`;
+    const fg = intensity > 0.5 ? '#fff' : 'var(--text2)';
+    c.innerHTML += `<div class="heat-cell" style="background:${bg};color:${fg}" title="${val} встреч">${name.replace(/_/g,' ')} (${val})</div>`;
+  });
+}
+
+function renderFunFacts() {
+  const c = document.getElementById('fun-facts');
+  FUN_FACTS.forEach(f => {
+    c.innerHTML += `<div class="fun-card"><div class="f-num" style="color:${f.color}">${f.num}</div><div class="f-label">${f.label}</div></div>`;
+  });
+}
+
+// ===== DECISION FREQUENCY =====
+
+const DECISION_FREQ = [
+  { week:'1 Дек', decisions:3, meetings:4 },
+  { week:'8 Дек', decisions:4, meetings:3 },
+  { week:'15 Дек', decisions:3, meetings:4 },
+  { week:'22 Дек', decisions:5, meetings:3 },
+  { week:'29 Дек', decisions:2, meetings:2 },
+  { week:'5 Янв', decisions:1, meetings:2 },
+  { week:'12 Янв', decisions:2, meetings:3 },
+  { week:'19 Янв', decisions:2, meetings:4 },
+  { week:'26 Янв', decisions:1, meetings:3 },
+  { week:'2 Фев', decisions:2, meetings:4 },
+  { week:'9 Фев', decisions:1, meetings:3 },
+  { week:'16 Фев', decisions:1, meetings:3 },
+  { week:'23 Фев', decisions:2, meetings:3 },
+  { week:'2 Мар', decisions:3, meetings:4 },
+  { week:'9 Мар', decisions:2, meetings:3 },
+  { week:'16 Мар', decisions:2, meetings:3 },
+  { week:'23 Мар', decisions:2, meetings:3 },
+];
+
+function renderFreqChart() {
+  const chart = document.getElementById('freq-chart');
+  const labels = document.getElementById('freq-labels');
+  const W = 900, H = 180, PAD = 20;
+  const n = DECISION_FREQ.length;
+  const maxD = Math.max(...DECISION_FREQ.map(d=>d.decisions));
+  const maxM = Math.max(...DECISION_FREQ.map(d=>d.meetings));
+  const maxVal = Math.max(maxD, maxM);
+
+  function x(i) { return PAD + (i/(n-1)) * (W - PAD*2); }
+  function y(v) { return H - PAD - (v/maxVal) * (H - PAD*2); }
+
+  // Build area path for decisions
+  let dPath = `M ${x(0)} ${y(DECISION_FREQ[0].decisions)}`;
+  DECISION_FREQ.forEach((d,i) => { if(i>0) dPath += ` L ${x(i)} ${y(d.decisions)}`; });
+  let dArea = dPath + ` L ${x(n-1)} ${H-PAD} L ${x(0)} ${H-PAD} Z`;
+
+  // Build area path for meetings
+  let mPath = `M ${x(0)} ${y(DECISION_FREQ[0].meetings)}`;
+  DECISION_FREQ.forEach((d,i) => { if(i>0) mPath += ` L ${x(i)} ${y(d.meetings)}`; });
+  let mArea = mPath + ` L ${x(n-1)} ${H-PAD} L ${x(0)} ${H-PAD} Z`;
+
+  // Grid lines
+  let grid = '';
+  for(let v=1; v<=maxVal; v++) {
+    grid += `<line x1="${PAD}" y1="${y(v)}" x2="${W-PAD}" y2="${y(v)}" stroke="rgba(42,45,62,.5)" stroke-dasharray="4"/>`;
+    grid += `<text x="${PAD-4}" y="${y(v)+4}" fill="var(--text2)" font-size="10" text-anchor="end">${v}</text>`;
+  }
+
+  // Dots for decisions
+  let dDots = DECISION_FREQ.map((d,i) =>
+    `<circle cx="${x(i)}" cy="${y(d.decisions)}" r="4" fill="var(--accent)" opacity="0">
+      <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="${i*0.08}s" fill="freeze"/>
+      <animate attributeName="r" from="0" to="4" dur="0.3s" begin="${i*0.08}s" fill="freeze"/>
+    </circle>`
+  ).join('');
+
+  // Dots for meetings
+  let mDots = DECISION_FREQ.map((d,i) =>
+    `<circle cx="${x(i)}" cy="${y(d.meetings)}" r="3" fill="var(--green)" opacity="0">
+      <animate attributeName="opacity" from="0" to=".7" dur="0.3s" begin="${i*0.08+0.05}s" fill="freeze"/>
+    </circle>`
+  ).join('');
+
+  // Glow pulse on peaks
+  let peakIdx = DECISION_FREQ.reduce((best,d,i) => d.decisions > DECISION_FREQ[best].decisions ? i : best, 0);
+  let peakGlow = `<circle cx="${x(peakIdx)}" cy="${y(DECISION_FREQ[peakIdx].decisions)}" r="4" fill="var(--accent)">
+    <animate attributeName="r" values="4;10;4" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.2;1" dur="2s" repeatCount="indefinite"/>
+  </circle>`;
+
+  chart.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="gd" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--accent)" stop-opacity=".3"/>
+          <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="gm" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--green)" stop-opacity=".15"/>
+          <stop offset="100%" stop-color="var(--green)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      ${grid}
+      <path d="${mArea}" fill="url(#gm)"/>
+      <path d="${mPath}" fill="none" stroke="var(--green)" stroke-width="1.5" opacity=".5"/>
+      <path d="${dArea}" fill="url(#gd)"/>
+      <path d="${dPath}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      ${mDots}
+      ${dDots}
+      ${peakGlow}
+    </svg>`;
+
+  // Labels
+  const step = Math.max(1, Math.floor(n/6));
+  DECISION_FREQ.forEach((d,i) => {
+    if(i % step === 0 || i === n-1) labels.innerHTML += `<span>${d.week}</span>`;
+  });
+}
+
+// ===== SCROLL PROGRESS + REVEAL =====
+
+function initScrollProgress() {
+  const bar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    bar.style.width = pct + '%';
+  });
+}
+
+function initReveal() {
+  document.querySelectorAll('section').forEach(s => s.classList.add('reveal'));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold:0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// Init
+renderValueProps();
+renderLayers();
+renderJourney();
+renderHeatmap();
+renderConcepts();
+renderDecisions();
+renderIndustry();
+renderTimeline();
+renderRepo();
+// WG section
+renderWgStats();
+renderStreams();
+renderContributors();
+renderMonthly();
+renderPodium();
+renderHeatmapWg();
+renderFreqChart();
+renderFunFacts();
+// Global effects
+initScrollProgress();
+initReveal();
+</script>
+</body>
+</html>
