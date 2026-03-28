@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas — Операционная метамодель банка</title>
+<style>
+:root {
+  --bg: #0a0c14;
+  --bg2: #111525;
+  --bg3: #1a1f35;
+  --border: #252a42;
+  --text: #e4e7f1;
+  --text2: #7b819a;
+  --text3: #4a5070;
+  --accent: #6c5ce7;
+  --accent2: #a78bfa;
+  --green: #00cec9;
+  --green2: #10b981;
+  --orange: #f59e0b;
+  --pink: #ec4899;
+  --blue: #3b82f6;
+  --red: #ef4444;
+  --cyan: #06b6d4;
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;line-height:1.7;overflow-x:hidden}
+
+.scroll-progress{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--accent),var(--green),var(--pink),var(--orange));z-index:9999;transition:width .05s linear;box-shadow:0 0 12px var(--accent)}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}.reveal-d4{transition-delay:.4s}
+
+.container{max-width:1360px;margin:0 auto;padding:0 28px}
+section{padding:72px 0}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 auto;max-width:600px}
+
+/* NAV */
+.topnav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:16px 0;transition:background .3s}
+.topnav.scrolled{background:rgba(10,12,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.topnav .inner{max-width:1360px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between}
+.topnav .logo{font-weight:800;font-size:1.1rem;letter-spacing:1px}
+.topnav .logo span{color:var(--accent2)}
+.topnav .nav-links{display:flex;gap:28px}
+.topnav .nav-links a{color:var(--text2);text-decoration:none;font-size:.82rem;font-weight:500;transition:color .2s}
+.topnav .nav-links a:hover{color:var(--text)}
+@media(max-width:768px){.topnav .nav-links{display:none}}
+
+/* HERO */
+.hero{padding:130px 0 72px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:140%;height:160%;background:radial-gradient(ellipse at 50% 40%,rgba(108,92,231,.1) 0%,rgba(0,206,201,.04) 40%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-block;background:linear-gradient(135deg,rgba(108,92,231,.2),rgba(0,206,201,.15));border:1px solid rgba(108,92,231,.3);border-radius:24px;padding:6px 20px;font-size:.78rem;color:var(--accent2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.2;margin-bottom:20px}
+.hero h1 .gr{background:linear-gradient(135deg,var(--accent2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{font-size:1.1rem;color:var(--text2);max-width:800px;margin:0 auto 48px;line-height:1.8}
+.hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.hero-stat{text-align:center;min-width:130px}
+.hero-stat .num{font-size:2.6rem;font-weight:800;line-height:1}
+.hero-stat .label{font-size:.75rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:6px}
+
+/* SECTION */
+.st{font-size:1.8rem;font-weight:800;margin-bottom:8px;line-height:1.3}
+.st .gr{background:linear-gradient(135deg,var(--accent2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sd{color:var(--text2);font-size:1.05rem;max-width:720px;margin-bottom:36px;line-height:1.8}
+
+/* CARDS */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.g4{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all .35s;position:relative;overflow:hidden}
+.card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.card .icon{font-size:2rem;margin-bottom:12px}
+.card h3{font-size:1.05rem;margin-bottom:8px;font-weight:700}
+.card p{font-size:.88rem;color:var(--text2);line-height:1.7}
+.card-accent{border-left:3px solid var(--accent)}
+.card-red::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--red);opacity:.6}
+.pill{display:inline-block;padding:3px 12px;border-radius:12px;font-size:.72rem;font-weight:700;margin-top:10px}
+.pill-red{background:rgba(239,68,68,.12);color:var(--red)}
+.pill-green{background:rgba(0,206,201,.12);color:var(--green)}
+.pill-accent{background:rgba(108,92,231,.12);color:var(--accent2)}
+.pill-orange{background:rgba(245,158,11,.12);color:var(--orange)}
+
+/* SCENARIO */
+.scenario{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin:24px 0}
+.scenario-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.scenario-header .emoji{font-size:1.6rem}
+.scenario-header h3{font-size:1.1rem;font-weight:700}
+.scenario-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center}
+@media(max-width:768px){.scenario-grid{grid-template-columns:1fr;text-align:center}}
+.scenario-box{padding:20px;border-radius:var(--radius-sm)}
+.scenario-box.today{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15)}
+.scenario-box.atlas{background:rgba(0,206,201,.06);border:1px solid rgba(0,206,201,.15)}
+.scenario-box h4{font-size:.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.scenario-box.today h4{color:var(--red)}
+.scenario-box.atlas h4{color:var(--green)}
+.scenario-box p{font-size:.88rem;color:var(--text2)}
+.scenario-box .time{font-size:1.8rem;font-weight:800;margin-top:8px}
+.scenario-arrow{font-size:2rem;color:var(--accent2)}
+
+/* INTEGRATION */
+.int-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.spine{display:flex;flex-direction:column;gap:6px;margin-top:24px}
+.spine-row{border-radius:var(--radius-sm);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;transition:all .3s;cursor:pointer;border:1px solid transparent}
+.spine-row:hover{transform:translateX(6px)}
+.spine-row .lname{font-weight:700;font-size:.95rem;min-width:200px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:4px 12px;border-radius:16px;font-size:.72rem;font-weight:600;transition:all .3s}
+.chip-on{background:rgba(0,206,201,.1);border:1px solid rgba(0,206,201,.3);color:var(--green)}
+.chip-gap{background:rgba(239,68,68,.06);border:1px dashed rgba(239,68,68,.3);color:var(--red)}
+.chip-atlas{background:rgba(108,92,231,.12);border:1px solid rgba(108,92,231,.3);color:var(--accent2);font-weight:700}
+.l-strat{background:linear-gradient(135deg,rgba(108,92,231,.12),rgba(108,92,231,.04))}
+.l-strat:hover{border-color:var(--accent)}
+.l-biz{background:linear-gradient(135deg,rgba(0,206,201,.12),rgba(0,206,201,.04))}
+.l-biz:hover{border-color:var(--green)}
+.l-sol{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.04))}
+.l-sol:hover{border-color:var(--blue)}
+.l-comp{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.04))}
+.l-comp:hover{border-color:var(--orange)}
+.l-infra{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.04))}
+.l-infra:hover{border-color:var(--red)}
+.l-data{background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.04))}
+.l-data:hover{border-color:var(--pink)}
+
+.int-bottom{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px}
+@media(max-width:768px){.int-bottom{grid-template-columns:1fr}}
+.int-bottom .card h4{font-size:.92rem;margin-bottom:6px;color:var(--accent2)}
+
+/* CONVERGENCE */
+.conv-visual{display:grid;grid-template-columns:1fr auto 1fr;gap:32px;align-items:center;margin:40px 0}
+@media(max-width:900px){.conv-visual{grid-template-columns:1fr;text-align:center}}
+.role-stack{display:flex;flex-direction:column;gap:10px}
+.role{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 20px;display:flex;align-items:center;gap:12px;transition:all .4s}
+.role .emoji{font-size:1.3rem}.role .rn{font-weight:600;font-size:.88rem}.role .rd{font-size:.72rem;color:var(--text2)}
+.conv-arrow{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--accent2);font-size:2.5rem;padding:0 16px}
+.conv-arrow .al{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--text2)}
+.new-role-box{background:linear-gradient(135deg,rgba(108,92,231,.12),rgba(0,206,201,.1));border:2px solid var(--accent);border-radius:var(--radius);padding:28px;text-align:center}
+.new-role-box h3{font-size:1.3rem;margin-bottom:8px}
+.new-role-box p{font-size:.88rem;color:var(--text2)}
+
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
+@media(max-width:768px){.risk-grid{grid-template-columns:1fr}}
+.risk-box{border-radius:var(--radius);padding:28px}
+.risk-box.problem{background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(239,68,68,.02));border:1px solid rgba(239,68,68,.15)}
+.risk-box.problem h3{color:var(--red);font-size:1.1rem;margin-bottom:10px}
+.risk-box.solution{background:linear-gradient(135deg,rgba(0,206,201,.06),rgba(0,206,201,.02));border:1px solid rgba(0,206,201,.15)}
+.risk-box.solution h3{color:var(--green);font-size:1.1rem;margin-bottom:10px}
+.risk-box p{font-size:.88rem;color:var(--text2);line-height:1.8}
+
+/* TABLE */
+.btable{width:100%;border-collapse:separate;border-spacing:0;background:var(--bg2);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+.btable th{background:var(--bg3);padding:14px 18px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text2);font-weight:600}
+.btable td{padding:14px 18px;border-top:1px solid var(--border);font-size:.85rem}
+.btable tr:hover td{background:rgba(108,92,231,.04)}
+.vh{color:var(--green);font-weight:700}.vl{color:var(--red);font-weight:700}.vm{color:var(--orange);font-weight:700}
+
+/* BAR CHART */
+.bars{display:flex;flex-direction:column;gap:12px;margin:20px 0}
+.bar-r{display:flex;align-items:center;gap:10px}
+.bar-l{width:80px;text-align:right;font-size:.78rem;color:var(--text2);flex-shrink:0}
+.bar-t{flex:1;height:26px;background:var(--bg3);border-radius:13px;overflow:hidden}
+.bar-f{height:100%;border-radius:13px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:.7rem;font-weight:700;color:#fff;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.bar-f.bg{background:linear-gradient(90deg,var(--accent),var(--green))}
+.bar-f.bv{background:linear-gradient(90deg,var(--text3),var(--text2))}
+
+/* QUOTE */
+.quote{background:var(--bg2);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;padding:28px 32px;margin:32px 0;font-style:italic;color:var(--text2);font-size:1rem;line-height:1.8}
+.quote .src{display:block;margin-top:10px;font-style:normal;font-size:.78rem;color:var(--accent2);font-weight:600}
+
+/* LADDER */
+.ladder{display:flex;gap:4px;margin:32px 0}
+@media(max-width:900px){.ladder{flex-direction:column}}
+.lstep{flex:1;padding:24px 18px;border-radius:var(--radius-sm);text-align:center;transition:all .4s;cursor:pointer;border:1px solid transparent;position:relative}
+.lstep:hover{transform:translateY(-4px)}
+.lstep .sn{font-size:1.8rem;font-weight:800;opacity:.2;line-height:1}
+.lstep h4{font-size:.85rem;margin:6px 0 4px;font-weight:700}
+.lstep p{font-size:.72rem;color:var(--text2);line-height:1.5}
+.lstep .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:.6rem;font-weight:700;padding:3px 12px;border-radius:10px;text-transform:uppercase;letter-spacing:1px;color:#fff;white-space:nowrap}
+.ls1{background:linear-gradient(180deg,rgba(107,114,128,.1),rgba(107,114,128,.03))}
+.ls2{background:linear-gradient(180deg,rgba(59,130,246,.1),rgba(59,130,246,.03))}
+.ls3{background:linear-gradient(180deg,rgba(108,92,231,.12),rgba(108,92,231,.04));border-color:var(--accent)}
+.ls4{background:linear-gradient(180deg,rgba(0,206,201,.1),rgba(0,206,201,.03))}
+.ls5{background:linear-gradient(180deg,rgba(236,72,153,.1),rgba(236,72,153,.03))}
+
+/* REFS */
+.ref-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .35s}
+.ref-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.ref-card h3{font-size:1rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ref-card p{font-size:.85rem;color:var(--text2);line-height:1.7}
+
+/* ROADMAP */
+.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:32px 0}
+@media(max-width:768px){.roadmap{grid-template-columns:1fr}}
+.rm-phase{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;position:relative;overflow:hidden}
+.rm-phase::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px}
+.rm-phase.p1::before{background:linear-gradient(90deg,var(--accent),var(--blue))}
+.rm-phase.p2::before{background:linear-gradient(90deg,var(--blue),var(--green))}
+.rm-phase.p3::before{background:linear-gradient(90deg,var(--green),var(--pink))}
+.rm-phase .pl{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--text2);margin-bottom:8px}
+.rm-phase h3{font-size:1.1rem;margin-bottom:10px}
+.rm-phase ul{list-style:none;margin-top:10px}
+.rm-phase ul li{font-size:.82rem;color:var(--text2);padding:4px 0 4px 16px;position:relative}
+.rm-phase ul li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--accent2)}
+
+/* ROI */
+.roi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:32px 0}
+@media(max-width:900px){.roi-grid{grid-template-columns:repeat(2,1fr)}}
+.roi-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;transition:all .3s}
+.roi-card:hover{border-color:var(--green);transform:translateY(-3px)}
+.roi-card .rnum{font-size:2.2rem;font-weight:800;line-height:1}
+.roi-card .rlabel{font-size:.78rem;color:var(--text2);margin-top:6px}
+.roi-card .rsrc{font-size:.65rem;color:var(--text3);margin-top:4px}
+
+/* CTA */
+.cta{text-align:center;padding:80px 0}
+.cta h2{font-size:2rem;font-weight:800;margin-bottom:16px}
+.cta p{color:var(--text2);max-width:650px;margin:0 auto;font-size:1.05rem;line-height:1.8}
+
+.footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;font-size:.75rem;color:var(--text3)}
+
+.mt-sm{margin-top:16px}.mt-md{margin-top:32px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+
+/* NAV DOTS */
+.nav-dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:10px}
+.ndot{width:10px;height:10px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .3s;border:2px solid transparent}
+.ndot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px var(--accent)}
+.ndot:hover{background:var(--accent2)}
+@media(max-width:768px){.nav-dots{display:none}}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- TOP NAV -->
+<div class="topnav" id="topnav">
+  <div class="inner">
+    <div class="logo"><span>Atlas</span> Metamodel</div>
+    <div class="nav-links">
+      <a href="#s-problem">Проблема</a>
+      <a href="#s-solution">Решение</a>
+      <a href="#s-integration">Интеграция</a>
+      <a href="#s-ai">AI</a>
+      <a href="#s-evidence">Доказательства</a>
+      <a href="#s-roadmap">Roadmap</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="s-hero">
+<div class="container">
+  <div class="hero-badge">Стратегическая инициатива &middot; Enterprise Architecture</div>
+  <h1>Банк знает о себе меньше,<br>чем <span class="gr">Google знает о нас</span></h1>
+  <p class="sub">
+    У Google &mdash; Knowledge Graph на 500 млрд фактов, связывающий всё со всем.
+    У нас &mdash; Confluence, Excel и головы 10 ключевых людей.
+    <strong>Atlas</strong> &mdash; операционная метамодель, которая делает банк понятным для людей и AI одновременно.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num" style="color:var(--accent2)">3.4&times;</div><div class="label">рост точности<br>AI с онтологией</div></div>
+    <div class="hero-stat"><div class="num" style="color:var(--green)">сек</div><div class="label">impact analysis<br>вместо дней</div></div>
+    <div class="hero-stat"><div class="num" style="color:var(--pink)">60&times;</div><div class="label">снижение<br>галлюцинаций</div></div>
+    <div class="hero-stat"><div class="num" style="color:var(--orange)">&lt;6 мес</div><div class="label">до первого<br>бизнес-кейса</div></div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== PROBLEM ==================== -->
+<section id="s-problem">
+<div class="container">
+  <div class="st reveal">Три сценария, <span class="gr">которые стоят нам денег</span></div>
+  <p class="sd reveal reveal-d1">Не абстрактные риски &mdash; а ситуации, которые происходят каждый квартал.</p>
+
+  <!-- Scenario 1: НСПК -->
+  <div class="scenario reveal">
+    <div class="scenario-header"><span class="emoji">🔥</span><h3>НСПК сообщает о 4-часовом maintenance window &mdash; какие наши продукты затронуты?</h3></div>
+    <div class="scenario-grid">
+      <div class="scenario-box today">
+        <h4>Сегодня</h4>
+        <p>Рассылка по чатам. Кто-то знает, кто-то нет. Через 3 часа собрали неполный список затронутых систем. Клиенты звонят, а мы не знаем масштаб. Утром &mdash; эскалация.</p>
+        <div class="time" style="color:var(--red)">3&ndash;4 часа</div>
+      </div>
+      <div class="scenario-arrow">&rarr;</div>
+      <div class="scenario-box atlas">
+        <h4>С Atlas</h4>
+        <p>Запрос к графу: <code style="font-size:.8rem;background:var(--bg3);padding:2px 8px;border-radius:4px">impact("НСПК", type="external_dependency")</code>. Мгновенно: список затронутых систем, процессов, продуктов, каналов, ответственных. AI-агент формирует бриф.</p>
+        <div class="time" style="color:var(--green)">30 секунд</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenario 2 -->
+  <div class="scenario reveal">
+    <div class="scenario-header"><span class="emoji">📋</span><h3>Регулятор запрашивает: &laquo;Покажите все системы, обрабатывающие ПДн клиентов сегмента X&raquo;</h3></div>
+    <div class="scenario-grid">
+      <div class="scenario-box today">
+        <h4>Сегодня</h4>
+        <p>Создаётся рабочая группа. 3 недели сбора данных из SimpleOne, DataHub, Data Owner App, руководителей направлений. Результат &mdash; Excel на 200 строк с 30% неточностей.</p>
+        <div class="time" style="color:var(--red)">3&ndash;4 недели</div>
+      </div>
+      <div class="scenario-arrow">&rarr;</div>
+      <div class="scenario-box atlas">
+        <h4>С Atlas</h4>
+        <p>SPARQL/Cypher-запрос по графу: сегмент &rarr; продукты &rarr; процессы &rarr; системы &rarr; дата-продукты. Автоматический отчёт с визуализацией lineage и ответственными.</p>
+        <div class="time" style="color:var(--green)">15 минут</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenario 3 -->
+  <div class="scenario reveal">
+    <div class="scenario-header"><span class="emoji">🚪</span><h3>Ключевой Tech Lead увольняется</h3></div>
+    <div class="scenario-grid">
+      <div class="scenario-box today">
+        <h4>Сегодня</h4>
+        <p>Знания о связях между 40+ системами, бизнес-правилах, неочевидных зависимостях уходят с ним. Новый человек выходит на продуктивность через 6&ndash;12 месяцев.</p>
+        <div class="time" style="color:var(--red)">6&ndash;12 месяцев</div>
+      </div>
+      <div class="scenario-arrow">&rarr;</div>
+      <div class="scenario-box atlas">
+        <h4>С Atlas</h4>
+        <p>Все связи &mdash; в графе. Новый сотрудник за день видит полную картину домена. AI-ассистент отвечает на вопросы &laquo;почему так сделано&raquo; из истории решений.</p>
+        <div class="time" style="color:var(--green)">1&ndash;2 недели</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== SOLUTION ==================== -->
+<section id="s-solution">
+<div class="container">
+  <div class="st reveal">Что такое Atlas &mdash; <span class="gr">за 60 секунд</span></div>
+  <p class="sd reveal reveal-d1">Не ещё одна система документирования. Живая, машиночитаемая, валидируемая карта банка.</p>
+
+  <div class="grid g2 reveal">
+    <div class="card card-accent">
+      <h3>Метамодель = строительный кодекс</h3>
+      <p>Формальные правила: какие типы сущностей существуют в банке (процессы, системы, продукты, данные), какие связи между ними допустимы, какие ограничения целостности обязательны. YAML-авторинг, Git-версионирование, автовалидация.</p>
+    </div>
+    <div class="card card-accent">
+      <h3>Граф знаний = подробная карта города</h3>
+      <p>Конкретные экземпляры: &laquo;Кредитный конвейер&raquo; &rarr; реализован через loan-origination-service &rarr; потребляет данные из scoring-engine &rarr; принадлежит домену Retail. Все связи &mdash; типизированные, запрашиваемые, валидируемые.</p>
+    </div>
+  </div>
+
+  <div class="quote reveal mt-md">
+    Метамодель для банка &mdash; то же, что Google Knowledge Graph для поиска: структура, которая делает всё остальное умнее. Без неё AI &mdash; это быстрый поиск по Confluence. С ней &mdash; архитектурный навигатор, который понимает контекст.
+  </div>
+
+  <!-- Maturity ladder -->
+  <div class="ladder reveal mt-md">
+    <div class="lstep ls1"><div class="sn">01</div><h4>Таксономия</h4><p>Классификация. &laquo;Шкаф с папками&raquo;</p></div>
+    <div class="lstep ls2"><div class="badge" style="background:var(--orange)">мы здесь</div><div class="sn">02</div><h4>Онтология</h4><p>Типизированные связи. OWL/RDF</p></div>
+    <div class="lstep ls3"><div class="badge" style="background:var(--accent)">Atlas</div><div class="sn">03</div><h4>Метамодель</h4><p>Правила моделирования. Строительный кодекс</p></div>
+    <div class="lstep ls4"><div class="sn">04</div><h4>Граф знаний</h4><p>Экземпляры + связи. Живая карта</p></div>
+    <div class="lstep ls5"><div class="sn">05</div><h4>Цифровой двойник</h4><p>Real-time. What-if симуляции</p></div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== INTEGRATION (Idea #1) ==================== -->
+<section class="int-section" id="s-integration">
+<div class="container">
+  <div class="st reveal">Существующие системы <span class="gr">не заменяются</span> &mdash; они встраиваются</div>
+  <p class="sd reveal reveal-d1">Каждая система банка уже закрывает свой кусок знаний. Atlas &mdash; это семантический слой поверх, который соединяет фрагменты в единую картину. Никаких миграций.</p>
+
+  <div class="spine reveal">
+    <div class="spine-row l-strat">
+      <div class="lname">Стратегический</div>
+      <div class="chips">
+        <span class="chip chip-on">Ops Process Tool (value streams)</span>
+        <span class="chip chip-on">HR-система (оргструктура)</span>
+        <span class="chip chip-gap">нет сквозных связей с IT</span>
+        <span class="chip chip-atlas">Atlas: goal &rarr; domain &rarr; product &rarr; org_unit</span>
+      </div>
+    </div>
+    <div class="spine-row l-biz">
+      <div class="lname">Бизнес</div>
+      <div class="chips">
+        <span class="chip chip-on">Ops Process Tool (бизнес-процессы)</span>
+        <span class="chip chip-on">Бизнес-глоссарий</span>
+        <span class="chip chip-gap">процессы не связаны с системами</span>
+        <span class="chip chip-atlas">Atlas: process &rarr; operation &rarr; it_system</span>
+      </div>
+    </div>
+    <div class="spine-row l-sol">
+      <div class="lname">Решения</div>
+      <div class="chips">
+        <span class="chip chip-on">SimpleOne (ИТ-системы &mdash; мастер)</span>
+        <span class="chip chip-on">CAP (операции &harr; компоненты)</span>
+        <span class="chip chip-gap">design-time, не runtime</span>
+        <span class="chip chip-atlas">Atlas: it_system &rarr; component &rarr; api &rarr; data_product</span>
+      </div>
+    </div>
+    <div class="spine-row l-comp">
+      <div class="lname">Компоненты</div>
+      <div class="chips">
+        <span class="chip chip-on">MSH (компоненты &mdash; мастер)</span>
+        <span class="chip chip-on">Service Mesh</span>
+        <span class="chip chip-gap">нет связи с бизнес-функциями</span>
+        <span class="chip chip-atlas">Atlas: component &rarr; capability &rarr; value_stream</span>
+      </div>
+    </div>
+    <div class="spine-row l-infra">
+      <div class="lname">Инфраструктура</div>
+      <div class="chips">
+        <span class="chip chip-on">Мониторинг (Grafana)</span>
+        <span class="chip chip-on">Cloud Management</span>
+        <span class="chip chip-gap">алерт без бизнес-контекста</span>
+        <span class="chip chip-atlas">Atlas: infra &rarr; component &rarr; process &rarr; product</span>
+      </div>
+    </div>
+    <div class="spine-row l-data">
+      <div class="lname">Данные</div>
+      <div class="chips">
+        <span class="chip chip-on">DataHub (метаданные, lineage)</span>
+        <span class="chip chip-on">Data Owner App (дата-продукты)</span>
+        <span class="chip chip-gap">lineage без семантики</span>
+        <span class="chip chip-atlas">Atlas: data_product &rarr; sli/slo &rarr; contract &rarr; owner</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="int-bottom reveal">
+    <div class="card">
+      <h4>Ключевой инсайт</h4>
+      <p>Каждая система &mdash; источник фактов. SimpleOne знает про ИТ-системы, Ops Process Tool &mdash; про процессы, DataHub &mdash; про lineage. <strong>Но ни одна не знает, как ИТ-система связана с процессом, который создаёт дата-продукт для регуляторного отчёта.</strong> Atlas &mdash; это недостающие связи.</p>
+    </div>
+    <div class="card">
+      <h4>Техническая реализация</h4>
+      <p>Коннекторы к SimpleOne, MSH, Ops Process Tool, CAP, DataHub, Data Owner App через API/CDC. Маппинг на онтологию через relation_catalog. MCP-сервер для AI-агентов. OWL/Turtle-экспорт. Всё в Git &mdash; код-ревью, версионирование, CI/CD.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== AI CONVERGENCE (Idea #2) ==================== -->
+<section id="s-ai">
+<div class="container">
+  <div class="st reveal">AI меняет команды. <span class="gr">Знания не должны пропасть.</span></div>
+  <p class="sd reveal reveal-d1">Конвергенция ролей &mdash; неизбежна и полезна. Но когда 5 ролей сливаются в одну, объём неявных знаний на человека растёт кратно. Онтология &mdash; страховка от потери контекста.</p>
+
+  <div class="conv-visual reveal">
+    <div class="role-stack">
+      <div class="role"><span class="emoji">📊</span><div><div class="rn">Системный аналитик</div><div class="rd">Требования, спецификации</div></div></div>
+      <div class="role"><span class="emoji">💻</span><div><div class="rn">Разработчик</div><div class="rd">Код, API, архитектура</div></div></div>
+      <div class="role"><span class="emoji">🧪</span><div><div class="rn">QA</div><div class="rd">Тесты, валидация</div></div></div>
+      <div class="role"><span class="emoji">🔧</span><div><div class="rn">DevOps / SRE</div><div class="rd">CI/CD, мониторинг</div></div></div>
+      <div class="role"><span class="emoji">📐</span><div><div class="rn">Архитектор</div><div class="rd">Решения, governance</div></div></div>
+    </div>
+    <div class="conv-arrow">
+      <div class="al">AI-агенты</div>
+      <div>&rarr;</div>
+      <div style="font-size:.68rem;color:var(--text2)">90% разработчиков<br>используют AI<br><span style="font-size:.58rem;color:var(--text3)">JetBrains, 2026</span></div>
+    </div>
+    <div class="new-role-box">
+      <h3>Product Engineer</h3>
+      <p>Один специалист + AI-агенты покрывают весь SDLC: от требований до продакшена</p>
+      <div class="mt-sm">
+        <span class="pill pill-green">Эффективность &times;3&ndash;5</span>
+        <span class="pill pill-accent">Меньше людей, больше скорость</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-grid reveal">
+    <div class="risk-box problem">
+      <h3>Риск: знания уходят с людьми</h3>
+      <p>Когда 5 ролей &rarr; 1&ndash;2, уход одного Product Engineer = потеря контекста целой команды. Сегодня эти знания &mdash; в головах, чатах и локальных заметках.</p>
+      <p class="mt-sm">DORA Report 2024: рост AI на 25% коррелирует с <strong>падением стабильности на 7.2%</strong>. AI создаёт изменения быстрее, чем организация осмысляет последствия.</p>
+    </div>
+    <div class="risk-box solution">
+      <h3>Решение: граф знаний как память организации</h3>
+      <p>Atlas фиксирует <strong>не код, а контекст</strong>: почему принято решение, какие процессы связаны, где зависимости, кто владелец.</p>
+      <p class="mt-sm">AI-агент с доступом к графу: принимает требование &rarr; находит затронутые сервисы &rarr; генерирует код с учётом контрактов данных &rarr; создаёт тесты из бизнес-правил онтологии &rarr; предлагает деплоймент-план. <strong>Каждый шаг валидируется против метамодели.</strong></p>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== EVIDENCE ==================== -->
+<section id="s-evidence">
+<div class="container">
+  <div class="st reveal">Доказательства: <span class="gr">цифры, а не маркетинг</span></div>
+  <p class="sd reveal reveal-d1">Peer-reviewed исследования, бенчмарки Microsoft Research и SIGMOD. Не слайды вендоров &mdash; научные данные.</p>
+
+  <div class="grid-2 reveal">
+    <div>
+      <h3 style="font-size:1rem;margin-bottom:16px">Graph RAG vs Vector RAG: точность</h3>
+      <div class="bars" id="benchBars"></div>
+    </div>
+    <div>
+      <table class="btable">
+        <tr><th>Исследование</th><th>С графом</th><th>Без графа</th></tr>
+        <tr><td>Sequeda et al. (SIGMOD 2024)</td><td class="vh">54.2%</td><td class="vl">16.7%</td></tr>
+        <tr><td>FalkorDB SDK (2025)</td><td class="vh">90%+</td><td class="vl">~26%</td></tr>
+        <tr><td>AIMultiple</td><td class="vh">82%</td><td class="vl">15%</td></tr>
+        <tr><td>Lettria (industrial)</td><td class="vh">90.6%</td><td class="vm">65.6%</td></tr>
+        <tr><td>OG-RAG (Microsoft, EMNLP)</td><td class="vh">+55% recall</td><td class="vl">baseline</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="roi-grid reveal mt-md">
+    <div class="roi-card">
+      <div class="rnum" style="color:var(--green)">3.4&times;</div>
+      <div class="rlabel">Рост точности LLM<br>с онтологией</div>
+      <div class="rsrc">Sequeda et al., SIGMOD 2024</div>
+    </div>
+    <div class="roi-card">
+      <div class="rnum" style="color:var(--pink)">1.7%</div>
+      <div class="rlabel">Галлюцинации с KG<br>(vs 63% без)</div>
+      <div class="rsrc">PubMed, RDF/OWL study, 2025</div>
+    </div>
+    <div class="roi-card">
+      <div class="rnum" style="color:var(--accent2)">0%</div>
+      <div class="rlabel">Точность LLM на KPI<br>без онтологии</div>
+      <div class="rsrc">Sequeda: стратег. вопросы</div>
+    </div>
+    <div class="roi-card">
+      <div class="rnum" style="color:var(--orange)">96/96</div>
+      <div class="rlabel">LazyGraphRAG выиграл<br>все сравнения</div>
+      <div class="rsrc">Microsoft Research, 2025</div>
+    </div>
+  </div>
+
+  <div class="quote reveal mt-md">
+    &laquo;Без Knowledge Graph и семантического обогащения ваша data fabric не обеспечит контекстуальные данные, необходимые для предотвращения галлюцинаций в GenAI. Это один из самых критических шагов к AI-ready данным.&raquo;
+    <span class="src">Gartner, 2025</span>
+  </div>
+
+  <div class="quote reveal">
+    &laquo;На вопросах о KPI и стратегическом планировании LLM без графа знаний показал ровно 0% точности &mdash; эти категории требуют понимания связей между метриками и бизнес-объектами, что невозможно без онтологии.&raquo;
+    <span class="src">Sequeda, Allemang, Jacob &mdash; ACM SIGMOD 2024, peer-reviewed</span>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== REFERENCES ==================== -->
+<section id="s-refs">
+<div class="container">
+  <div class="st reveal">Кто уже <span class="gr">построил это</span></div>
+  <p class="sd reveal reveal-d1">Не теоретические концепции &mdash; работающие системы в крупнейших финансовых организациях мира. Каждая подтверждает: формализация знаний &mdash; конкурентное преимущество.</p>
+
+  <div class="grid g2 reveal">
+    <div class="ref-card">
+      <h3>🔮 Palantir Foundry</h3>
+      <p>Весь бизнес построен на идее: <strong>связанные данные экспоненциально ценнее разрозненных</strong>. Foundry Ontology &mdash; семантический слой, через который 8,000+ пользователей SOMPO работают с данными на языке бизнеса. 500+ bootcamps/год, конверсия 75%. 139 сделок >$1M за квартал.</p>
+    </div>
+    <div class="ref-card">
+      <h3>🏦 Goldman Sachs &mdash; Legend/PURE</h3>
+      <p>Единая формальная модель данных для трейдинга, риска и регуляторной отчётности. <strong>Формализация &mdash; не академическое упражнение, а конкурентное оружие</strong> на уровне высших финансов. One source of truth для всей организации.</p>
+    </div>
+    <div class="ref-card">
+      <h3>🌐 JPMorgan Chase</h3>
+      <p>Внутренний knowledge graph: системы, данные, процессы, оргструктура &mdash; всё связано. <strong>Impact analysis и regulatory reporting at scale</strong> на 300,000+ сотрудников и тысячи систем. Каждый элемент архитектуры &mdash; в графе.</p>
+    </div>
+    <div class="ref-card">
+      <h3>🇪🇺 ING Bank</h3>
+      <p>Enterprise ontology как основа платформенной трансформации. Доказательство: <strong>европейский банк может принять ontology-driven architecture</strong> и получить измеримые улучшения в time-to-market и операционной прозрачности.</p>
+    </div>
+    <div class="ref-card">
+      <h3>📊 Microsoft</h3>
+      <p>Microsoft Graph связывает людей, файлы и активность. Fabric OneLake строит единую семантическую модель. <strong>GraphRAG &mdash; 30,500+ звёзд на GitHub</strong>. OG-RAG (EMNLP 2025): +55% recall с онтологией. Ставка Microsoft ясна: будущее enterprise &mdash; граф знаний.</p>
+    </div>
+    <div class="ref-card">
+      <h3>🎵 Zalando, Netflix, Spotify</h3>
+      <p>Пионеры data mesh и metadata-платформ (DataHub, Backstage). <strong>Metadata как продукт</strong> &mdash; с ownership, контрактами и discoverability. Atlas приносит эту философию в банкинг с регуляторной строгостью.</p>
+    </div>
+  </div>
+
+  <div class="quote reveal mt-md">
+    Ни один из этих примеров &mdash; не стартап, экспериментирующий с графами. Это крупнейшие финансовые организации мира, вложившие сотни миллионов долларов в формализацию знаний. Вопрос не &laquo;стоит ли это делать&raquo;, а &laquo;как быстро мы начнём&raquo;.
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== ROADMAP ==================== -->
+<section id="s-roadmap">
+<div class="container">
+  <div class="st reveal">Roadmap: <span class="gr">пилот на домене Operations</span></div>
+  <p class="sd reveal reveal-d1">Не big bang. Начинаем с одного домена, строим граф из существующих реестров, проводим серию измеримых экспериментов.</p>
+
+  <div class="roadmap reveal">
+    <div class="rm-phase p1">
+      <div class="pl">Фаза 1 &middot; 0&ndash;6 месяцев &middot; Пилот Operations</div>
+      <h3>Разметка. Интеграция. Эксперименты.</h3>
+      <p>Разметка баз знаний на онтологию Atlas, интеграция реестров в единый граф, API + MCP, серия пилотов.</p>
+      <ul>
+        <li>Разметка сущностей: SimpleOne (ИТ-системы), MSH (компоненты), Ops Process Tool (процессы), CAP (связи операций &harr; компонентов), DataHub (lineage), Data Owner App (дата-продукты)</li>
+        <li>Интеграция в единый граф знаний</li>
+        <li>API-слой (REST/GraphQL) + MCP-сервер</li>
+        <li><strong>EXP-1:</strong> Auto-discovery фичей из графа &mdash; обнаружение скрытых связей между сущностями</li>
+        <li><strong>EXP-2:</strong> Impact analysis через граф &mdash; &laquo;что затронет изменение системы X&raquo;</li>
+        <li><strong>EXP-3:</strong> A/B-тест LLM: с графом vs без (методология Sequeda)</li>
+        <li><strong>EXP-4:</strong> Автогенерация ответов на регуляторные запросы</li>
+      </ul>
+    </div>
+    <div class="rm-phase p2">
+      <div class="pl">Фаза 2 &middot; 6&ndash;12 месяцев</div>
+      <h3>Три домена. AI-агенты. Регуляторика.</h3>
+      <p>Масштабирование на Operations + Retail + CIB. AI-агенты в продакшене.</p>
+      <ul>
+        <li>MCP-сервер для AI-агентов в продакшене</li>
+        <li>SHACL-валидация всех изменений графа</li>
+        <li>Регуляторные запросы из графа &mdash; стандартный процесс</li>
+        <li>Онбординг новых сотрудников: дни вместо месяцев</li>
+        <li>Proposal-based workflow для изменений</li>
+      </ul>
+    </div>
+    <div class="rm-phase p3">
+      <div class="pl">Фаза 3 &middot; 12&ndash;24 месяца</div>
+      <h3>Платформа. Полный граф. Цифровой двойник.</h3>
+      <p>Все домены. Runtime-синхронизация. Предиктивный impact analysis.</p>
+      <ul>
+        <li>Полный корпоративный граф знаний</li>
+        <li>Auto-discovery из Service Mesh / APM</li>
+        <li>Два семантических слоя: метрики + знания</li>
+        <li>What-if симуляции изменений</li>
+        <li>Self-documenting architecture</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="reveal mt-md" style="font-size:1.1rem;margin-bottom:16px">KPI пилота (Фаза 1)</h3>
+  <div class="roi-grid reveal">
+    <div class="roi-card">
+      <div class="rnum" style="color:var(--green)">&times;50</div>
+      <div class="rlabel">Ускорение<br>impact analysis</div>
+      <div class="rsrc">Часы &rarr; секунды</div>
+    </div>
+    <div class="roi-card">
+      <div class="rnum" style="color:var(--accent2)">&times;10</div>
+      <div class="rlabel">Ускорение ответов<br>регулятору</div>
+      <div class="rsrc">Недели &rarr; часы</div>
+    </div>
+    <div class="roi-card">
+      <div class="rnum" style="color:var(--pink)">&times;6</div>
+      <div class="rlabel">Ускорение<br>онбординга</div>
+      <div class="rsrc">Месяцы &rarr; недели</div>
+    </div>
+    <div class="roi-card">
+      <div class="rnum" style="color:var(--orange)">3.4&times;</div>
+      <div class="rlabel">Точность AI<br>на наших данных</div>
+      <div class="rsrc">Sequeda benchmark</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta" id="s-cta">
+  <h2 class="reveal">Компании, которые разберутся с этим первыми,<br>будут работать на <span class="gr">принципиально другой скорости</span></h2>
+  <p class="reveal reveal-d1">Goldman Sachs, JPMorgan, ING уже сделали ставку. Microsoft инвестирует миллиарды в Knowledge Graph инфраструктуру. Вопрос для нас &mdash; не &laquo;если&raquo;, а &laquo;когда&raquo; и &laquo;как быстро&raquo;.</p>
+  <p class="reveal reveal-d2 mt-sm" style="font-size:.9rem">Предлагаемый следующий шаг: <strong>6-месячный пилот на домене Operations</strong> с серией измеримых экспериментов.</p>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    Atlas Metamodel &middot; Enterprise Architecture &middot; 2026<br>
+    Данные: Gartner 2025, Microsoft Research (EMNLP 2025), Sequeda et al. (ACM SIGMOD 2024), JetBrains AI Pulse 2026, DORA Report 2024
+  </div>
+</footer>
+
+<script>
+// Scroll progress
+const bar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%';
+});
+
+// Top nav scroll effect
+const topnav = document.getElementById('topnav');
+window.addEventListener('scroll', () => {
+  topnav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Nav dots
+const sects = ['s-hero','s-problem','s-solution','s-integration','s-ai','s-evidence','s-refs','s-roadmap','s-cta'];
+const dotsC = document.getElementById('navDots');
+sects.forEach(id => {
+  const d = document.createElement('div');
+  d.className = 'ndot';
+  d.onclick = () => document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  dotsC.appendChild(d);
+});
+const sObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const i = sects.indexOf(e.target.id);
+      document.querySelectorAll('.ndot').forEach((d,j) => d.classList.toggle('active', j===i));
+    }
+  });
+}, { threshold: 0.25 });
+sects.forEach(id => { const el = document.getElementById(id); if(el) sObs.observe(el); });
+
+// Benchmark bars
+const bd = [
+  {l:'Sequeda (SIGMOD)',g:54.2,v:16.7},
+  {l:'FalkorDB SDK',g:90,v:26},
+  {l:'AIMultiple',g:82,v:15},
+  {l:'Lettria (industrial)',g:90.6,v:65.6},
+];
+const bEl = document.getElementById('benchBars');
+bd.forEach(d => {
+  bEl.innerHTML += `
+    <div style="font-size:.75rem;color:var(--text2);margin-bottom:2px">${d.l}</div>
+    <div class="bar-r"><div class="bar-l" style="color:var(--green)">Graph</div><div class="bar-t"><div class="bar-f bg" style="width:${d.g}%">${d.g}%</div></div></div>
+    <div class="bar-r" style="margin-bottom:14px"><div class="bar-l" style="color:var(--text3)">Vector</div><div class="bar-t"><div class="bar-f bv" style="width:${d.v}%">${d.v}%</div></div></div>`;
+});
+</script>
+</body>
+</html>
