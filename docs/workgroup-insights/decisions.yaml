@@ -1,0 +1,119 @@
+# Ключевые решения по метамодели
+
+decisions:
+
+  # === Батч 1: 2025-12-01 — 2025-12-10 ===
+
+  - date: "2025-12-01"
+    topic: "Терминология: модульный банк → composable enterprise"
+    decision: "Принято — использовать устоявшийся рыночный термин composable enterprise"
+    rationale: "бизнес-архитектор указал, что composable enterprise — когда value streams собираются из переиспользуемых capability-кубиков"
+    affected_entities: [business_capability, value_stream]
+
+  - date: "2025-12-01"
+    topic: "Организационная принадлежность метамодели"
+    decision: "Позиционируется как активность Enterprise Architecture (не Data)"
+    rationale: "Руководитель инициативы высказал позицию; формально не закрыт, но направление намечено"
+    affected_entities: [organizational_unit]
+
+  - date: "2025-12-01"
+    topic: "Разграничение метамодель vs онтология"
+    decision: "Онтология = корпоративная бизнес-модель данных (классы и связи); метамодель = мета-сущности (типы сущностей и связей)"
+    rationale: "Компромисс рабочей группы; на уровне онтологии — конкретные домены, но не экземпляры"
+    affected_entities: [business_domain, business_entity]
+
+  - date: "2025-12-01"
+    topic: "Приоритеты стейкхолдеров"
+    decision: "П1: системы-потребители бизнес-модели (СИСПИ); П2: оунеры крупных систем; П3: Fish Leads / Job Families"
+    rationale: "К П3 приходить с готовым вариантом — иначе ничего не получишь"
+    affected_entities: [it_system, organizational_unit]
+
+  - date: "2025-12-03"
+    topic: "Дата-контракт — самостоятельная сущность"
+    decision: "Принято — дата-контракт не просто свойство дата-продукта, а самостоятельная сущность"
+    rationale: "Консенсус Красовой-лид дата-контрактов: контракт строится над данными и материализует их как продукт"
+    affected_entities: [data_contract, data_product]
+
+  - date: "2025-12-03"
+    topic: "Контракт шире чем спецификация API или схема поставки"
+    decision: "Принято — схемы в Kafka/API-портале = «схемы поставки», не полноценные дата-контракты"
+    rationale: "Разграничение технической схемы и бизнесового контракта с обязательствами"
+    affected_entities: [data_contract, api, integration]
+
+  - date: "2025-12-03"
+    topic: "Контракт существует вне дата-платформы"
+    decision: "Принято — контракты есть и на Kafka-топики, и в API, и на МЧС-схемы"
+    rationale: "Дата-продукт не ограничен дата-платформой"
+    affected_entities: [data_contract, data_product, data_object]
+
+  - date: "2025-12-03"
+    topic: "Статусная модель контракта: draft → active → certified"
+    decision: "Принято — добавлен уровень «certified» выше active"
+    rationale: "Аналог «методологического лайка» — подтверждение высокого качества"
+    affected_entities: [data_contract]
+
+  - date: "2025-12-03"
+    topic: "Гарантии доставки — атрибут контракта"
+    decision: "Принято — at-least-once / exactly-once фиксируются в контракте"
+    rationale: "участник рабочей группы и Руководитель инициативы: наличие дублей в raw-слое — обязательная характеристика"
+    affected_entities: [data_contract, sla, information_flow]
+
+  - date: "2025-12-08"
+    topic: "Дата-продукт как центральная сущность каталога (не таблица)"
+    decision: "Принято — подход от дата-продукта, а не от физической таблицы"
+    rationale: "Финансовый блок (Юдкин) продвигал; получил консенсус"
+    affected_entities: [data_product, data_object]
+
+  - date: "2025-12-08"
+    topic: "Два класса golden-record каталога"
+    decision: "Принято — каталог мастер для: (1) объект данных, (2) процесс поставки"
+    rationale: "лид дата-контрактов: остальное — агрегируемые атрибуты из других систем"
+    affected_entities: [data_object, data_process]
+
+  - date: "2025-12-08"
+    topic: "Система-источник — атрибут, не first-class объект каталога"
+    decision: "Принято — система-источник = атрибут разметки data_object"
+    rationale: "лид дата-контрактов зафиксировал явно: это не самостоятельная сущность каталога"
+    affected_entities: [source, data_object]
+
+  - date: "2025-12-08"
+    topic: "Потребители первичны, контракт опционален"
+    decision: "Принято — статистика использования в каталоге независимо от наличия контракта"
+    rationale: "Ранее потребители хранились только через контракт — расширено"
+    affected_entities: [value_consumer, data_contract]
+
+  - date: "2025-12-09"
+    topic: "Интеграция = взаимодействие двух компонентов (не подписка)"
+    decision: "Принято — интеграция существует при наличии и продюсера, и потребителя"
+    rationale: "Сужение: просто подключение к Kafka — не интеграция"
+    affected_entities: [integration, component]
+
+  - date: "2025-12-09"
+    topic: "Ресурс = application layer (не инфраструктура)"
+    decision: "Принято — ресурс = то, от чего зависит компонент (Kafka topic, S3 bucket)"
+    rationale: "Кластер Kafka = инфраструктурный слой; топик Kafka = ресурс application layer"
+    affected_entities: [logical_resource, infra_resource, component]
+
+  - date: "2025-12-09"
+    topic: "AI-агенты как потребители метамодели"
+    decision: "Зафиксировано стратегически — точность определений важна для машиночитаемости"
+    rationale: "Агенты смогут делать «что если» аналитику на графе знаний"
+    affected_entities: [it_system, business_entity]
+
+  - date: "2025-12-10"
+    topic: "Требование ≠ Правило ≠ Соглашение"
+    decision: "Принято трёхуровневое разделение: требование (текст) → соглашение (числовая формализация) → индикатор (факт)"
+    rationale: "Ранее три термина смешивались; рабочая группа уточнили"
+    affected_entities: [requirement, sla, metric, data_contract]
+
+  - date: "2025-12-10"
+    topic: "Система инцидентов — вне системы контрактов"
+    decision: "Принято — управление инцидентами = отдельная система, контракты принимают/отдают сигналы"
+    rationale: "Руководитель инициативы: это мощная система, должна быть за границей контракта"
+    affected_entities: [incident, data_contract]
+
+  - date: "2025-12-10"
+    topic: "Граница системы контрактов"
+    decision: "Принято — система контрактов не является движком проверки; DQS/Kapha/DTP — снаружи"
+    rationale: "Проверки, хранилище метрик, инциденты — всё за границей системы контрактов"
+    affected_entities: [data_contract, metric, incident, it_system]
