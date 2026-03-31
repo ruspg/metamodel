@@ -2,7 +2,7 @@ meta:
   version: 1
   bank_code: "BANK"
   model_name: "enterprise_metamodel"
-  last_updated: "2025-11-16"
+  last_updated: "2026-04-01"
   locale: "ru-RU"
   title: "Горизонтальный сценарий управления Enterprise-моделью"
   description: >-
@@ -59,6 +59,19 @@ entity_kinds:
         name: "Бизнес-домен"
         metamodel_level: strategic_view
         description: "Домен, в котором оперирует семейство."
+
+  - id: job
+    name: "Job"
+    name_ru: "Job (клиентская задача)"
+    metamodel_level: strategic_view
+    category: value_definition
+    description: >-
+      Задача или потребность клиента (Jobs-to-be-Done), которую он стремится
+      решить, обращаясь к продуктам и услугам банка. Является основой
+      для определения потоков создания ценности.
+    rules: |-
+      - Формулируется с точки зрения клиента, а не банка.
+      - Группируется в Job Family.
 
   - id: value_stream
     name: "Value Stream"
@@ -143,6 +156,7 @@ entity_kinds:
     name_ru: "Клиентский сегмент"
     metamodel_level: strategic_view
     category: customer
+    status: draft
     description: >-
       Группа потребителей ценности (клиентов, партнёров, внутренних
       стейкхолдеров), объединённых общими характеристиками, потребностями
@@ -150,6 +164,7 @@ entity_kinds:
     rules: |-
       - Название должно явно идентифицировать группу (Retail, SME, Private и т.п.).
       - Используется для таргетирования продуктов и потоков ценности.
+      - Статус: draft — сущность и её связи требуют уточнения.
 
   - id: channel
     name: "Channel"
@@ -334,6 +349,25 @@ entity_kinds:
         metamodel_level: business_details
         description: "Уровень важности или иерархия (Tier)."
 
+  - id: business_operation
+    name: "Business Operation"
+    name_ru: "Бизнес-операция"
+    metamodel_level: business_details
+    category: process
+    description: >-
+      Конкретный исполняемый бизнес-шаг внутри бизнес-процесса, достаточно
+      значимый для привязки к системам, данным, контролям и BPMN-активностям/задачам.
+
+  - id: business_action
+    name: "Business Action"
+    name_ru: "Бизнес-действие"
+    metamodel_level: business_details
+    category: process
+    description: >-
+      Атомарное действие внутри бизнес-операции, представляющее минимальный
+      шаг исполнения, который может быть реализован методом API или иным
+      техническим вызовом.
+
   - id: business_function
     name: "Business Function"
     name_ru: "Бизнес-функция"
@@ -345,6 +379,15 @@ entity_kinds:
     rules: |-
       - Не может быть разделена на более мелкие функции без потери смысла.
       - Может быть автоматизированной (есть связанная ИТ-подсистема) или ручной.
+
+  - id: business_role
+    name: "Business Role"
+    name_ru: "Бизнес-роль"
+    metamodel_level: business_details
+    category: people
+    description: >-
+      Функциональная роль, определяющая зону ответственности и полномочия
+      в рамках бизнес-процессов и функций. Агрегируется организационной единицей.
 
   - id: business_entity
     name: "Business Entity"
@@ -911,27 +954,28 @@ entity_kinds:
         metamodel_level: business_details
         description: "Категория доступа."
 
-  - id: data_pipeline
-    name: "Data Pipeline"
-    name_ru: "Поток загрузки данных"
-    metamodel_level: solution_details
-    category: integration
+  - id: data_process
+    name: "Data Process"
+    name_ru: "Дата-процесс"
+    metamodel_level: data_details
+    category: data_product
     description: >-
-      Автоматизированный процесс, который перемещает и трансформирует данные
-      между источниками и потребителями (хранилища, дата-продукты, отчёты).
+      Логический процесс обработки данных, создающий или потребляющий объекты
+      данных и фиксирующий значения метрик. Может быть реализован через
+      ETL/ELT pipeline, streaming job или иной механизм.
     rules: |-
       - Имеет расписание, конфигурацию и целевой набор данных.
       - Может состоять из нескольких коннекторов и трансформаций.
     attributes:
-      - id: data_pipeline.type
+      - id: data_process.type
         name: "Тип пайплайна"
         metamodel_level: solution_details
         description: "ETL, ELT, streaming и т.п."
-      - id: data_pipeline.config_parameters
+      - id: data_process.config_parameters
         name: "Конфигурация"
         metamodel_level: solution_details
         description: "Набор параметров запуска."
-      - id: data_pipeline.schedule
+      - id: data_process.schedule
         name: "Расписание"
         metamodel_level: solution_details
         description: "Cron/airflow расписание выполнения."
@@ -977,6 +1021,10 @@ entity_kinds:
         name: "Тип ресурса"
         metamodel_level: solution_details
         description: "БД, брокер сообщений, файловое хранилище и т.д."
+      - id: logical_resource.resource_type
+        name: "Детальный тип"
+        metamodel_level: solution_details
+        description: "Примеры: DB, Namespace, Bucket, Topic, Queue, Schema Registry."
       - id: logical_resource.resource_kind
         name: "Класс ресурса"
         metamodel_level: solution_details
@@ -984,11 +1032,11 @@ entity_kinds:
       - id: logical_resource.it_system_id
         name: "ИТ-система"
         metamodel_level: solution_details
-        description: "Система, владеющая ресурсом."
+        description: "Система, владеющая ресурсом. Денормализация для быстрого поиска."
 
   - id: infrastructure_resource
     name: "Infrastructure Resource"
-    name_ru: "Инфраструктурный ресурс"
+    name_ru: "Конфигурационная единица (Инфраструктурный ресурс)"
     metamodel_level: infrastructure_details
     category: infrastructure
     description: >-
@@ -1003,6 +1051,12 @@ entity_kinds:
         name: "Описание"
         metamodel_level: infrastructure_details
         description: "Свободное текстовое описание ресурса."
+
+  - id: component_instance
+    name: "Component Instance"
+    name_ru: "Экземпляр компонента"
+    metamodel_level: infrastructure_details
+    category: application
 
   - id: transformation
     name: "Transformation"
@@ -1028,9 +1082,9 @@ entity_kinds:
         metamodel_level: solution_details
         description: "Поток, внутри которого выполняется трансформация."
 
-  - id: data_pipeline_run
-    name: "Data Pipeline Run"
-    name_ru: "Результат запуска потока"
+  - id: data_process_run
+    name: "Data Process Run"
+    name_ru: "Результат запуска дата-процесса"
     metamodel_level: solution_details
     category: integration_run
     description: >-
@@ -1040,43 +1094,43 @@ entity_kinds:
       - Фиксирует метрики (количество записей, длительность, статус).
       - Используется для мониторинга производительности и инцидентов.
     attributes:
-      - id: data_pipeline_run.start_ts
+      - id: data_process_run.start_ts
         name: "Начало выполнения"
         metamodel_level: solution_details
         description: "Время старта запуска."
-      - id: data_pipeline_run.end_ts
+      - id: data_process_run.end_ts
         name: "Окончание"
         metamodel_level: solution_details
         description: "Время завершения запуска."
-      - id: data_pipeline_run.status
+      - id: data_process_run.status
         name: "Статус"
         metamodel_level: solution_details
         description: "SUCCESS, FAILED и т.п."
-      - id: data_pipeline_run.records_processed
+      - id: data_process_run.records_processed
         name: "Обработано записей"
         metamodel_level: solution_details
         description: "Количество записей за запуск."
-      - id: data_pipeline_run.portion_data
+      - id: data_process_run.portion_data
         name: "Объём данных"
         metamodel_level: solution_details
         description: "Информация об объёме или партициях."
-      - id: data_pipeline_run.business_dates
+      - id: data_process_run.business_dates
         name: "Бизнес-даты"
         metamodel_level: business_details
         description: "Диапазон бизнес-дат, затронутых запуском."
-      - id: data_pipeline_run.partition_name
+      - id: data_process_run.partition_name
         name: "Партиция"
         metamodel_level: data_details
         description: "Имя обработанной партиции."
-      - id: data_pipeline_run.data_ready_ts
+      - id: data_process_run.data_ready_ts
         name: "Готовность данных"
         metamodel_level: solution_details
         description: "Момент, когда данные доступны потребителям."
-      - id: data_pipeline_run.airflow_execution_date
+      - id: data_process_run.airflow_execution_date
         name: "Airflow execution date"
         metamodel_level: solution_details
         description: "Техническая дата запуска."
-      - id: data_pipeline_run.insert_ts
+      - id: data_process_run.insert_ts
         name: "Запись метрики"
         metamodel_level: solution_details
         description: "Когда информация о запуске зафиксирована."
@@ -1186,41 +1240,42 @@ entity_kinds:
         metamodel_level: solution_details
         description: "Критичность системы."
 
-  - id: functional_subsystem
-    name: "Functional Subsystem"
-    name_ru: "Функциональная подсистема"
+  - id: vendor_product
+    name: "Vendor Product"
+    name_ru: "Вендорский продукт"
     metamodel_level: solution_details
     category: application
     description: >-
-      Логическая часть ИТ-системы, объединяющая набор компонентов для
-      реализации конкретных функций.
-    attributes:
-      - id: functional_subsystem.it_system_id
-        name: "ИТ-система"
-        metamodel_level: solution_details
-        description: "Родительская система."
-      - id: functional_subsystem.tier
-        name: "Tier"
-        metamodel_level: solution_details
-        description: "Критичность подсистемы."
+      Коммерческое программное обеспечение стороннего поставщика, развёрнутое
+      в инфраструктуре банка. ИТ-система может являться частным случаем
+      (специализацией) вендорского продукта.
 
-  - id: component
-    name: "Component"
-    name_ru: "Компонент"
+  - id: software_component
+    name: "Software Component"
+    name_ru: "Компонент ИС"
     metamodel_level: component_details
     category: application
     description: >-
-      Прикладной модуль, сервис, база данных или иная часть подсистемы,
-      выполняющая конкретную функцию.
+      Компонент информационной системы — прикладной модуль, сервис, база данных
+      или иная составная часть ИТ-системы, выполняющая конкретную функцию.
     attributes:
-      - id: component.type
+      - id: software_component.type
         name: "Тип компонента"
         metamodel_level: component_details
         description: "Микросервис, БД, UI и т.д."
-      - id: component.functional_subsystem_id
-        name: "Подсистема"
-        metamodel_level: solution_details
-        description: "К какой подсистеме относится компонент."
+
+  - id: technology
+    name: "Technology"
+    name_ru: "Технология"
+    metamodel_level: component_details
+    category: application
+
+  - id: source
+    name: "Source"
+    name_ru: "Источник"
+    metamodel_level: component_details
+    category: integration
+    status: draft
 
   - id: integration
     name: "Integration"
@@ -1571,29 +1626,28 @@ entity_kinds:
         metamodel_level: solution_details
         description: "Запуск, к которому относится инцидент."
 
-  - id: metric
-    name: "Metric"
-    name_ru: "Метрика"
-    metamodel_level: strategic_view
+  - id: tech_metric
+    name: "Technical Metric"
+    name_ru: "Техническая метрика"
+    metamodel_level: data_details
     category: metric
     description: >-
-      Стандартизованный показатель (бизнесовый, технический, SLA),
-      который используется для оценки процессов, качества данных
-      или производительности.
+      Технический, SLA или quality-показатель, используемый для оценки качества
+      данных, производительности процессов или соблюдения контрактных обязательств.
     attributes:
-      - id: metric.metric_type
+      - id: tech_metric.metric_type
         name: "Тип метрики"
-        metamodel_level: strategic_view
+        metamodel_level: data_details
         description: "BUSINESS, TECHNICAL, QUALITY, PERFORMANCE, SLA."
-      - id: metric.calculation_logic
+      - id: tech_metric.calculation_logic
         name: "Формула расчёта"
-        metamodel_level: strategic_view
+        metamodel_level: data_details
         description: "Описание алгоритма вычисления."
-      - id: metric.measurement_unit
+      - id: tech_metric.measurement_unit
         name: "Единица измерения"
-        metamodel_level: strategic_view
+        metamodel_level: data_details
         description: "%, секунды, штуки и т.д."
-      - id: metric.data_source
+      - id: tech_metric.data_source
         name: "Источник данных"
         metamodel_level: data_details
         description: "Откуда берутся значения."
@@ -1803,15 +1857,6 @@ relation_kinds:
     metamodel_level: business_details
     category: composition
     direction: directed
-
-  - id: value_stream_uses_capability
-    name: "Поток ценности → Бизнес-способность"
-    from_kind: value_stream
-    to_kind: business_capability
-    metamodel_level: strategic_view
-    category: dependency
-    direction: directed
-
   - id: data_product_represents_business_entity
     name: "Дата-продукт → Бизнес-сущность"
     from_kind: data_product
@@ -1823,14 +1868,14 @@ relation_kinds:
   - id: data_product_implemented_by_pipeline
     name: "Дата-продукт → Data Pipeline"
     from_kind: data_product
-    to_kind: data_pipeline
+    to_kind: data_process
     metamodel_level: solution_details
     category: implementation
     direction: directed
 
   - id: pipeline_uses_connector
     name: "Data Pipeline → Connector"
-    from_kind: data_pipeline
+    from_kind: data_process
     to_kind: connector
     metamodel_level: component_details
     category: composition
@@ -1838,7 +1883,7 @@ relation_kinds:
 
   - id: pipeline_uses_transformation
     name: "Data Pipeline → Transformation"
-    from_kind: data_pipeline
+    from_kind: data_process
     to_kind: transformation
     metamodel_level: component_details
     category: composition
@@ -1846,8 +1891,8 @@ relation_kinds:
 
   - id: pipeline_has_run
     name: "Data Pipeline → Pipeline Run"
-    from_kind: data_pipeline
-    to_kind: data_pipeline_run
+    from_kind: data_process
+    to_kind: data_process_run
     metamodel_level: solution_details
     category: lifecycle
     direction: directed
@@ -1947,15 +1992,6 @@ relation_kinds:
     metamodel_level: data_details
     category: classification
     direction: directed
-
-  - id: bank_product_in_job_family
-    name: "Bank Product → Job Family"
-    from_kind: bank_product
-    to_kind: job_family
-    metamodel_level: business_details
-    category: assignment
-    direction: directed
-
   - id: job_family_has_bank_product
     name: "Job Family → Bank Product"
     from_kind: job_family
@@ -1964,34 +2000,6 @@ relation_kinds:
     category: assignment
     direction: directed
     description: "Job Family ведёт портфель банковских продуктов, за которые отвечает."
-
-  - id: job_family_owns_integration
-    name: "Job Family → Integration"
-    from_kind: job_family
-    to_kind: integration
-    metamodel_level: solution_details
-    category: ownership
-    direction: directed
-    description: "Job Family закрепляет ответственных за поддержание интеграций своего продуктового контура."
-
-  - id: job_family_uses_logical_resource
-    name: "Job Family → Logical Resource"
-    from_kind: job_family
-    to_kind: logical_resource
-    metamodel_level: solution_details
-    category: dependency
-    direction: directed
-    description: "Показывает, какими логическими ресурсами (БД, очередями, сервисами) пользуются продукты Job Family."
-
-  - id: job_family_depends_on_infrastructure_resource
-    name: "Job Family → Infrastructure Resource"
-    from_kind: job_family
-    to_kind: infrastructure_resource
-    metamodel_level: infrastructure_details
-    category: dependency
-    direction: directed
-    description: "Подсвечивает инфраструктурные ресурсы, от которых зависит выполнение обязательств Job Family."
-
   - id: bank_product_targets_segment
     name: "Bank Product → Customer Segment"
     from_kind: bank_product
@@ -1999,6 +2007,7 @@ relation_kinds:
     metamodel_level: business_details
     category: customer
     direction: directed
+    status: draft
 
   - id: bank_product_provides_value
     name: "Bank Product → Value"
@@ -2007,15 +2016,6 @@ relation_kinds:
     metamodel_level: strategic_view
     category: value_delivery
     direction: directed
-
-  - id: bank_product_has_owner
-    name: "Bank Product → Employee"
-    from_kind: bank_product
-    to_kind: employee
-    metamodel_level: business_details
-    category: ownership
-    direction: directed
-
   - id: value_consumer_uses_channel
     name: "Value Consumer → Channel"
     from_kind: value_consumer
@@ -2031,6 +2031,7 @@ relation_kinds:
     metamodel_level: strategic_view
     category: classification
     direction: directed
+    status: draft
 
   - id: value_consumer_seeks_value
     name: "Value Consumer → Value"
@@ -2091,7 +2092,7 @@ relation_kinds:
   - id: requirement_metric_link_to_metric
     name: "Requirement Metric Link → Metric"
     from_kind: requirement_metric_link
-    to_kind: metric
+    to_kind: tech_metric
     metamodel_level: business_details
     category: measurement
     direction: directed
@@ -2155,30 +2156,13 @@ relation_kinds:
   - id: data_product_link_pipeline
     name: "Data Product Link → Data Pipeline"
     from_kind: data_product_link
-    to_kind: data_pipeline
+    to_kind: data_process
     metamodel_level: solution_details
     category: implementation
     direction: directed
-
-  - id: it_system_has_subsystem
-    name: "IT System → Functional Subsystem"
-    from_kind: it_system
-    to_kind: functional_subsystem
-    metamodel_level: solution_details
-    category: composition
-    direction: directed
-
-  - id: subsystem_has_component
-    name: "Functional Subsystem → Component"
-    from_kind: functional_subsystem
-    to_kind: component
-    metamodel_level: component_details
-    category: composition
-    direction: directed
-
   - id: component_exposes_api
     name: "Component → API"
-    from_kind: component
+    from_kind: software_component
     to_kind: api
     metamodel_level: solution_details
     category: interface
@@ -2202,7 +2186,7 @@ relation_kinds:
 
   - id: component_runs_on_logical_resource
     name: "Component → Logical Resource"
-    from_kind: component
+    from_kind: software_component
     to_kind: logical_resource
     metamodel_level: solution_details
     category: deployment
@@ -2215,23 +2199,6 @@ relation_kinds:
     metamodel_level: infrastructure_details
     category: deployment
     direction: directed
-
-  - id: logical_resource_owned_by_team
-    name: "Logical Resource → Team"
-    from_kind: logical_resource
-    to_kind: team
-    metamodel_level: business_details
-    category: ownership
-    direction: directed
-
-  - id: logical_resource_supports_it_system
-    name: "Logical Resource → IT System"
-    from_kind: logical_resource
-    to_kind: it_system
-    metamodel_level: solution_details
-    category: implementation
-    direction: directed
-
   - id: code_repository_owned_by_team
     name: "Code Repository → Team"
     from_kind: code_repository
@@ -2243,7 +2210,7 @@ relation_kinds:
   - id: integration_in_component
     name: "Integration → Component"
     from_kind: integration
-    to_kind: component
+    to_kind: software_component
     metamodel_level: solution_details
     category: implementation
     direction: directed
@@ -2255,3 +2222,668 @@ relation_kinds:
     metamodel_level: data_details
     category: representation
     direction: directed
+
+  # ============================================
+  # Блок 1: Стратегический слой (Job, Value, Goal)
+  # ============================================
+
+  - id: rel_job_family_has_job
+    name: "Job Family → Job"
+    from_kind: job_family
+    to_kind: job
+    metamodel_level: strategic_view
+    category: composition
+    direction: directed
+    description: "Job Family состоит из набора клиентских задач (Jobs)."
+
+  - id: rel_value_stream_fulfills_job
+    name: "Value Stream → Job"
+    from_kind: value_stream
+    to_kind: job
+    metamodel_level: strategic_view
+    category: realization
+    direction: directed
+    description: "Поток создания ценности выполняет (fulfills) клиентскую задачу."
+
+  - id: rel_job_defines_need_for_value
+    name: "Job → Value"
+    from_kind: job
+    to_kind: value
+    metamodel_level: strategic_view
+    category: dependency
+    direction: directed
+    description: "Клиентская задача определяет потребность в ценности."
+
+  - id: rel_value_stream_produces_value
+    name: "Value Stream → Value"
+    from_kind: value_stream
+    to_kind: value
+    metamodel_level: strategic_view
+    category: value_delivery
+    direction: directed
+    description: "Поток создания ценности производит ценность для потребителя."
+
+  - id: rel_value_associated_with_goal
+    name: "Value → Goal"
+    from_kind: value
+    to_kind: business_goal
+    metamodel_level: strategic_view
+    category: alignment
+    direction: directed
+    description: "Ценность может быть ассоциирована с бизнес-целью."
+
+  - id: rel_channel_delivers_value
+    name: "Channel → Value"
+    from_kind: channel
+    to_kind: value
+    metamodel_level: business_details
+    category: interaction
+    direction: directed
+    description: "Канал обеспечивает касание с клиентом для создания ценности."
+
+  - id: rel_bank_product_has_value_stream
+    name: "Bank Product → Value Stream"
+    from_kind: bank_product
+    to_kind: value_stream
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Банковский продукт состоит из потоков создания ценности."
+
+  - id: rel_value_sold_via_bank_product
+    name: "Value → Bank Product"
+    from_kind: value
+    to_kind: bank_product
+    metamodel_level: strategic_view
+    category: aggregation
+    direction: directed
+    description: "Ценность агрегирует банковские продукты."
+
+  # ============================================
+  # Блок 2: Org Unit + Business Role
+  # ============================================
+
+  - id: rel_org_unit_creates_bank_product
+    name: "Org Unit → Bank Product"
+    from_kind: organizational_unit
+    to_kind: bank_product
+    metamodel_level: business_details
+    category: ownership
+    direction: directed
+    description: "Организационная единица владеет банковским продуктом."
+
+  - id: rel_org_unit_responsible_for_it_system
+    name: "Org Unit → IT System"
+    from_kind: organizational_unit
+    to_kind: it_system
+    metamodel_level: solution_details
+    category: ownership
+    direction: directed
+    description: "Организационная единица отвечает за ИТ-систему."
+
+  - id: rel_org_unit_supports_capability
+    name: "Org Unit → Business Capability"
+    from_kind: organizational_unit
+    to_kind: business_capability
+    metamodel_level: strategic_view
+    category: support
+    direction: directed
+    description: "Организационная единица поддерживает бизнес-способность."
+
+  - id: rel_org_unit_performs_function
+    name: "Org Unit → Business Function"
+    from_kind: organizational_unit
+    to_kind: business_function
+    metamodel_level: business_details
+    category: execution
+    direction: directed
+    description: "Организационная единица отвечает за выполнение бизнес-функции."
+
+  - id: rel_org_unit_achieves_goal
+    name: "Org Unit → Goal"
+    from_kind: organizational_unit
+    to_kind: business_goal
+    metamodel_level: strategic_view
+    category: alignment
+    direction: directed
+    description: "Организационная единица достигает цели."
+
+  - id: rel_org_unit_associated_with_job_family
+    name: "Org Unit → Job Family"
+    from_kind: organizational_unit
+    to_kind: job_family
+    metamodel_level: strategic_view
+    category: association
+    direction: directed
+    description: "Организационная единица опционально ассоциирована с Job Family."
+
+  - id: rel_org_unit_aggregates_role
+    name: "Org Unit → Business Role"
+    from_kind: organizational_unit
+    to_kind: business_role
+    metamodel_level: business_details
+    category: aggregation
+    direction: directed
+    description: "Организационная единица агрегирует бизнес-роли."
+
+  - id: rel_role_participates_in_process
+    name: "Business Role → Business Process"
+    from_kind: business_role
+    to_kind: business_process
+    metamodel_level: business_details
+    category: participation
+    direction: directed
+    description: "Бизнес-роль участвует в бизнес-процессе."
+
+  - id: rel_role_responsible_for_function
+    name: "Business Role → Business Function"
+    from_kind: business_role
+    to_kind: business_function
+    metamodel_level: business_details
+    category: execution
+    direction: directed
+    description: "Бизнес-роль отвечает за выполнение бизнес-функции."
+
+  # ============================================
+  # Блок 3: Capability, Process, Operation, Action, Function
+  # ============================================
+
+  - id: rel_it_system_realizes_capability
+    name: "IT System → Business Capability"
+    from_kind: it_system
+    to_kind: business_capability
+    metamodel_level: solution_details
+    category: realization
+    direction: directed
+    description: "ИТ-система реализует бизнес-способность."
+
+  - id: rel_it_system_automates_function
+    name: "IT System → Business Function"
+    from_kind: it_system
+    to_kind: business_function
+    metamodel_level: solution_details
+    category: automation
+    direction: directed
+    description: "ИТ-система автоматизирует бизнес-функцию."
+
+  - id: rel_capability_provides_function
+    name: "Business Capability → Business Function"
+    from_kind: business_capability
+    to_kind: business_function
+    metamodel_level: business_details
+    category: provision
+    direction: directed
+    description: "Бизнес-способность обеспечивает бизнес-функцию."
+
+  - id: rel_capability_required_for_goal
+    name: "Business Capability → Goal"
+    from_kind: business_capability
+    to_kind: business_goal
+    metamodel_level: strategic_view
+    category: alignment
+    direction: directed
+    description: "Бизнес-способность необходима для достижения цели."
+
+  - id: rel_capability_supports_stage
+    name: "Business Capability → Value Stream Stage"
+    from_kind: business_capability
+    to_kind: value_stream_stage
+    metamodel_level: strategic_view
+    category: support
+    direction: directed
+    description: "Бизнес-способность используется в стадии потока (поддерживает)."
+
+  - id: rel_process_serves_business_entity
+    name: "Business Process → Business Entity"
+    from_kind: business_process
+    to_kind: business_entity
+    metamodel_level: business_details
+    category: service
+    direction: directed
+    description: "Бизнес-процесс создаёт или изменяет состояние бизнес-сущности."
+
+  - id: rel_process_operationalizes_function
+    name: "Business Process → Business Function"
+    from_kind: business_process
+    to_kind: business_function
+    metamodel_level: business_details
+    category: operationalization
+    direction: directed
+    description: "Бизнес-процесс операционализирует бизнес-функцию."
+
+  - id: rel_process_aggregates_operation
+    name: "Business Process → Business Operation"
+    from_kind: business_process
+    to_kind: business_operation
+    metamodel_level: business_details
+    category: aggregation
+    direction: directed
+    description: "Бизнес-процесс агрегирует бизнес-операции."
+
+  - id: rel_operation_has_action
+    name: "Business Operation → Business Action"
+    from_kind: business_operation
+    to_kind: business_action
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Бизнес-операция состоит из бизнес-действий."
+
+  - id: rel_operation_relates_to_function
+    name: "Business Operation → Business Function"
+    from_kind: business_operation
+    to_kind: business_function
+    metamodel_level: business_details
+    category: association
+    direction: directed
+    description: "Бизнес-операция относится к бизнес-функции."
+
+  - id: rel_api_method_realizes_action
+    name: "API Method → Business Action"
+    from_kind: api_method
+    to_kind: business_action
+    metamodel_level: component_details
+    category: realization
+    direction: directed
+    description: "Метод API реализует бизнес-действие."
+
+  # ============================================
+  # Блок 4: IT-система, Информационный поток, Интеграция
+  # ============================================
+
+  - id: rel_it_system_serves_information_flow
+    name: "IT System → Information Flow"
+    from_kind: it_system
+    to_kind: information_flow
+    metamodel_level: solution_details
+    category: service
+    direction: directed
+    description: "ИТ-система является источником или потребителем информационного потока."
+
+  - id: rel_it_system_specializes_vendor_product
+    name: "IT System → Vendor Product"
+    from_kind: it_system
+    to_kind: vendor_product
+    metamodel_level: solution_details
+    category: specialization
+    direction: directed
+    description: "ИТ-система является частным случаем (специализацией) вендорского ПО."
+
+  - id: rel_it_system_has_component
+    name: "Software Component → IT System"
+    from_kind: software_component
+    to_kind: it_system
+    metamodel_level: solution_details
+    category: composition
+    direction: directed
+    description: "ИТ-система состоит из компонентов ИС (композиция)."
+
+  - id: rel_business_entity_mastered_by_it_system
+    name: "Business Entity ↔ IT System"
+    from_kind: business_entity
+    to_kind: it_system
+    metamodel_level: data_details
+    category: association
+    direction: undirected
+    description: "Бизнес-сущность ассоциирована с мастер-системой (учётная ИТ-система)."
+
+  - id: rel_integration_realizes_information_flow
+    name: "Integration → Information Flow"
+    from_kind: integration
+    to_kind: information_flow
+    metamodel_level: solution_details
+    category: realization
+    direction: directed
+    description: "Интеграция реализует информационный поток."
+
+  - id: rel_integration_has_api_method
+    name: "Integration → API Method"
+    from_kind: integration
+    to_kind: api_method
+    metamodel_level: solution_details
+    category: composition
+    direction: directed
+    description: "Интеграция состоит из методов API."
+
+  - id: rel_software_component_aggregates_api
+    name: "Software Component → API"
+    from_kind: software_component
+    to_kind: api
+    metamodel_level: component_details
+    category: aggregation
+    direction: directed
+    description: "Компонент ИС агрегирует API."
+
+  # ============================================
+  # Блок 5: Technology, Vendor, Source, Instance
+  # ============================================
+
+  - id: rel_technology_has_component
+    name: "Technology → Software Component"
+    from_kind: technology
+    to_kind: software_component
+    metamodel_level: component_details
+    category: composition
+    direction: directed
+    description: "Технология состоит из компонентов ИС."
+
+  - id: rel_technology_has_resource
+    name: "Technology → Logical Resource"
+    from_kind: technology
+    to_kind: logical_resource
+    metamodel_level: component_details
+    category: composition
+    direction: directed
+    description: "Технология содержит логические ресурсы."
+
+  - id: rel_vendor_product_has_component
+    name: "Vendor Product → Software Component"
+    from_kind: vendor_product
+    to_kind: software_component
+    metamodel_level: solution_details
+    category: composition
+    direction: directed
+    description: "Вендорское ПО состоит из компонентов ИС."
+
+  - id: rel_vendor_product_has_technology
+    name: "Vendor Product → Technology"
+    from_kind: vendor_product
+    to_kind: technology
+    metamodel_level: solution_details
+    category: composition
+    direction: directed
+    description: "Вендорское ПО содержит технологии."
+
+  - id: rel_logical_resource_has_vendor_product
+    name: "Logical Resource → Vendor Product"
+    from_kind: logical_resource
+    to_kind: vendor_product
+    metamodel_level: solution_details
+    category: composition
+    direction: directed
+    description: "Логический ресурс содержит вендорское ПО."
+
+  - id: rel_component_instance_of_component
+    name: "Component Instance → Software Component"
+    from_kind: component_instance
+    to_kind: software_component
+    metamodel_level: infrastructure_details
+    category: instantiation
+    direction: directed
+    description: "Экземпляр является развёртыванием компонента ИС."
+
+  - id: rel_logical_resource_serves_component
+    name: "Logical Resource → Software Component"
+    from_kind: logical_resource
+    to_kind: software_component
+    metamodel_level: solution_details
+    category: service
+    direction: directed
+    description: "Логический ресурс обслуживает компонент ИС."
+
+  - id: rel_logical_resource_serves_integration
+    name: "Logical Resource → Integration"
+    from_kind: logical_resource
+    to_kind: integration
+    metamodel_level: solution_details
+    category: service
+    direction: directed
+    description: "Логический ресурс обслуживает интеграцию."
+
+  - id: rel_logical_resource_serves_instance
+    name: "Logical Resource → Component Instance"
+    from_kind: logical_resource
+    to_kind: component_instance
+    metamodel_level: infrastructure_details
+    category: service
+    direction: directed
+    description: "Логический ресурс обслуживает экземпляр компонента."
+
+  - id: rel_infra_resource_serves_instance
+    name: "Infrastructure Resource → Component Instance"
+    from_kind: infrastructure_resource
+    to_kind: component_instance
+    metamodel_level: infrastructure_details
+    category: service
+    direction: directed
+    description: "Инфраструктурный ресурс обслуживает экземпляр компонента."
+
+  - id: rel_infra_resource_serves_resource
+    name: "Infrastructure Resource → Logical Resource"
+    from_kind: infrastructure_resource
+    to_kind: logical_resource
+    metamodel_level: infrastructure_details
+    category: service
+    direction: directed
+    description: "Инфраструктурный ресурс обслуживает логический ресурс."
+
+  - id: rel_source_serves_api
+    name: "Source → API"
+    from_kind: source
+    to_kind: api
+    metamodel_level: component_details
+    category: service
+    direction: directed
+    status: draft
+    description: "Источник данных обслуживает API."
+
+  - id: rel_source_serves_component
+    name: "Source → Software Component"
+    from_kind: source
+    to_kind: software_component
+    metamodel_level: component_details
+    category: service
+    direction: directed
+    status: draft
+    description: "Источник данных обслуживает компонент ИС."
+
+  - id: rel_source_serves_data_schema
+    name: "Source → Data Schema"
+    from_kind: source
+    to_kind: data_schema
+    metamodel_level: component_details
+    category: service
+    direction: directed
+    status: draft
+    description: "Источник данных обслуживает схему данных."
+
+  # ============================================
+  # Блок 6: Data Schema → Business layer
+  # ============================================
+
+  - id: rel_data_schema_realizes_entity
+    name: "Data Schema → Business Entity"
+    from_kind: data_schema
+    to_kind: business_entity
+    metamodel_level: data_details
+    category: realization
+    direction: directed
+    description: "Схема данных реализует бизнес-сущность."
+
+  - id: rel_data_schema_has_api_method
+    name: "Data Schema → API Method"
+    from_kind: data_schema
+    to_kind: api_method
+    metamodel_level: component_details
+    category: composition
+    direction: directed
+    description: "Схема данных содержит методы API."
+
+  - id: rel_data_schema_aggregates_attribute
+    name: "Data Schema → Business Attribute"
+    from_kind: data_schema
+    to_kind: business_attribute
+    metamodel_level: data_details
+    category: aggregation
+    direction: directed
+    description: "Схема данных агрегирует бизнес-атрибуты."
+
+  # ============================================
+  # Блок 7: Дата-слой
+  # ============================================
+
+  - id: rel_data_product_has_data_object
+    name: "Data Product → Data Object"
+    from_kind: data_product
+    to_kind: data_object
+    metamodel_level: data_details
+    category: composition
+    direction: directed
+    description: "Data продукт состоит из объектов данных."
+
+  - id: rel_data_object_includes_metadata_in_contract
+    name: "Data Object → Data Contract"
+    from_kind: data_object
+    to_kind: data_contract
+    metamodel_level: data_details
+    category: metadata
+    direction: directed
+    description: "Объект данных включает метаданные в дата-контракт."
+
+  - id: rel_sla_ensures_data_contract
+    name: "SLA → Data Contract"
+    from_kind: sla
+    to_kind: data_contract
+    metamodel_level: business_details
+    category: service_level
+    direction: directed
+    description: "SLA обеспечивает выполнение условий дата-контракта."
+
+  - id: rel_contract_requirement_in_sla
+    name: "Contract Requirement → SLA"
+    from_kind: contract_requirement
+    to_kind: sla
+    metamodel_level: business_details
+    category: composition
+    direction: directed
+    description: "Требование контракта содержится в SLA."
+
+  - id: rel_metric_evaluates_requirement
+    name: "Tech Metric → Contract Requirement"
+    from_kind: tech_metric
+    to_kind: contract_requirement
+    metamodel_level: data_details
+    category: measurement
+    direction: directed
+    description: "Метрика оценивает соответствие требованию контракта."
+
+  - id: rel_data_process_creates_data_object
+    name: "Data Process → Data Object"
+    from_kind: data_process
+    to_kind: data_object
+    metamodel_level: data_details
+    category: creation
+    direction: directed
+    description: "Дата-процесс создаёт объект данных."
+
+  - id: rel_data_object_used_by_data_process
+    name: "Data Object → Data Process"
+    from_kind: data_object
+    to_kind: data_process
+    metamodel_level: data_details
+    category: usage
+    direction: directed
+    description: "Объект данных используется дата-процессом."
+
+  - id: rel_data_process_records_metric
+    name: "Data Process → Tech Metric"
+    from_kind: data_process
+    to_kind: tech_metric
+    metamodel_level: data_details
+    category: measurement
+    direction: directed
+    description: "Дата-процесс фиксирует значения метрики."
+
+  - id: rel_software_component_creates_data_process
+    name: "Software Component → Data Process"
+    from_kind: software_component
+    to_kind: data_process
+    metamodel_level: data_details
+    category: creation
+    direction: directed
+    description: "Компонент ИС создаёт дата-процесс."
+
+  - id: rel_software_component_contracts_data_object
+    name: "Software Component → Data Object"
+    from_kind: software_component
+    to_kind: data_object
+    metamodel_level: data_details
+    category: contract
+    direction: directed
+    description: "Компонент ИС контрактует поставку объекта данных."
+
+  # ============================================
+  # Блок 8: Self-references
+  # ============================================
+
+  - id: rel_process_parent
+    name: "Business Process → Business Process"
+    from_kind: business_process
+    to_kind: business_process
+    metamodel_level: business_details
+    category: hierarchy
+    direction: directed
+    description: "Иерархия или вызов между бизнес-процессами."
+
+  - id: rel_business_entity_parent
+    name: "Business Entity → Business Entity"
+    from_kind: business_entity
+    to_kind: business_entity
+    metamodel_level: data_details
+    category: hierarchy
+    direction: directed
+    description: "Связь между бизнес-сущностями (иерархия, ассоциация)."
+
+  - id: rel_goal_parent
+    name: "Goal → Goal"
+    from_kind: business_goal
+    to_kind: business_goal
+    metamodel_level: strategic_view
+    category: hierarchy
+    direction: directed
+    description: "Иерархия целей (цель верхнего уровня → подцель)."
+
+  - id: rel_data_product_depends_on_data_product
+    name: "Data Product → Data Product"
+    from_kind: data_product
+    to_kind: data_product
+    metamodel_level: data_details
+    category: dependency
+    direction: directed
+    description: "Зависимость между дата-продуктами (агрегация, происхождение)."
+
+  - id: rel_data_object_relates_to_data_object
+    name: "Data Object → Data Object"
+    from_kind: data_object
+    to_kind: data_object
+    metamodel_level: data_details
+    category: dependency
+    direction: directed
+    description: "Связь между объектами данных (наследование, агрегация)."
+
+  - id: rel_capability_parent
+    name: "Business Capability → Business Capability"
+    from_kind: business_capability
+    to_kind: business_capability
+    metamodel_level: strategic_view
+    category: hierarchy
+    direction: directed
+    description: "Иерархия бизнес-способностей (композиция)."
+
+  - id: rel_org_unit_parent
+    name: "Org Unit → Org Unit"
+    from_kind: organizational_unit
+    to_kind: organizational_unit
+    metamodel_level: strategic_view
+    category: hierarchy
+    direction: directed
+    description: "Иерархия организационных единиц (композиция)."
+
+  - id: rel_function_consumes_function
+    name: "Business Function → Business Function"
+    from_kind: business_function
+    to_kind: business_function
+    metamodel_level: business_details
+    category: dependency
+    direction: directed
+    description: "Бизнес-функция потребляет другую бизнес-функцию."
