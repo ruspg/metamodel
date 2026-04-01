@@ -113,9 +113,9 @@ def test_projection_builder_restores_wave1_minimum_slice_surface() -> None:
         "business_entity",
     }
     required_relation_ids = {
-        "rel_process_contains_operation",
-        "rel_operation_uses_system",
-        "rel_operation_executed_by_component",
+        "rel_process_decomposes_to_operation",
+        "rel_operation_supported_by_system",
+        "rel_operation_supported_by_component",
         "rel_process_serves_entity",
     }
 
