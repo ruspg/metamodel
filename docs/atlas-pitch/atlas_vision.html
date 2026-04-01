@@ -4,8 +4,75 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atlas — Операционная метамодель банка</title>
+<script>
+// Early theme detection — prevent flash
+(function(){var t=localStorage.getItem('atlas-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();
+</script>
 <style>
+/* ===== LIGHT THEME (default) — RBank corporate palette ===== */
 :root {
+  --bg: #FCFAFA;
+  --bg2: #F6F4F4;
+  --bg3: #F0ECEC;
+  --border: #D7D2D2;
+  --text: #2B2D33;
+  --text2: #5A5757;
+  --text3: #827F7F;
+  --accent: #FED500;
+  --accent2: #FABE00;
+  --green: #5AA357;
+  --green2: #5AA357;
+  --orange: #D27532;
+  --pink: #CD5A50;
+  --blue: #7864D7;
+  --red: #CD5A50;
+  --cyan: #6984B2;
+  --brand-yellow: #FEE600;
+  --accent-text: #2B2D33;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --nav-scrolled-bg: rgba(252,250,250,.95);
+  --hero-glow1: rgba(254,213,0,.1);
+  --hero-glow2: rgba(254,230,0,.05);
+  --scenario-today-bg: #FFE3E1;
+  --scenario-today-border: #FFCBC7;
+  --scenario-atlas-bg: #E5F6E5;
+  --scenario-atlas-border: #BFE8BF;
+  --chip-on-bg: #E1F5EB;
+  --chip-on-border: rgba(90,163,87,.4);
+  --chip-gap-bg: #FFE3E1;
+  --chip-gap-border: rgba(205,90,80,.35);
+  --chip-atlas-bg: #FFFCE6;
+  --chip-atlas-border: rgba(254,213,0,.5);
+  --spine-strat: var(--bg2);
+  --spine-biz: var(--bg2);
+  --spine-sol: var(--bg2);
+  --spine-comp: var(--bg2);
+  --spine-infra: var(--bg2);
+  --spine-data: var(--bg2);
+  --risk-problem-bg: linear-gradient(135deg,#FFE3E1,#FFF5F4);
+  --risk-problem-border: #FFCBC7;
+  --risk-solution-bg: linear-gradient(135deg,#E5F6E5,#F5FBF5);
+  --risk-solution-border: #BFE8BF;
+  --new-role-bg: #FFFCE6;
+  --pill-red-bg: #FFE3E1;
+  --pill-green-bg: #E5F6E5;
+  --pill-accent-bg: #FFFCE6;
+  --pill-orange-bg: #FFF0E0;
+  --bar-vect-from: #AFAAAA;
+  --bar-vect-to: #827F7F;
+  --ls1-bg: var(--bg2);
+  --ls2-bg: var(--bg2);
+  --ls3-bg: var(--bg2);
+  --ls4-bg: var(--bg2);
+  --ls5-bg: var(--bg2);
+  --table-hover: rgba(254,213,0,.08);
+  --scroll-gradient: linear-gradient(90deg,#FED500,#FEE600,#FEEE4D);
+  --bar-text-color: #fff;
+}
+
+/* ===== DARK THEME ===== */
+[data-theme="dark"] {
   --bg: #0a0c14;
   --bg2: #111525;
   --bg3: #1a1f35;
@@ -22,14 +89,51 @@
   --blue: #3b82f6;
   --red: #ef4444;
   --cyan: #06b6d4;
-  --radius: 14px;
-  --radius-sm: 8px;
+  --brand-yellow: #FEE600;
+  --nav-scrolled-bg: rgba(10,12,20,.92);
+  --hero-glow1: rgba(108,92,231,.1);
+  --hero-glow2: rgba(0,206,201,.04);
+  --scenario-today-bg: rgba(239,68,68,.06);
+  --scenario-today-border: rgba(239,68,68,.15);
+  --scenario-atlas-bg: rgba(0,206,201,.06);
+  --scenario-atlas-border: rgba(0,206,201,.15);
+  --chip-on-bg: rgba(0,206,201,.1);
+  --chip-on-border: rgba(0,206,201,.3);
+  --chip-gap-bg: rgba(239,68,68,.06);
+  --chip-gap-border: rgba(239,68,68,.3);
+  --chip-atlas-bg: rgba(108,92,231,.12);
+  --chip-atlas-border: rgba(108,92,231,.3);
+  --spine-strat: linear-gradient(135deg,rgba(108,92,231,.12),rgba(108,92,231,.04));
+  --spine-biz: linear-gradient(135deg,rgba(0,206,201,.12),rgba(0,206,201,.04));
+  --spine-sol: linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.04));
+  --spine-comp: linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.04));
+  --spine-infra: linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.04));
+  --spine-data: linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.04));
+  --risk-problem-bg: linear-gradient(135deg,rgba(239,68,68,.06),rgba(239,68,68,.02));
+  --risk-problem-border: rgba(239,68,68,.15);
+  --risk-solution-bg: linear-gradient(135deg,rgba(0,206,201,.06),rgba(0,206,201,.02));
+  --risk-solution-border: rgba(0,206,201,.15);
+  --new-role-bg: linear-gradient(135deg,rgba(108,92,231,.12),rgba(0,206,201,.1));
+  --pill-red-bg: rgba(239,68,68,.12);
+  --pill-green-bg: rgba(0,206,201,.12);
+  --pill-accent-bg: rgba(108,92,231,.12);
+  --pill-orange-bg: rgba(245,158,11,.12);
+  --bar-vect-from: var(--text3);
+  --bar-vect-to: var(--text2);
+  --ls1-bg: linear-gradient(180deg,rgba(107,114,128,.1),rgba(107,114,128,.03));
+  --ls2-bg: linear-gradient(180deg,rgba(59,130,246,.1),rgba(59,130,246,.03));
+  --ls3-bg: linear-gradient(180deg,rgba(108,92,231,.12),rgba(108,92,231,.04));
+  --ls4-bg: linear-gradient(180deg,rgba(0,206,201,.1),rgba(0,206,201,.03));
+  --ls5-bg: linear-gradient(180deg,rgba(236,72,153,.1),rgba(236,72,153,.03));
+  --table-hover: rgba(108,92,231,.04);
+  --scroll-gradient: linear-gradient(90deg,var(--accent),var(--green),var(--pink),var(--orange));
+  --bar-text-color: #fff;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;line-height:1.7;overflow-x:hidden}
 
-.scroll-progress{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--accent),var(--green),var(--pink),var(--orange));z-index:9999;transition:width .05s linear;box-shadow:0 0 12px var(--accent)}
+.scroll-progress{position:fixed;top:0;left:0;width:0%;height:3px;background:var(--scroll-gradient);z-index:9999;transition:width .05s linear;box-shadow:0 0 12px var(--accent)}
 
 .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -41,7 +145,7 @@ section{padding:72px 0}
 
 /* NAV */
 .topnav{position:fixed;top:0;left:0;width:100%;z-index:100;padding:16px 0;transition:background .3s}
-.topnav.scrolled{background:rgba(10,12,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.topnav.scrolled{background:var(--nav-scrolled-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
 .topnav .inner{max-width:1360px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between}
 .topnav .logo{font-weight:800;font-size:1.1rem;letter-spacing:1px}
 .topnav .logo span{color:var(--accent2)}
@@ -52,10 +156,12 @@ section{padding:72px 0}
 
 /* HERO */
 .hero{padding:130px 0 72px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:140%;height:160%;background:radial-gradient(ellipse at 50% 40%,rgba(108,92,231,.1) 0%,rgba(0,206,201,.04) 40%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-block;background:linear-gradient(135deg,rgba(108,92,231,.2),rgba(0,206,201,.15));border:1px solid rgba(108,92,231,.3);border-radius:24px;padding:6px 20px;font-size:.78rem;color:var(--accent2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px}
+.hero::before{content:'';position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:140%;height:160%;background:radial-gradient(ellipse at 50% 40%,var(--hero-glow1) 0%,var(--hero-glow2) 40%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-block;background:#FFFCE6;border:1px solid #FEF280;border-radius:24px;padding:6px 20px;font-size:.78rem;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px}
+[data-theme="dark"] .hero-badge{background:linear-gradient(135deg,rgba(108,92,231,.2),rgba(0,206,201,.15));border-color:rgba(108,92,231,.3);color:var(--accent2)}
 .hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.2;margin-bottom:20px}
-.hero h1 .gr{background:linear-gradient(135deg,var(--accent2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .gr{color:#7864D7;-webkit-text-fill-color:#7864D7}
+[data-theme="dark"] .hero h1 .gr,[data-theme="dark"] .st .gr{background:linear-gradient(135deg,#a78bfa,#00cec9);-webkit-background-clip:text;background-clip:text}
 .hero .sub{font-size:1.1rem;color:var(--text2);max-width:800px;margin:0 auto 48px;line-height:1.8}
 .hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
 .hero-stat{text-align:center;min-width:130px}
@@ -64,7 +170,7 @@ section{padding:72px 0}
 
 /* SECTION */
 .st{font-size:1.8rem;font-weight:800;margin-bottom:8px;line-height:1.3}
-.st .gr{background:linear-gradient(135deg,var(--accent2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.st .gr{color:#7864D7;-webkit-text-fill-color:#7864D7}
 .sd{color:var(--text2);font-size:1.05rem;max-width:720px;margin-bottom:36px;line-height:1.8}
 
 /* CARDS */
@@ -80,21 +186,24 @@ section{padding:72px 0}
 .card-accent{border-left:3px solid var(--accent)}
 .card-red::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--red);opacity:.6}
 .pill{display:inline-block;padding:3px 12px;border-radius:12px;font-size:.72rem;font-weight:700;margin-top:10px}
-.pill-red{background:rgba(239,68,68,.12);color:var(--red)}
-.pill-green{background:rgba(0,206,201,.12);color:var(--green)}
-.pill-accent{background:rgba(108,92,231,.12);color:var(--accent2)}
-.pill-orange{background:rgba(245,158,11,.12);color:var(--orange)}
+.pill-red{background:var(--pill-red-bg);color:var(--red)}
+.pill-green{background:var(--pill-green-bg);color:var(--green)}
+.pill-accent{background:var(--pill-accent-bg);color:var(--accent2)}
+.pill-orange{background:var(--pill-orange-bg);color:var(--orange)}
 
 /* SCENARIO */
 .scenario{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin:24px 0}
 .scenario-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.scenario-header .emoji{font-size:1.6rem}
+.scenario-header .emoji{font-size:1.6rem;display:flex;align-items:center}
+.scenario-header .emoji svg,.role .emoji svg,.ref-icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.scenario-header .emoji svg{width:26px;height:26px}
+.ref-card h3 svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:6px}
 .scenario-header h3{font-size:1.1rem;font-weight:700}
 .scenario-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center}
 @media(max-width:768px){.scenario-grid{grid-template-columns:1fr;text-align:center}}
 .scenario-box{padding:20px;border-radius:var(--radius-sm)}
-.scenario-box.today{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15)}
-.scenario-box.atlas{background:rgba(0,206,201,.06);border:1px solid rgba(0,206,201,.15)}
+.scenario-box.today{background:var(--scenario-today-bg);border:1px solid var(--scenario-today-border)}
+.scenario-box.atlas{background:var(--scenario-atlas-bg);border:1px solid var(--scenario-atlas-border)}
 .scenario-box h4{font-size:.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
 .scenario-box.today h4{color:var(--red)}
 .scenario-box.atlas h4{color:var(--green)}
@@ -110,20 +219,20 @@ section{padding:72px 0}
 .spine-row .lname{font-weight:700;font-size:.95rem;min-width:200px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .chip{padding:4px 12px;border-radius:16px;font-size:.72rem;font-weight:600;transition:all .3s}
-.chip-on{background:rgba(0,206,201,.1);border:1px solid rgba(0,206,201,.3);color:var(--green)}
-.chip-gap{background:rgba(239,68,68,.06);border:1px dashed rgba(239,68,68,.3);color:var(--red)}
-.chip-atlas{background:rgba(108,92,231,.12);border:1px solid rgba(108,92,231,.3);color:var(--accent2);font-weight:700}
-.l-strat{background:linear-gradient(135deg,rgba(108,92,231,.12),rgba(108,92,231,.04))}
+.chip-on{background:var(--chip-on-bg);border:1px solid var(--chip-on-border);color:var(--green)}
+.chip-gap{background:var(--chip-gap-bg);border:1px dashed var(--chip-gap-border);color:var(--red)}
+.chip-atlas{background:var(--chip-atlas-bg);border:1px solid var(--chip-atlas-border);color:var(--accent2);font-weight:700}
+.l-strat{background:var(--spine-strat)}
 .l-strat:hover{border-color:var(--accent)}
-.l-biz{background:linear-gradient(135deg,rgba(0,206,201,.12),rgba(0,206,201,.04))}
+.l-biz{background:var(--spine-biz)}
 .l-biz:hover{border-color:var(--green)}
-.l-sol{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.04))}
+.l-sol{background:var(--spine-sol)}
 .l-sol:hover{border-color:var(--blue)}
-.l-comp{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.04))}
+.l-comp{background:var(--spine-comp)}
 .l-comp:hover{border-color:var(--orange)}
-.l-infra{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.04))}
+.l-infra{background:var(--spine-infra)}
 .l-infra:hover{border-color:var(--red)}
-.l-data{background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.04))}
+.l-data{background:var(--spine-data)}
 .l-data:hover{border-color:var(--pink)}
 
 .int-bottom{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px}
@@ -138,16 +247,16 @@ section{padding:72px 0}
 .role .emoji{font-size:1.3rem}.role .rn{font-weight:600;font-size:.88rem}.role .rd{font-size:.72rem;color:var(--text2)}
 .conv-arrow{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--accent2);font-size:2.5rem;padding:0 16px}
 .conv-arrow .al{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--text2)}
-.new-role-box{background:linear-gradient(135deg,rgba(108,92,231,.12),rgba(0,206,201,.1));border:2px solid var(--accent);border-radius:var(--radius);padding:28px;text-align:center}
+.new-role-box{background:var(--new-role-bg);border:2px solid var(--accent);border-radius:var(--radius);padding:28px;text-align:center}
 .new-role-box h3{font-size:1.3rem;margin-bottom:8px}
 .new-role-box p{font-size:.88rem;color:var(--text2)}
 
 .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
 @media(max-width:768px){.risk-grid{grid-template-columns:1fr}}
 .risk-box{border-radius:var(--radius);padding:28px}
-.risk-box.problem{background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(239,68,68,.02));border:1px solid rgba(239,68,68,.15)}
+.risk-box.problem{background:var(--risk-problem-bg);border:1px solid var(--risk-problem-border)}
 .risk-box.problem h3{color:var(--red);font-size:1.1rem;margin-bottom:10px}
-.risk-box.solution{background:linear-gradient(135deg,rgba(0,206,201,.06),rgba(0,206,201,.02));border:1px solid rgba(0,206,201,.15)}
+.risk-box.solution{background:var(--risk-solution-bg);border:1px solid var(--risk-solution-border)}
 .risk-box.solution h3{color:var(--green);font-size:1.1rem;margin-bottom:10px}
 .risk-box p{font-size:.88rem;color:var(--text2);line-height:1.8}
 
@@ -155,7 +264,7 @@ section{padding:72px 0}
 .btable{width:100%;border-collapse:separate;border-spacing:0;background:var(--bg2);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
 .btable th{background:var(--bg3);padding:14px 18px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text2);font-weight:600}
 .btable td{padding:14px 18px;border-top:1px solid var(--border);font-size:.85rem}
-.btable tr:hover td{background:rgba(108,92,231,.04)}
+.btable tr:hover td{background:var(--table-hover)}
 .vh{color:var(--green);font-weight:700}.vl{color:var(--red);font-weight:700}.vm{color:var(--orange);font-weight:700}
 
 /* BAR CHART */
@@ -165,7 +274,7 @@ section{padding:72px 0}
 .bar-t{flex:1;height:26px;background:var(--bg3);border-radius:13px;overflow:hidden}
 .bar-f{height:100%;border-radius:13px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:.7rem;font-weight:700;color:#fff;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
 .bar-f.bg{background:linear-gradient(90deg,var(--accent),var(--green))}
-.bar-f.bv{background:linear-gradient(90deg,var(--text3),var(--text2))}
+.bar-f.bv{background:linear-gradient(90deg,var(--bar-vect-from),var(--bar-vect-to))}
 
 /* QUOTE */
 .quote{background:var(--bg2);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;padding:28px 32px;margin:32px 0;font-style:italic;color:var(--text2);font-size:1rem;line-height:1.8}
@@ -180,11 +289,11 @@ section{padding:72px 0}
 .lstep h4{font-size:.85rem;margin:6px 0 4px;font-weight:700}
 .lstep p{font-size:.72rem;color:var(--text2);line-height:1.5}
 .lstep .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:.6rem;font-weight:700;padding:3px 12px;border-radius:10px;text-transform:uppercase;letter-spacing:1px;color:#fff;white-space:nowrap}
-.ls1{background:linear-gradient(180deg,rgba(107,114,128,.1),rgba(107,114,128,.03))}
-.ls2{background:linear-gradient(180deg,rgba(59,130,246,.1),rgba(59,130,246,.03))}
-.ls3{background:linear-gradient(180deg,rgba(108,92,231,.12),rgba(108,92,231,.04));border-color:var(--accent)}
-.ls4{background:linear-gradient(180deg,rgba(0,206,201,.1),rgba(0,206,201,.03))}
-.ls5{background:linear-gradient(180deg,rgba(236,72,153,.1),rgba(236,72,153,.03))}
+.ls1{background:var(--ls1-bg)}
+.ls2{background:var(--ls2-bg)}
+.ls3{background:var(--ls3-bg);border-color:var(--accent)}
+.ls4{background:var(--ls4-bg)}
+.ls5{background:var(--ls5-bg)}
 
 /* REFS */
 .ref-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .35s}
@@ -232,6 +341,50 @@ section{padding:72px 0}
 .ndot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px var(--accent)}
 .ndot:hover{background:var(--accent2)}
 @media(max-width:768px){.nav-dots{display:none}}
+
+/* THEME TOGGLE */
+.theme-toggle{background:none;border:1px solid var(--border);border-radius:20px;cursor:pointer;padding:6px 10px;display:flex;align-items:center;gap:6px;color:var(--text2);font-size:.75rem;transition:all .3s;flex-shrink:0}
+.theme-toggle:hover{border-color:var(--accent);color:var(--text)}
+.theme-toggle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s}
+.theme-toggle:hover svg{transform:rotate(20deg)}
+.theme-toggle .sun{display:inline}
+.theme-toggle .moon{display:none}
+[data-theme="dark"] .theme-toggle .sun{display:none}
+[data-theme="dark"] .theme-toggle .moon{display:inline}
+.theme-toggle .label-text::after{content:'Light'}
+[data-theme="dark"] .theme-toggle .label-text::after{content:'Dark'}
+
+/* Light-theme specific: bar text needs to stay white on colored bars */
+.bar-f{color:var(--bar-text-color)}
+
+/* Light-theme quote uses brand yellow border */
+.quote{border-left-color:var(--brand-yellow)}
+[data-theme="dark"] .quote{border-left-color:var(--accent)}
+
+/* Light-theme: spine-row colored left borders per layer */
+:root .spine-row{background:var(--bg2);border-left:3px solid var(--border)}
+:root .spine-row.l-strat{border-left-color:#7864D7}
+:root .spine-row.l-biz{border-left-color:#5AA357}
+:root .spine-row.l-sol{border-left-color:#4669C8}
+:root .spine-row.l-comp{border-left-color:#D27532}
+:root .spine-row.l-infra{border-left-color:#CD5A50}
+:root .spine-row.l-data{border-left-color:#986BD6}
+
+/* Light-theme: ladder step colored top borders */
+:root .ls1{border-top:3px solid #CD5A50}
+:root .ls2{border-top:3px solid #D27532}
+:root .ls3{border-top:3px solid #FED500}
+:root .ls4{border-top:3px solid #5AA357}
+:root .ls5{border-top:3px solid #7864D7}
+
+/* Light-theme: roadmap phase bars — unified Yellow */
+:root .rm-phase.p1::before,:root .rm-phase.p2::before,:root .rm-phase.p3::before{background:#FED500}
+
+/* Light-theme: bar chart gradient — Paris→Bern */
+:root .bar-f.bg{background:linear-gradient(90deg,#7864D7,#5AA357)}
+
+/* Light-theme: new-role-box border */
+:root .new-role-box{border-color:#FED500}
 </style>
 </head>
 <body>
@@ -246,11 +399,17 @@ section{padding:72px 0}
     <div class="nav-links">
       <a href="#s-problem">Проблема</a>
       <a href="#s-solution">Решение</a>
+      <a href="#s-metamodel">Метамодель</a>
       <a href="#s-integration">Интеграция</a>
       <a href="#s-ai">AI</a>
       <a href="#s-evidence">Доказательства</a>
       <a href="#s-roadmap">Roadmap</a>
     </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <span class="label-text"></span>
+    </button>
   </div>
 </div>
 
@@ -265,10 +424,10 @@ section{padding:72px 0}
     <strong>Atlas</strong> &mdash; операционная метамодель, которая делает банк понятным для людей и AI одновременно.
   </p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="num" style="color:var(--accent2)">3.4&times;</div><div class="label">рост точности<br>AI с онтологией</div></div>
-    <div class="hero-stat"><div class="num" style="color:var(--green)">сек</div><div class="label">impact analysis<br>вместо дней</div></div>
-    <div class="hero-stat"><div class="num" style="color:var(--pink)">60&times;</div><div class="label">снижение<br>галлюцинаций</div></div>
-    <div class="hero-stat"><div class="num" style="color:var(--orange)">&lt;6 мес</div><div class="label">до первого<br>бизнес-кейса</div></div>
+    <div class="hero-stat"><div class="num" style="color:var(--blue)">73</div><div class="label">типа сущностей<br>в метамодели</div></div>
+    <div class="hero-stat"><div class="num" style="color:var(--blue)">118</div><div class="label">типов связей<br>между ними</div></div>
+    <div class="hero-stat"><div class="num" style="color:var(--blue)">6</div><div class="label">слоёв архитектуры<br>от стратегии до инфры</div></div>
+    <div class="hero-stat"><div class="num" style="color:var(--blue)">3.4&times;</div><div class="label">рост точности<br>AI с онтологией</div></div>
   </div>
 </div>
 </section>
@@ -283,7 +442,7 @@ section{padding:72px 0}
 
   <!-- Scenario 1: НСПК -->
   <div class="scenario reveal">
-    <div class="scenario-header"><span class="emoji">🔥</span><h3>НСПК сообщает о 4-часовом maintenance window &mdash; какие наши продукты затронуты?</h3></div>
+    <div class="scenario-header"><span class="emoji"><svg viewBox="0 0 24 24"><path d="M12 12c2-2.96 0-7-1-8 0 3.04-4 6.5-4 8s2.24 4 5 4 5-2 5-4c0-2-1.5-3-3-3-1.08 0-2 1-2 3z"/></svg></span><h3>НСПК сообщает о 4-часовом maintenance window &mdash; какие наши продукты затронуты?</h3></div>
     <div class="scenario-grid">
       <div class="scenario-box today">
         <h4>Сегодня</h4>
@@ -293,7 +452,7 @@ section{padding:72px 0}
       <div class="scenario-arrow">&rarr;</div>
       <div class="scenario-box atlas">
         <h4>С Atlas</h4>
-        <p>Запрос к графу: <code style="font-size:.8rem;background:var(--bg3);padding:2px 8px;border-radius:4px">impact("НСПК", type="external_dependency")</code>. Мгновенно: список затронутых систем, процессов, продуктов, каналов, ответственных. AI-агент формирует бриф.</p>
+        <p>Запрос к графу: <code style="font-size:.8rem;background:var(--bg3);padding:2px 8px;border-radius:4px">impact("НСПК", type="integration") &rarr; it_system &rarr; software_component &rarr; business_process &rarr; bank_product</code>. Мгновенно: список затронутых систем, процессов, продуктов, каналов, ответственных. AI-агент формирует бриф.</p>
         <div class="time" style="color:var(--green)">30 секунд</div>
       </div>
     </div>
@@ -301,7 +460,7 @@ section{padding:72px 0}
 
   <!-- Scenario 2 -->
   <div class="scenario reveal">
-    <div class="scenario-header"><span class="emoji">📋</span><h3>Регулятор запрашивает: &laquo;Покажите все системы, обрабатывающие ПДн клиентов сегмента X&raquo;</h3></div>
+    <div class="scenario-header"><span class="emoji"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg></span><h3>Регулятор запрашивает: &laquo;Покажите все системы, обрабатывающие ПДн клиентов сегмента X&raquo;</h3></div>
     <div class="scenario-grid">
       <div class="scenario-box today">
         <h4>Сегодня</h4>
@@ -311,7 +470,7 @@ section{padding:72px 0}
       <div class="scenario-arrow">&rarr;</div>
       <div class="scenario-box atlas">
         <h4>С Atlas</h4>
-        <p>SPARQL/Cypher-запрос по графу: сегмент &rarr; продукты &rarr; процессы &rarr; системы &rarr; дата-продукты. Автоматический отчёт с визуализацией lineage и ответственными.</p>
+        <p>Запрос по графу: customer_segment &rarr; bank_product &rarr; business_process &rarr; it_system &rarr; data_product &rarr; data_owner. Автоматический отчёт с визуализацией lineage и ответственными.</p>
         <div class="time" style="color:var(--green)">15 минут</div>
       </div>
     </div>
@@ -319,7 +478,7 @@ section{padding:72px 0}
 
   <!-- Scenario 3 -->
   <div class="scenario reveal">
-    <div class="scenario-header"><span class="emoji">🚪</span><h3>Ключевой Tech Lead увольняется</h3></div>
+    <div class="scenario-header"><span class="emoji"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="11" x2="22" y2="11"/></svg></span><h3>Ключевой Tech Lead увольняется</h3></div>
     <div class="scenario-grid">
       <div class="scenario-box today">
         <h4>Сегодня</h4>
@@ -348,11 +507,11 @@ section{padding:72px 0}
   <div class="grid g2 reveal">
     <div class="card card-accent">
       <h3>Метамодель = строительный кодекс</h3>
-      <p>Формальные правила: какие типы сущностей существуют в банке (процессы, системы, продукты, данные), какие связи между ними допустимы, какие ограничения целостности обязательны. YAML-авторинг, Git-версионирование, автовалидация.</p>
+      <p>73 типа сущностей и 118 типов связей в 6 слоях: от стратегических целей (job, value_stream, business_goal) через бизнес-процессы (process &rarr; operation &rarr; action &rarr; role) до компонентов (software_component, technology, source). YAML-авторинг, Git-версионирование, автовалидация.</p>
     </div>
     <div class="card card-accent">
       <h3>Граф знаний = подробная карта города</h3>
-      <p>Конкретные экземпляры: &laquo;Кредитный конвейер&raquo; &rarr; реализован через loan-origination-service &rarr; потребляет данные из scoring-engine &rarr; принадлежит домену Retail. Все связи &mdash; типизированные, запрашиваемые, валидируемые.</p>
+      <p>Конкретные экземпляры: job &laquo;Получить кредит&raquo; &rarr; value_stream &laquo;Кредитный конвейер&raquo; &rarr; it_system &rarr; software_component &rarr; data_product &rarr; data_contract &rarr; data_owner. Все 118 типов связей &mdash; типизированные, запрашиваемые, валидируемые.</p>
     </div>
   </div>
 
@@ -373,6 +532,59 @@ section{padding:72px 0}
 
 <div class="divider"></div>
 
+<!-- ==================== METAMODEL ANATOMY ==================== -->
+<section id="s-metamodel">
+<div class="container">
+  <div class="st reveal">Анатомия метамодели: <span class="gr">73 типа сущностей &times; 6 слоёв</span></div>
+  <p class="sd reveal reveal-d1">Каждый слой &mdash; отдельный ракурс на организацию. Связи между слоями (118 типов) &mdash; это то, чего нет ни в одной существующей системе банка.</p>
+
+  <div class="grid g3 reveal">
+    <div class="card" style="border-top:3px solid #7864D7">
+      <h3 style="color:#7864D7">Strategic View</h3>
+      <p style="font-size:.78rem;color:var(--text2);margin-bottom:8px">9 сущностей</p>
+      <p style="font-size:.8rem"><code>job_family</code>, <code>job</code>, <code>value</code>, <code>business_capability</code>, <code>business_domain</code>, <code>customer_segment</code>, <code>org_unit</code>, <code>business_goal</code>, <code>business_metric</code></p>
+      <span class="pill pill-accent">Jobs-to-be-Done + Capabilities</span>
+    </div>
+    <div class="card" style="border-top:3px solid #5AA357">
+      <h3 style="color:#5AA357">Business Details</h3>
+      <p style="font-size:.78rem;color:var(--text2);margin-bottom:8px">20 сущностей</p>
+      <p style="font-size:.8rem"><code>value_stream</code>, <code>business_process</code>, <code>business_operation</code>, <code>business_action</code>, <code>business_role</code>, <code>business_function</code>, <code>bank_product</code>, <code>channel</code>, <code>employee</code>, <code>team</code>&hellip;</p>
+      <span class="pill pill-green">Process &rarr; Operation &rarr; Action</span>
+    </div>
+    <div class="card" style="border-top:3px solid #986BD6">
+      <h3 style="color:#986BD6">Data Details</h3>
+      <p style="font-size:.78rem;color:var(--text2);margin-bottom:8px">18 сущностей</p>
+      <p style="font-size:.8rem"><code>data_product</code>, <code>business_entity</code>, <code>data_contract</code>, <code>data_schema</code>, <code>data_table</code>, <code>data_process</code>, <code>feature</code>, <code>tech_metric</code>, <code>data_query</code>, <code>sensitive_level</code>&hellip;</p>
+      <span class="pill pill-accent">Data Products + Contracts</span>
+    </div>
+    <div class="card" style="border-top:3px solid #4669C8">
+      <h3 style="color:#4669C8">Solution Details</h3>
+      <p style="font-size:.78rem;color:var(--text2);margin-bottom:8px">13 сущностей</p>
+      <p style="font-size:.8rem"><code>it_system</code>, <code>vendor_product</code>, <code>api</code>, <code>integration</code>, <code>information_flow</code>, <code>ml_model</code>, <code>ai_agent</code>, <code>report</code>, <code>notebook</code>, <code>logical_resource</code>&hellip;</p>
+      <span class="pill pill-orange">IT Systems + Integrations</span>
+    </div>
+    <div class="card" style="border-top:3px solid #D27532">
+      <h3 style="color:#D27532">Component Details</h3>
+      <p style="font-size:.78rem;color:var(--text2);margin-bottom:8px">11 сущностей</p>
+      <p style="font-size:.8rem"><code>software_component</code>, <code>technology</code>, <code>source</code>, <code>connector</code>, <code>transformation</code>, <code>api_method</code>, <code>code_repository</code>, <code>data_quality_check</code>&hellip;</p>
+      <span class="pill pill-orange">Components + Technologies</span>
+    </div>
+    <div class="card" style="border-top:3px solid #CD5A50">
+      <h3 style="color:#CD5A50">Infrastructure Details</h3>
+      <p style="font-size:.78rem;color:var(--text2);margin-bottom:8px">2 сущности</p>
+      <p style="font-size:.8rem"><code>infrastructure_resource</code>, <code>component_instance</code></p>
+      <span class="pill pill-red">Runtime Instances</span>
+    </div>
+  </div>
+
+  <div class="quote reveal mt-md">
+    Ключевое отличие от справочников: 118 типов связей между слоями. Например, <code>job</code> &rarr; <code>value_stream</code> &rarr; <code>business_process</code> &rarr; <code>it_system</code> &rarr; <code>software_component</code> &rarr; <code>data_product</code> &mdash; полная трассировка от клиентской задачи до конкретных данных.
+  </div>
+</div>
+</section>
+
+<div class="divider"></div>
+
 <!-- ==================== INTEGRATION (Idea #1) ==================== -->
 <section class="int-section" id="s-integration">
 <div class="container">
@@ -381,57 +593,57 @@ section{padding:72px 0}
 
   <div class="spine reveal">
     <div class="spine-row l-strat">
-      <div class="lname">Стратегический</div>
+      <div class="lname">Strategic View <span style="font-size:.72rem;color:var(--text3)">(9 сущностей)</span></div>
       <div class="chips">
         <span class="chip chip-on">Ops Process Tool (value streams)</span>
-        <span class="chip chip-on">HR-система (оргструктура)</span>
+        <span class="chip chip-on">HR-система (org_unit)</span>
         <span class="chip chip-gap">нет сквозных связей с IT</span>
-        <span class="chip chip-atlas">Atlas: goal &rarr; domain &rarr; product &rarr; org_unit</span>
+        <span class="chip chip-atlas">Atlas: job &rarr; value_stream &rarr; capability &rarr; goal</span>
       </div>
     </div>
     <div class="spine-row l-biz">
-      <div class="lname">Бизнес</div>
+      <div class="lname">Business Details <span style="font-size:.72rem;color:var(--text3)">(20 сущностей)</span></div>
       <div class="chips">
         <span class="chip chip-on">Ops Process Tool (бизнес-процессы)</span>
         <span class="chip chip-on">Бизнес-глоссарий</span>
         <span class="chip chip-gap">процессы не связаны с системами</span>
-        <span class="chip chip-atlas">Atlas: process &rarr; operation &rarr; it_system</span>
-      </div>
-    </div>
-    <div class="spine-row l-sol">
-      <div class="lname">Решения</div>
-      <div class="chips">
-        <span class="chip chip-on">SimpleOne (ИТ-системы &mdash; мастер)</span>
-        <span class="chip chip-on">CAP (операции &harr; компоненты)</span>
-        <span class="chip chip-gap">design-time, не runtime</span>
-        <span class="chip chip-atlas">Atlas: it_system &rarr; component &rarr; api &rarr; data_product</span>
-      </div>
-    </div>
-    <div class="spine-row l-comp">
-      <div class="lname">Компоненты</div>
-      <div class="chips">
-        <span class="chip chip-on">MSH (компоненты &mdash; мастер)</span>
-        <span class="chip chip-on">Service Mesh</span>
-        <span class="chip chip-gap">нет связи с бизнес-функциями</span>
-        <span class="chip chip-atlas">Atlas: component &rarr; capability &rarr; value_stream</span>
-      </div>
-    </div>
-    <div class="spine-row l-infra">
-      <div class="lname">Инфраструктура</div>
-      <div class="chips">
-        <span class="chip chip-on">Мониторинг (Grafana)</span>
-        <span class="chip chip-on">Cloud Management</span>
-        <span class="chip chip-gap">алерт без бизнес-контекста</span>
-        <span class="chip chip-atlas">Atlas: infra &rarr; component &rarr; process &rarr; product</span>
+        <span class="chip chip-atlas">Atlas: process &rarr; operation &rarr; action &rarr; role</span>
       </div>
     </div>
     <div class="spine-row l-data">
-      <div class="lname">Данные</div>
+      <div class="lname">Data Details <span style="font-size:.72rem;color:var(--text3)">(18 сущностей)</span></div>
       <div class="chips">
         <span class="chip chip-on">DataHub (метаданные, lineage)</span>
         <span class="chip chip-on">Data Owner App (дата-продукты)</span>
         <span class="chip chip-gap">lineage без семантики</span>
-        <span class="chip chip-atlas">Atlas: data_product &rarr; sli/slo &rarr; contract &rarr; owner</span>
+        <span class="chip chip-atlas">Atlas: data_product &rarr; data_contract &rarr; sla &rarr; data_owner</span>
+      </div>
+    </div>
+    <div class="spine-row l-sol">
+      <div class="lname">Solution Details <span style="font-size:.72rem;color:var(--text3)">(13 сущностей)</span></div>
+      <div class="chips">
+        <span class="chip chip-on">SimpleOne (ИТ-системы &mdash; мастер)</span>
+        <span class="chip chip-on">CAP (операции &harr; компоненты)</span>
+        <span class="chip chip-gap">design-time, не runtime</span>
+        <span class="chip chip-atlas">Atlas: it_system &rarr; vendor_product &rarr; software_component &rarr; api</span>
+      </div>
+    </div>
+    <div class="spine-row l-comp">
+      <div class="lname">Component Details <span style="font-size:.72rem;color:var(--text3)">(11 сущностей)</span></div>
+      <div class="chips">
+        <span class="chip chip-on">MSH (software_component &mdash; мастер)</span>
+        <span class="chip chip-on">Service Mesh</span>
+        <span class="chip chip-gap">нет связи с бизнес-функциями</span>
+        <span class="chip chip-atlas">Atlas: software_component &rarr; technology &rarr; source</span>
+      </div>
+    </div>
+    <div class="spine-row l-infra">
+      <div class="lname">Infrastructure Details <span style="font-size:.72rem;color:var(--text3)">(2 сущности)</span></div>
+      <div class="chips">
+        <span class="chip chip-on">Мониторинг (Grafana)</span>
+        <span class="chip chip-on">Cloud Management</span>
+        <span class="chip chip-gap">алерт без бизнес-контекста</span>
+        <span class="chip chip-atlas">Atlas: infra_resource &rarr; component_instance &rarr; process &rarr; product</span>
       </div>
     </div>
   </div>
@@ -443,7 +655,7 @@ section{padding:72px 0}
     </div>
     <div class="card">
       <h4>Техническая реализация</h4>
-      <p>Коннекторы к SimpleOne, MSH, Ops Process Tool, CAP, DataHub, Data Owner App через API/CDC. Маппинг на онтологию через relation_catalog. MCP-сервер для AI-агентов. OWL/Turtle-экспорт. Всё в Git &mdash; код-ревью, версионирование, CI/CD.</p>
+      <p>Коннекторы к SimpleOne, MSH, Ops Process Tool, CAP, DataHub, Data Owner App через API/CDC. 73 entity_kinds + 118 relation_kinds в relation_catalog. MCP-сервер для AI-агентов. OWL/Turtle-экспорт. Всё в Git &mdash; код-ревью, версионирование, CI/CD.</p>
     </div>
   </div>
 </div>
@@ -459,11 +671,11 @@ section{padding:72px 0}
 
   <div class="conv-visual reveal">
     <div class="role-stack">
-      <div class="role"><span class="emoji">📊</span><div><div class="rn">Системный аналитик</div><div class="rd">Требования, спецификации</div></div></div>
-      <div class="role"><span class="emoji">💻</span><div><div class="rn">Разработчик</div><div class="rd">Код, API, архитектура</div></div></div>
-      <div class="role"><span class="emoji">🧪</span><div><div class="rn">QA</div><div class="rd">Тесты, валидация</div></div></div>
-      <div class="role"><span class="emoji">🔧</span><div><div class="rn">DevOps / SRE</div><div class="rd">CI/CD, мониторинг</div></div></div>
-      <div class="role"><span class="emoji">📐</span><div><div class="rn">Архитектор</div><div class="rd">Решения, governance</div></div></div>
+      <div class="role"><span class="emoji"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span><div><div class="rn">Системный аналитик</div><div class="rd">Требования, спецификации</div></div></div>
+      <div class="role"><span class="emoji"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><div><div class="rn">Разработчик</div><div class="rd">Код, API, архитектура</div></div></div>
+      <div class="role"><span class="emoji"><svg viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16.5h10"/></svg></span><div><div class="rn">QA</div><div class="rd">Тесты, валидация</div></div></div>
+      <div class="role"><span class="emoji"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span><div><div class="rn">DevOps / SRE</div><div class="rd">CI/CD, мониторинг</div></div></div>
+      <div class="role"><span class="emoji"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg></span><div><div class="rn">Архитектор</div><div class="rd">Решения, governance</div></div></div>
     </div>
     <div class="conv-arrow">
       <div class="al">AI-агенты</div>
@@ -488,8 +700,8 @@ section{padding:72px 0}
     </div>
     <div class="risk-box solution">
       <h3>Решение: граф знаний как память организации</h3>
-      <p>Atlas фиксирует <strong>не код, а контекст</strong>: почему принято решение, какие процессы связаны, где зависимости, кто владелец.</p>
-      <p class="mt-sm">AI-агент с доступом к графу: принимает требование &rarr; находит затронутые сервисы &rarr; генерирует код с учётом контрактов данных &rarr; создаёт тесты из бизнес-правил онтологии &rarr; предлагает деплоймент-план. <strong>Каждый шаг валидируется против метамодели.</strong></p>
+      <p>Atlas фиксирует <strong>не код, а контекст</strong>: почему принято решение, какие business_process связаны, где integration-зависимости, кто data_owner.</p>
+      <p class="mt-sm">AI-агент с доступом к графу: принимает job &rarr; находит затронутые it_system и software_component &rarr; генерирует код с учётом data_contract &rarr; создаёт тесты из data_quality_check онтологии &rarr; предлагает деплоймент-план через information_flow. <strong>Каждый шаг валидируется против 118 типов связей метамодели.</strong></p>
     </div>
   </div>
 </div>
@@ -565,27 +777,27 @@ section{padding:72px 0}
 
   <div class="grid g2 reveal">
     <div class="ref-card">
-      <h3>🔮 Palantir Foundry</h3>
+      <h3><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Palantir Foundry</h3>
       <p>Весь бизнес построен на идее: <strong>связанные данные экспоненциально ценнее разрозненных</strong>. Foundry Ontology &mdash; семантический слой, через который 8,000+ пользователей SOMPO работают с данными на языке бизнеса. 500+ bootcamps/год, конверсия 75%. 139 сделок >$1M за квартал.</p>
     </div>
     <div class="ref-card">
-      <h3>🏦 Goldman Sachs &mdash; Legend/PURE</h3>
+      <h3><svg viewBox="0 0 24 24"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg> Goldman Sachs &mdash; Legend/PURE</h3>
       <p>Единая формальная модель данных для трейдинга, риска и регуляторной отчётности. <strong>Формализация &mdash; не академическое упражнение, а конкурентное оружие</strong> на уровне высших финансов. One source of truth для всей организации.</p>
     </div>
     <div class="ref-card">
-      <h3>🌐 JPMorgan Chase</h3>
+      <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> JPMorgan Chase</h3>
       <p>Внутренний knowledge graph: системы, данные, процессы, оргструктура &mdash; всё связано. <strong>Impact analysis и regulatory reporting at scale</strong> на 300,000+ сотрудников и тысячи систем. Каждый элемент архитектуры &mdash; в графе.</p>
     </div>
     <div class="ref-card">
-      <h3>🇪🇺 ING Bank</h3>
+      <h3><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M8 10h.01M16 10h.01M12 10h.01M8 14h.01M16 14h.01M12 14h.01"/></svg> ING Bank</h3>
       <p>Enterprise ontology как основа платформенной трансформации. Доказательство: <strong>европейский банк может принять ontology-driven architecture</strong> и получить измеримые улучшения в time-to-market и операционной прозрачности.</p>
     </div>
     <div class="ref-card">
-      <h3>📊 Microsoft</h3>
+      <h3><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> Microsoft</h3>
       <p>Microsoft Graph связывает людей, файлы и активность. Fabric OneLake строит единую семантическую модель. <strong>GraphRAG &mdash; 30,500+ звёзд на GitHub</strong>. OG-RAG (EMNLP 2025): +55% recall с онтологией. Ставка Microsoft ясна: будущее enterprise &mdash; граф знаний.</p>
     </div>
     <div class="ref-card">
-      <h3>🎵 Zalando, Netflix, Spotify</h3>
+      <h3><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Zalando, Netflix, Spotify</h3>
       <p>Пионеры data mesh и metadata-платформ (DataHub, Backstage). <strong>Metadata как продукт</strong> &mdash; с ownership, контрактами и discoverability. Atlas приносит эту философию в банкинг с регуляторной строгостью.</p>
     </div>
   </div>
@@ -708,7 +920,7 @@ const obs = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
 // Nav dots
-const sects = ['s-hero','s-problem','s-solution','s-integration','s-ai','s-evidence','s-refs','s-roadmap','s-cta'];
+const sects = ['s-hero','s-problem','s-solution','s-metamodel','s-integration','s-ai','s-evidence','s-refs','s-roadmap','s-cta'];
 const dotsC = document.getElementById('navDots');
 sects.forEach(id => {
   const d = document.createElement('div');
@@ -725,6 +937,19 @@ const sObs = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.25 });
 sects.forEach(id => { const el = document.getElementById(id); if(el) sObs.observe(el); });
+
+// Theme toggle
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    html.removeAttribute('data-theme');
+    localStorage.removeItem('atlas-theme');
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    localStorage.setItem('atlas-theme', 'dark');
+  }
+});
 
 // Benchmark bars
 const bd = [
